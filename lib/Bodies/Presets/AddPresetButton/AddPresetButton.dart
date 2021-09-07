@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
-import '../../../main.dart';
+import '../CompetitionSettings.dart';
 import 'AddPresetDialog.dart';
 
 class AddNewPresetButton extends StatelessWidget {
@@ -24,7 +23,9 @@ class AddNewPresetButton extends StatelessWidget {
   showNewPresetDialog(context){
     showDialog(
         context: context,
-        builder: (BuildContext context) {return AddPresetDialog();}
+        builder: (BuildContext context) {
+          Map copy = {...preset_ShootOff};
+          return AddPresetDialog(settings: copy);}
         );
   }
 }

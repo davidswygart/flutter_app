@@ -25,16 +25,28 @@ class DashBody extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            Container(
+              child: Text('Last Game results'),
+              color: Colors.lightBlueAccent,
+              padding: EdgeInsets.all(100),
+              margin: EdgeInsets.all(20),
+            ),
+            Container(
+              child: Text('graph of scores over time or histogram comparing you to others'),
+              color: Colors.lightGreen,
+              padding: EdgeInsets.all(100),
+              margin: EdgeInsets.all(20),
+            ),
             ElevatedButton(
               onPressed: () {Navigator.pushNamed(context,'/GameModes');},
-              child: const Text('Start Game',
+              child: const Text('Start New Game',
                 style: TextStyle(
                   fontSize:20
                 ),
               ),
-        ),
-      ],
-    )
+            ),
+          ],
+        )
     );
   }
 }

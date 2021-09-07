@@ -1,7 +1,7 @@
 const preset_colorInOrder = {
   'title': 'Colors in Order',
   'Number of Rounds': 3,
-  'Delay between Rounds': 1000,
+  'Delay between Rounds': 1,
   'Multiplayer Mode':
   4, //Indicates the number of paddles in async mode, 0 indicates simultaneous play
   'Movement Speed': 0,
@@ -19,7 +19,7 @@ const preset_colorInOrder = {
 const preset_ShootOff = {
   'title': 'Shoot Off',
   'Number of Rounds': 5,
-  'Delay between Rounds': 1000,
+  'Delay between Rounds': 1,
   'Multiplayer Mode':
   0, //Indicates the number of paddles in async mode, 0 indicates simultaneous play
   'Movement Speed': 0,
@@ -36,7 +36,7 @@ const preset_ShootOff = {
 const preset_MovingTarget = {
   'title': 'Moving Target',
   'Number of Rounds': 5,
-  'Delay between Rounds': 1000,
+  'Delay between Rounds': 1,
   'Multiplayer Mode':
   0, //Indicates the number of paddles in async mode, 0 indicates simultaneous play
   'Movement Speed': 30,
@@ -53,7 +53,7 @@ const preset_MovingTarget = {
 const preset_DisapearingLights = {
   'title': 'Disappearing Lights',
   'Number of Rounds': 5,
-  'Delay between Rounds': 1000,
+  'Delay between Rounds': 1,
   'Multiplayer Mode':
   4, //Indicates the number of paddles in async mode, 0 indicates simultaneous play
   'Movement Speed': 0,

@@ -66,9 +66,13 @@ class CustomPresetNotifier extends ChangeNotifier {
 
   void add(Map settings) {
     Box<Map> presetBox = Hive.box(savedPresets);
+
     var now = DateTime.now();
     int key = now.second;
     settings['key'] = key;
+
+    settings['editable'] = true;
+
     presetBox.put(key, settings);
     buildListView();
     notifyListeners();
@@ -79,6 +83,21 @@ class CustomPresetNotifier extends ChangeNotifier {
     for (var key in presetBox.keys) {
       presetBox.delete(key);
     }
+    buildListView();
+    notifyListeners();
+  }
+
+  void delete(Map settings) {
+    Box<Map> presetBox = Hive.box(savedPresets);
+    presetBox.delete(settings['key']);
+    buildListView();
+    notifyListeners();
+  }
+
+  void update(Map settings) {
+    Box<Map> presetBox = Hive.box(savedPresets);
+    int key = settings['key'];
+    presetBox.put(key, settings);
     buildListView();
     notifyListeners();
   }
