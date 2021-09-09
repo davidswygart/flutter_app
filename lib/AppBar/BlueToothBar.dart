@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 
-class BlueToothBar extends StatelessWidget implements PreferredSizeWidget {
+class BlueToothBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   const BlueToothBar({Key? key, this.title = 'HTT'}) : super(key: key);
 
@@ -12,13 +12,47 @@ class BlueToothBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
+  State<StatefulWidget> createState() {
+    return _BlueToothBar();
+  }
+}
+
+class _BlueToothBar extends State<BlueToothBar>{
+  static const List<String> possibleStates = [
+    'Disconnected',
+    'Pending',
+    'Connected',
+  ];
+  static const List<MaterialColor> possibleColors = [
+    Colors.red,
+    Colors.yellow,
+    Colors.green
+  ];
+
+  String currentState = possibleStates[0];
+  MaterialColor currentColor = possibleColors[0];
+
+  int sillyCounter = 0;
+
+
+  @override
   Widget build(BuildContext context) {
-    return AppBar(title: Text(title), actions: <Widget>[
-      Padding(
+    return AppBar(title: Text(widget.title), actions: <Widget>[
+      Container(
         padding: EdgeInsets.all(5),
         child: GFButton(
-          onPressed: () {},
-          text: "Connected",
+          //focusColor: currentColor,
+          //splashColor: currentColor,
+          //highlightColor: currentColor,
+          color: currentColor,
+          onPressed: () {
+            sillyCounter = (sillyCounter+1) % 3;
+            setState(() {
+              currentColor = possibleColors[sillyCounter];
+              currentState = possibleStates[sillyCounter];
+            });
+            },
+          text: currentState,
           icon: Icon(Icons.bluetooth),
         ),
       )
