@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/components/toast/gf_toast.dart';
 
 import 'DeleteRenameNotification/CopyCompDialog.dart';
 import 'DeleteRenameNotification/DeleteRenameDiolog.dart';
@@ -14,8 +13,8 @@ class AccordionTitle extends StatelessWidget{
     return GestureDetector(
         child: Text(settings['title'],
           style: TextStyle(
-            //backgroundColor: Colors.red,
-          )
+            fontWeight: FontWeight.bold,
+          ),
         ),
         onLongPress: (){showDeleteRenameDialog(context, settings);}
     );

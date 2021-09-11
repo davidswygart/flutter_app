@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Bodies/Presets/CompetitionSettings.dart';
-import 'package:flutter_app/ChangeNotifiers/CustomPresetChangeNotifier.dart';
+
+import 'package:flutter_app/Bodies/Presets/CustomPresetChangeNotifier.dart';
 import 'package:provider/provider.dart';
 
 class AddPresetDialog extends StatelessWidget {
@@ -20,7 +20,7 @@ class AddPresetDialog extends StatelessWidget {
   }
 
   addPreset(context, name) {
-    final cpNotifier = Provider.of<CustomPresetNotifier>(context, listen:false);
+    final cpNotifier = Provider.of<PresetUpdater>(context, listen:false);
     settings['title'] = name;
     cpNotifier.add(settings);
     Navigator.pop(context);

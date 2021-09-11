@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Bodies/Presets/AddPresetButton/AddPresetDialog.dart';
-import 'package:flutter_app/ChangeNotifiers/CustomPresetChangeNotifier.dart';
+import 'package:flutter_app/Bodies/Presets/CustomPresetChangeNotifier.dart';
 import 'package:provider/provider.dart';
 
 class CopyCompDialog extends StatelessWidget{
@@ -23,7 +23,7 @@ class CopyCompDialog extends StatelessWidget{
   }
 
   delete(context){
-    final cpNotifier = Provider.of<CustomPresetNotifier>(context, listen:false);
+    final cpNotifier = Provider.of<PresetUpdater>(context, listen:false);
     cpNotifier.delete(settings);
     Navigator.pop(context);
     showNewPresetDialog(context);

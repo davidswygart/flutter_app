@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Bodies/Presets/CompetitionSettings.dart';
-import 'package:flutter_app/ChangeNotifiers/CustomPresetChangeNotifier.dart';
-import 'package:provider/provider.dart';
+
 
 class AddNameDialog extends StatelessWidget {
   Function addName;

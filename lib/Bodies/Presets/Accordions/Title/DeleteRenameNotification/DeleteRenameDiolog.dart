@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ChangeNotifiers/CustomPresetChangeNotifier.dart';
+import 'package:flutter_app/Bodies/Presets/CustomPresetChangeNotifier.dart';
 import 'package:provider/provider.dart';
 
 class DeleteRenameDialog extends StatelessWidget{
@@ -30,20 +30,20 @@ class DeleteRenameDialog extends StatelessWidget{
   }
 
   rename(context, newName){
-    final cpNotifier = Provider.of<CustomPresetNotifier>(context, listen:false);
+    final cpNotifier = Provider.of<PresetUpdater>(context, listen:false);
     settings['title'] = newName;
     cpNotifier.update(settings);
     Navigator.pop(context);
   }
 
   delete(context){
-    final cpNotifier = Provider.of<CustomPresetNotifier>(context, listen:false);
+    final cpNotifier = Provider.of<PresetUpdater>(context, listen:false);
     cpNotifier.delete(settings);
     Navigator.pop(context);
   }
 
   deleteAll(context){
-    final cpNotifier = Provider.of<CustomPresetNotifier>(context, listen:false);
+    final cpNotifier = Provider.of<PresetUpdater>(context, listen:false);
     cpNotifier.deleteAll();
     Navigator.pop(context);
   }

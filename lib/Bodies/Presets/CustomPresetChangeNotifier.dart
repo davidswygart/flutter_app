@@ -6,10 +6,15 @@ import 'package:flutter_app/Bodies/Presets/AddPresetButton/AddPresetButton.dart'
 import 'package:flutter_app/Bodies/Presets/CompetitionSettings.dart';
 import 'package:hive/hive.dart';
 
-import '../main.dart';
+import '../../main.dart';
 
-class CustomPresetNotifier extends ChangeNotifier {
-  CustomPresetNotifier(){buildListView();}
+class PresetUpdater extends ChangeNotifier {
+  PresetUpdater(){buildListView();}
+  static const TextStyle titleStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 25
+  );
+
   List widgetList = [];
   ListView listView = ListView();
 
@@ -103,15 +108,4 @@ class CustomPresetNotifier extends ChangeNotifier {
   }
 
 
-
-
-
-
-
-
-
-  static const TextStyle titleStyle = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 25
-  );
 }

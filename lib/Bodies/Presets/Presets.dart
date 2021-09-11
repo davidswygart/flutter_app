@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ChangeNotifiers/CustomPresetChangeNotifier.dart';
+import 'package:flutter_app/Bodies/Presets/CustomPresetChangeNotifier.dart';
 import 'package:provider/provider.dart';
 
 import '../../AppBar/BlueToothBar.dart';
@@ -23,7 +23,7 @@ class PresetBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CustomPresetNotifier>(
+    return Consumer<PresetUpdater>(
         builder: (context, customPresetNotifier, child) {
           return customPresetNotifier.listView;
         }

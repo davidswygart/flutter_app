@@ -30,7 +30,7 @@ class DelayBetweenRoundsDialog extends StatefulWidget{
   final Map settings;
   double val = 0;
   DelayBetweenRoundsDialog({required this.settings}){
-    //this.settings = settings;
+
     int intVal = settings['Delay between Rounds'];
     val = intVal.toDouble();
   }
