@@ -26,7 +26,7 @@ class PresetBody extends StatelessWidget {
     return Consumer<PresetUpdater>(
         builder: (context, customPresetNotifier, child) {
           return customPresetNotifier.listView;
-        }
-        );
+        },
+    );
   }
 }

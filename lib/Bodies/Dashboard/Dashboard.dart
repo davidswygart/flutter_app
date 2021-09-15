@@ -28,13 +28,13 @@ class DashBody extends StatelessWidget {
             Container(
               child: Text('Last Game results'),
               color: Colors.lightBlueAccent,
-              padding: EdgeInsets.all(100),
+              padding: EdgeInsets.all(80),
               margin: EdgeInsets.all(20),
             ),
             Container(
               child: Text('graph of scores over time or histogram comparing you to others'),
               color: Colors.lightGreen,
-              padding: EdgeInsets.all(100),
+              padding: EdgeInsets.all(80),
               margin: EdgeInsets.all(20),
             ),
             ElevatedButton(
