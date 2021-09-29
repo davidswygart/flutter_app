@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/AppBar/BlueToothBar.dart';
 
@@ -11,7 +9,9 @@ class ActiveGamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BlueToothBar(title: 'Play Game',),
+      appBar: BlueToothBar(
+        title: 'Play Game',
+      ),
       body: ActiveBody(),
     );
   }
@@ -20,23 +20,27 @@ class ActiveGamePage extends StatelessWidget {
 class ActiveBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _ActiveBody();}
+    return _ActiveBody();
+  }
 }
 
 class _ActiveBody extends State<ActiveBody> {
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         PaddleDisplay(),
-        Text('Shoot Your Color!', textScaleFactor: 3,),
+        Text(
+          'Shoot Your Color!',
+          textScaleFactor: 3,
+        ),
         ElevatedButton(
-          onPressed: () {Navigator.pushNamed(context,'/Dashboard');},
-          child: const Text('Quit Game',
-            style: TextStyle(
-                fontSize:20
-            ),
+          onPressed: () {
+            Navigator.pushNamed(context, '/Dashboard');
+          },
+          child: const Text(
+            'Quit Game',
+            style: TextStyle(fontSize: 20),
           ),
         ),
       ],

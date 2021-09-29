@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/NavigationDrawer/Drawer.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
+import '../../AdvanceButton.dart';
 import '../../AppBar/BlueToothBar.dart';
 
 class DashPage extends StatelessWidget {
@@ -8,8 +12,16 @@ class DashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BlueToothBar(title: 'HTT Dashboard',),
-      body: const DashBody(),
+      appBar: BlueToothBar(
+        title: 'HTT Dashboard',
+      ),
+      drawer: NavigationDrawer(),
+      body: DashBody(),
+      floatingActionButton: AdvanceButton(
+        route: '/GameModes',
+        text: 'New Game',
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -17,36 +29,29 @@ class DashPage extends StatelessWidget {
 class DashBody extends StatelessWidget {
   const DashBody({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-        alignment: Alignment.topCenter,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              child: Text('Last Game results'),
-              color: Colors.lightBlueAccent,
-              padding: EdgeInsets.all(80),
-              margin: EdgeInsets.all(20),
-            ),
-            Container(
-              child: Text('graph of scores over time or histogram comparing you to others'),
-              color: Colors.lightGreen,
-              padding: EdgeInsets.all(80),
-              margin: EdgeInsets.all(20),
-            ),
-            ElevatedButton(
-              onPressed: () {Navigator.pushNamed(context,'/GameModes');},
-              child: const Text('Start New Game',
-                style: TextStyle(
-                  fontSize:20
-                ),
-              ),
-            ),
-          ],
-        )
+    double height = MediaQuery.of(context).size.height;
+
+    return CarouselSlider(
+      items: [
+        Container(
+          child: Text('Last Game Results'),
+          color: Colors.green,
+          constraints: BoxConstraints.tight(Size.infinite),
+        ),
+        Container(
+          child: Text('History of Scores'),
+          color: Colors.brown,
+          constraints: BoxConstraints.tight(Size.infinite),
+        ),
+      ],
+      options: CarouselOptions(
+        enlargeCenterPage: true,
+        enlargeStrategy: CenterPageEnlargeStrategy.height,
+        height: height,
+        viewportFraction: 1,
+      ),
     );
   }
 }
