@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 
 class PaddleDisplay extends StatefulWidget {
+  List<Color> lstCols;
+  PaddleDisplay({required this.lstCols});
+
   @override
   State<StatefulWidget> createState() {
-    return _PaddleDisplay();
+    return _PaddleDisplay(lstCols: lstCols);
   }
 }
 
 class _PaddleDisplay extends State<PaddleDisplay> {
-  Map<String, Color> colorsOptions = {
-    'Red': Colors.red.shade500,
-    'Green': Colors.green.shade500,
-    'Blue': Colors.blue.shade500,
-    'White': Colors.white,
-    'default': Colors.grey.shade500
-  };
-
-  late List<String?> currentColor;
+  List<Color> lstCols;
+  _PaddleDisplay({required this.lstCols});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +36,7 @@ class _PaddleDisplay extends State<PaddleDisplay> {
           width: screenWidth / 4,
           height: screenWidth / 4,
           child: Container(
-            color: colorsOptions.values.elementAt(i),
+            color: lstCols[i],
             alignment: Alignment.center,
             child: Text(
               (i + 1).toString(),
@@ -50,7 +46,6 @@ class _PaddleDisplay extends State<PaddleDisplay> {
         ),
       );
     }
-
     return paddleList;
   }
 }

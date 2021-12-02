@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Bodies/GameSettings/GameSettings.dart';
+import 'package:flutter_app/Pages/Pages.dart';
 
 import 'package:getwidget/components/carousel/gf_carousel.dart';
 
@@ -20,7 +20,7 @@ class CompetitionCarousel extends StatelessWidget {
     ];
 
     List<Card> cardList = [];
-    for (PresetTemplate p in compPresets) {
+    for (Preset p in compPresets) {
       cardList.add(Card(
         child: GestureDetector(
           onTap: () {

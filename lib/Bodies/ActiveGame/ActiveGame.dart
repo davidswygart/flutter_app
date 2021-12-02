@@ -1,49 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/AppBar/BlueToothBar.dart';
+import 'package:flutter_app/Bodies/GameMode/CompetitionSettings.dart';
 
-import 'PaddleDisplay.dart';
+import 'NewGame.dart';
 
-class ActiveGamePage extends StatelessWidget {
-  const ActiveGamePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BlueToothBar(
-        title: 'Play Game',
-      ),
-      body: ActiveBody(),
-    );
-  }
-}
 
 class ActiveBody extends StatefulWidget {
+  final Preset preset;
+  const ActiveBody({required this.preset, Key? key}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState() {
-    return _ActiveBody();
+  State<StatefulWidget> createState(){
+    return _ActiveBody(preset: preset);
   }
 }
 
 class _ActiveBody extends State<ActiveBody> {
+  final Preset preset;
+  _ActiveBody({required this.preset});
+  NewGame game = NewGame();
+
+  @override
+  void initState() {
+    super.initState();
+    game.play();
+  }
+
+  @override
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        PaddleDisplay(),
-        Text(
-          'Shoot Your Color!',
-          textScaleFactor: 3,
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/Dashboard');
+      return StreamBuilder<Widget>(
+          stream: game.targetState.stream,
+          initialData: Text("Initial Data from Stream Builder"),
+          builder: (context, snapshot){
+            return snapshot.data ?? Text("Error: Null Data from Stream");
           },
-          child: const Text(
-            'Quit Game',
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-      ],
-    );
+      );
   }
 }

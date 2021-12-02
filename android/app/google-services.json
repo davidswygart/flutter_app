@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "920773081072",
+    "project_id": "hightechtargets-firebase",
+    "storage_bucket": "hightechtargets-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920773081072:android:3e2e01c31d1e378fe4cf35",
+        "android_client_info": {
+          "package_name": "com.HTT.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920773081072-0g4lc91fsahbl6usc9h41m0f01f9rcl3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.HTT.flutter_app",
+            "certificate_hash": "28dbfdc7232efadb00f9b11a4637acca18e5f37a"
+          }
+        },
+        {
+          "client_id": "920773081072-cl0c8kedf16460g491jn705npoqug88u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5JQ90K4tg-aq9iptbuiHNiiDji8rTW4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920773081072-cl0c8kedf16460g491jn705npoqug88u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

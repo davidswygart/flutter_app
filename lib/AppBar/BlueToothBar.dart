@@ -2,9 +2,8 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/BlueTooth/BlueServices.dart';
-
-import '../BlueTooth/PossibleStates.dart';
+import 'package:flutter_app/BlueTooth/BlueStateAssembler.dart';
+import 'package:flutter_app/Pages/Pages.dart';
 
 
 class BlueToothBar extends StatefulWidget implements PreferredSizeWidget {
@@ -24,29 +23,7 @@ class BlueToothBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _BlueToothBar extends State<BlueToothBar> {
-  final Map<String,Icon> btIcons = {
-    ConnectionStates.notSupported: Icon(
-      Icons.error,
-      color: Colors.red.shade500,
-    ),
-    ConnectionStates.blueToothDisabled: Icon(
-      Icons.bluetooth_disabled,
-      color: Colors.red.shade500,
-    ),
-    ConnectionStates.notConnected: Icon(
-      Icons.bluetooth,
-      color: Colors.red.shade500,
-    ),
-    ConnectionStates.connecting: Icon(
-      Icons.bluetooth_searching,
-      color: Colors.yellow.shade500,
-    ),
-    ConnectionStates.connected: Icon(
-      Icons.bluetooth_connected,
-      color: Colors.green.shade400,
-    ),
-  };
-  bool settingsNotOpen = true;
+  bool popupHasBeenShown = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,22 +32,29 @@ class _BlueToothBar extends State<BlueToothBar> {
         Text(widget.title),
       ]),
       actions: <Widget>[
-        StreamBuilder<String>(
-          stream: BlueServices.getStateStream(),
-          initialData: ConnectionStates.notSupported,
+        StreamBuilder<blueStates>(
+          stream: BlueStateAssembler.getStateStream(),
+          initialData: BlueStateAssembler.currentState,
           builder: (context, snapshot) {
-            if (snapshot.data == ConnectionStates.blueToothDisabled && settingsNotOpen) {
-              settingsNotOpen = false;
-              openBlueToothSettings(context);
+            blueStates state = BlueStateAssembler.currentState;//TODO: Don't really need to use stream/snapshot.  Just lets us know we need to rebuild.  Maybe something like a change notifier would be less resource intensive?  Low priority.
+
+            if (state == blueStates.turnedOff && !popupHasBeenShown){
+              openBlueToothSettingsPopUp(context);
             }
 
             return IconButton(
-              icon: btIcons[snapshot.data] ?? Icon(Icons.error),
+              icon: _getIcon(state),
               onPressed: () {
-/*                if (btUp.connectionState == ConnectionStates.blueToothDisabled){
-                  openBlueToothSettings(context);
-                }*/
-              }
+                if (state == blueStates.turnedOff){
+                  openBlueToothSettingsPopUp(context);
+                }
+                else {
+                  if (widget.title != BlueToothDevicesPage.routeName){
+                    Navigator.pushNamed(
+                        context, BlueToothDevicesPage.routeName);
+                  }
+                }
+              },
             );
           }
         ),
@@ -78,7 +62,8 @@ class _BlueToothBar extends State<BlueToothBar> {
     );
   }
 
-  openBlueToothSettings(BuildContext context){
+  openBlueToothSettingsPopUp(BuildContext context){
+    popupHasBeenShown = true;
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       showDialog(
         context: context,
@@ -105,7 +90,26 @@ class _BlueToothBar extends State<BlueToothBar> {
       );
     });
   }
+
+
+  Icon _getIcon(blueStates state){
+    switch(state){
+      case blueStates.error:
+        return Icon(Icons.device_unknown, color: Colors.red.shade500,);
+      case blueStates.notSupported:
+        return Icon(Icons.error, color: Colors.red.shade500,);
+      case blueStates.unauthorized:
+        return Icon(Icons.app_blocking, color: Colors.red.shade500,);
+      case blueStates.turnedOff:
+        return Icon(Icons.bluetooth_disabled, color: Colors.red.shade500,);
+      case blueStates.notConnected:
+        return Icon(Icons.bluetooth, color: Colors.red.shade500,);
+      case blueStates.scanning:
+        return Icon(Icons.bluetooth_searching, color: Colors.red.shade500,);
+      case blueStates.connecting:
+        return Icon(Icons.bluetooth_searching, color: Colors.yellow.shade500,);
+      case blueStates.connected:
+        return Icon(Icons.bluetooth_connected, color: Colors.green.shade500,);
+    }
+  }
 }
-
-
-

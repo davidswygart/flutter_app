@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Pages/Pages.dart';
 
 class AddNewPresetButton extends StatelessWidget {
   @override
@@ -16,7 +17,7 @@ class AddNewPresetButton extends StatelessWidget {
           primary: Colors.white10,
         ),
         onPressed: () {
-          Navigator.pushNamed(context, '/GameSettings');
+          Navigator.pushNamed(context, GameSettingsPage.routeName);
         });
   }
 }

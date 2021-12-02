@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class AdvanceButton extends StatelessWidget {
   final String text;
-  final String route;
-  const AdvanceButton({Key? key, required this.text, required this.route})
+  final Null Function() navigationFunction;
+  const AdvanceButton({Key? key, required this.text, required this.navigationFunction})
       : super(key: key);
 
   @override
@@ -13,9 +13,7 @@ class AdvanceButton extends StatelessWidget {
     return Container(
       constraints: BoxConstraints.expand(width: width / 2, height: width / 8),
       child: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, route);
-        },
+        onPressed: navigationFunction,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: FittedBox(
           fit: BoxFit.fitWidth,
