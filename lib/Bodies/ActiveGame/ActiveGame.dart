@@ -25,9 +25,6 @@ class _ActiveBody extends State<ActiveBody> {
     game.play();
   }
 
-  @override
-
-
 
   @override
   Widget build(BuildContext context) {
