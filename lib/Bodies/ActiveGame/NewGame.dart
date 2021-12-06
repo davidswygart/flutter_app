@@ -4,75 +4,60 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app/BlueTooth/BluetoothObjects.dart';
-import 'package:flutter_app/BlueTooth/ConnectHandler.dart';
+import 'package:flutter_app/BlueTooth/BlueToothHandler.dart';
 
 import 'package:flutter_blue/flutter_blue.dart';
 
-
-
 class NewGame {
-  BluetoothCharacteristic? padColChar;
-  BluetoothCharacteristic? hitPadChar;
-  StreamController<Widget> targetState = StreamController<Widget>.broadcast();
-  StreamController<List<int>> loopControl = StreamController<List<int>>.broadcast();
+  NewGame();
 
-  NewGame() {
-    //TODO Send general game settings to ESP32
-    BlueToothObjects btObj = ConnectHandler.getBtObjects();
-    padColChar = btObj.getChar('Play', 'paddleColor');
-    hitPadChar = btObj.getChar('Play', 'hitPaddle');
-    if (padColChar == null) {throw ('characteristic is null');}
-    hitPadChar!.value.listen((val){loopControl.add(val);});
-  }
+  Future<void> play(StreamController<Widget> displayBroadcaster) async {
+    BlueToothHandler bth = BlueToothHandler();
+    BluetoothCharacteristic? ledCharacteristic = bth.ledCharacteristic;
+    BluetoothCharacteristic? hitCharacteristic = bth.hitCharacteristic;
+    if ((ledCharacteristic == null) || (hitCharacteristic == null)){
+      return;
+    }
 
-  Future<void> play() async {
-    await hitPadChar!.setNotifyValue(true); //TODO move this to an earlier location
     const List<int> goColor = [0, 200, 0];
     const List<int> noGoColor = [200, 0, 0];
     const List<int> blankColor = [0,0,0];
     const int rndDelayMax = 5000; // ms
-    const int timeout = 5000; //ms
+    const int timeout = 500; //ms
     Random rng = Random();
     int previousReactionTime = 1000; //This gets used for no-go trials before go
     int scoreMultiplier = 1;
     num totalScore = 0;
 
 
-    targetState.add(Text("Get Ready", textScaleFactor: 3,));
+    displayBroadcaster.add(Text("Get Ready", textScaleFactor: 3,));
     await new Future.delayed(const Duration(seconds : 4));
-    targetState.add(Text("3", textScaleFactor: 3,));
+    displayBroadcaster.add(Text("3", textScaleFactor: 3,));
     await new Future.delayed(const Duration(seconds : 1));
-    targetState.add(Text("2", textScaleFactor: 3,));
+    displayBroadcaster.add(Text("2", textScaleFactor: 3,));
     await new Future.delayed(const Duration(seconds : 1));
-    targetState.add(Text("1", textScaleFactor: 3,));
+    displayBroadcaster.add(Text("1", textScaleFactor: 3,));
 
     for (int rnd = 0; rnd < 10; rnd++){
       await new Future.delayed(Duration(milliseconds : rng.nextInt(rndDelayMax))); //Round Delay
+
       // create the epoch
-
       bool go = rng.nextBool();
-      if (go){await padColChar!.write(goColor);}
-      else {await padColChar!.write(noGoColor);}
-
-      //targetState.add(PaddleDisplay(lstCols: [Colors.red.shade500, Colors.green.shade500, Colors.blue.shade500, Colors.blue.shade500]));
+      if (go){await ledCharacteristic.write(goColor);}
+      else {await ledCharacteristic.write(noGoColor);}
 
       //Wait for a response
-      new Future.delayed(const Duration(milliseconds : timeout), (){
-        loopControl.add([-1]);
-        debugPrint("Timeout");
-      }); // value of -1 means that timeout was reached
-      List<int> h = await loopControl.stream.firstWhere((val) => val.isNotEmpty);
-      debugPrint(h.toString());
-      //List<int> h = await hitPadChar!.value.firstWhere((val) => val.isNotEmpty);
+      Future<List<int>> hitFuture = hitCharacteristic.value.firstWhere((val) => val.isNotEmpty);
+      Future<List<int>> hitFutureTimeout = hitFuture.timeout(Duration(milliseconds: timeout), onTimeout: (){return [-1];});
+      List<int> hitBytes = await hitFutureTimeout;
 
       int reactionTime;
-      if (h[0] == -1){
+      if (hitBytes[0] == -1){
         debugPrint("Timeout");
         reactionTime = -1;
       }
       else{
-        reactionTime = ByteData.sublistView(Uint8List.fromList(h)).getUint32(0, Endian.little);
+        reactionTime = ByteData.sublistView(Uint8List.fromList(hitBytes)).getUint32(0, Endian.little);
         previousReactionTime = reactionTime;
         debugPrint("reaction Time = " + reactionTime.toString());
       }
@@ -102,7 +87,7 @@ class NewGame {
         scoreMultiplier *= 2;
       }
       else{
-        targetState.add(Text("Error: reaction time = "+ reactionTime.toString(), textScaleFactor: 3,));
+        displayBroadcaster.add(Text("Error: reaction time = "+ reactionTime.toString(), textScaleFactor: 3,));
         message = "Error determining if hit was justified";
         penalty = 1;
         scoreMultiplier = scoreMultiplier;
@@ -112,25 +97,31 @@ class NewGame {
       double roundScore = scoreMultiplier*1000/penalty;
       totalScore += roundScore;
 
-      targetState.add(Column(children: [
-        Text(message),
+      displayBroadcaster.add(Column(children: [
+        Text(message, textScaleFactor: 3,),
         Text("reaction time = " + reactionTime.toString(), textScaleFactor: 3,),
-        Text("round score = " + roundScore.toString(), textScaleFactor: 3,),
-        Text("total score = " + totalScore.toString(), textScaleFactor: 3,),
+        Text("round score = " + roundScore.round().toString(), textScaleFactor: 3,),
+        Text("total score = " + totalScore.round().toString(), textScaleFactor: 3,),
       ],
       )
       );
 
-      await padColChar!.write(blankColor);
+      await ledCharacteristic.write(blankColor);
     }
     await new Future.delayed(Duration(seconds : 5));
-    targetState.add(Text("End of game", textScaleFactor: 3,));
+    displayBroadcaster.add(Text("End of game", textScaleFactor: 3,));
+    displayBroadcaster.add(Column(children: [
+      Text("End of game", textScaleFactor: 2,),
+      Text("total score = " + totalScore.round().toString(), textScaleFactor: 2,),
+    ],
+    )
+    );
   }
 }
 
 
-/*
-for (int rnd = 0; rnd < 10; rnd++){
+
+/*for (int rnd = 0; rnd < 10; rnd++){
       await new Future.delayed(const Duration(seconds : 1));
       // create the epoch
       List<List<int>> pColors = [[200, 200, 200], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
@@ -165,5 +156,4 @@ for (int rnd = 0; rnd < 10; rnd++){
       targetState.add("hit target! Reaction Time = " + reactionTime.toString());
 
       await new Future.delayed(const Duration(seconds : 1));
-    }
-*/
+    }*/

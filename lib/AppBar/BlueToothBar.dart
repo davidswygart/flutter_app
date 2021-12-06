@@ -2,14 +2,13 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/BlueTooth/BlueStateAssembler.dart';
+import 'package:flutter_app/BlueTooth/BlueToothHandler.dart';
 import 'package:flutter_app/Pages/Pages.dart';
 
 
 class BlueToothBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   BlueToothBar({Key? key, this.title = 'HTT'}) : super(key: key);
-
 
   @override
   Size get preferredSize {
@@ -24,7 +23,7 @@ class BlueToothBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _BlueToothBar extends State<BlueToothBar> {
   bool popupHasBeenShown = false;
-
+  BlueToothHandler bth = BlueToothHandler();
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -33,10 +32,10 @@ class _BlueToothBar extends State<BlueToothBar> {
       ]),
       actions: <Widget>[
         StreamBuilder<blueStates>(
-          stream: BlueStateAssembler.getStateStream(),
-          initialData: BlueStateAssembler.currentState,
+          stream: bth.stateStream.distinct(),
+          initialData: bth.lastState,
           builder: (context, snapshot) {
-            blueStates state = BlueStateAssembler.currentState;//TODO: Don't really need to use stream/snapshot.  Just lets us know we need to rebuild.  Maybe something like a change notifier would be less resource intensive?  Low priority.
+            blueStates state = snapshot.data ?? blueStates.error;
 
             if (state == blueStates.turnedOff && !popupHasBeenShown){
               openBlueToothSettingsPopUp(context);
