@@ -110,13 +110,8 @@ class ActiveGamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Preset p = ModalRoute.of(context)!.settings.arguments as Preset? ?? Preset();
     return Scaffold(
-      appBar: BlueToothBar(title: routeName),
+      //appBar: BlueToothBar(title: routeName),
       body: ActiveBody(preset: p),
-      floatingActionButton: AdvanceButton(
-          navigationFunction: (){Navigator.pushNamedAndRemoveUntil(
-              context, DashPage.routeName, (r) => false);},
-          text: 'Start Game'),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

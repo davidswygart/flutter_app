@@ -32,17 +32,24 @@ class _BlueToothBar extends State<BlueToothBar> {
       ]),
       actions: <Widget>[
         StreamBuilder<blueStates>(
-          stream: bth.stateStream.distinct(),
+          stream: bth.stateStream,
           initialData: bth.lastState,
           builder: (context, snapshot) {
             blueStates state = snapshot.data ?? blueStates.error;
+            debugPrint('BluetoothBar State: '+ state.toString());
 
             if (state == blueStates.turnedOff && !popupHasBeenShown){
               openBlueToothSettingsPopUp(context);
             }
 
+            if (state == blueStates.connected) {
+              return Center(child: Text(bth.batteryLevel.toString()));
+            }
+
+
             return IconButton(
               icon: _getIcon(state),
+              //tooltip: bth.batteryLevel.toString(),
               onPressed: () {
                 if (state == blueStates.turnedOff){
                   openBlueToothSettingsPopUp(context);
@@ -59,6 +66,11 @@ class _BlueToothBar extends State<BlueToothBar> {
         ),
       ],
     );
+  }
+
+  dispose(){
+    //TODO: do I need to unsubscribe from the stream in some way?
+    super.dispose();
   }
 
   openBlueToothSettingsPopUp(BuildContext context){
