@@ -28,9 +28,8 @@ class Games {
   Games() {
     //Todo: import settings and determine game mode from settings.  Make global settings for common things (rounds, delay, ect.)
     bth = BlueToothHandler();
-    _ledBLE = bth.ledCharacteristic;
     //_hitBLE = bth.hitCharacteristic;
-    _playGoNoGo();
+    //_playGoNoGo();
     //_playBeatBrain();
   }
 
@@ -56,7 +55,7 @@ class Games {
   bool _playingGame = false;
   bool _stopCurrentGame = false;
 
-  Future<void> quitGame() async{
+/*  Future<void> quitGame() async{
     if(_playingGame){
       debugPrint('Game is playing.  I am going to try to make it stop');
       _stopCurrentGame = true;
@@ -99,12 +98,12 @@ class Games {
       int reactionTime = DateTime.now().compareTo(waitStart);
       debugPrint('made it here');
       int error = reactionTime - waitDelay;
-/*      if (error.abs() > 500){
+*//*      if (error.abs() > 500){
         await _blink(goColor);
       }
       else {
         await _blink(prepColor);
-      }*/
+      }*//*
       debugPrint('You were off by '+ error.toString());
     }
   }
@@ -225,7 +224,7 @@ class Games {
 
   Future<void> _blankLEDs() async {
     await _ledBLE!.write([0, 0, 0]);
-  }
+  }*/
 }
 
 /*for (int rnd = 0; rnd < 10; rnd++){

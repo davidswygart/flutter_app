@@ -10,4 +10,5 @@ final Map<String, Widget Function(BuildContext)> routes =
   BlueToothDevicesPage.routeName: (context) => const BlueToothDevicesPage(),
   UsersPage.routeName: (context) => const UsersPage(),
   PlayersPage.routeName: (context) => PlayersPage(),
+  DebugBlePage.routeName: (context) => DebugBlePage(),
 };

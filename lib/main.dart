@@ -12,8 +12,8 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox<Preset>(Preset.boxName);
   await Hive.openBox<User>(User.boxName);
-  BlueToothHandler bth = BlueToothHandler();
-  bth.startStateHandler();
+  //BlueToothHandler bth = BlueToothHandler();
+  //bth.connect();
 
   runApp(
     MaterialApp(

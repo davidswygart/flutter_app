@@ -25,6 +25,12 @@ class _ActiveBody extends State<ActiveBody> {
   late Widget quitButton;
 
   @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+/*
+  @override
   void initState() {
     super.initState();
     replayButton = ElevatedButton(
@@ -190,5 +196,5 @@ class _ActiveBody extends State<ActiveBody> {
         ),
       ],
     );
-  }
+  }*/
 }

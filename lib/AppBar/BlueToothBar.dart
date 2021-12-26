@@ -31,7 +31,8 @@ class _BlueToothBar extends State<BlueToothBar> {
         Text(widget.title),
       ]),
       actions: <Widget>[
-        StreamBuilder<blueStates>(
+        Text('delete this'),
+        /*StreamBuilder<blueStates>(
           stream: bth.stateStream,
           initialData: bth.lastState,
           builder: (context, snapshot) {
@@ -43,7 +44,8 @@ class _BlueToothBar extends State<BlueToothBar> {
             }
 
             if (state == blueStates.connected) {
-              return Center(child: Text(bth.batteryLevel.toString()));
+              return (Text('ignore this'));
+              //return Center(child: Text(bth.batteryLevel.toString()));
             }
 
 
@@ -63,7 +65,7 @@ class _BlueToothBar extends State<BlueToothBar> {
               },
             );
           }
-        ),
+        ),*/
       ],
     );
   }
@@ -103,7 +105,7 @@ class _BlueToothBar extends State<BlueToothBar> {
   }
 
 
-  Icon _getIcon(blueStates state){
+/*  Icon _getIcon(blueStates state){
     switch(state){
       case blueStates.error:
         return Icon(Icons.device_unknown, color: Colors.red.shade500,);
@@ -122,5 +124,5 @@ class _BlueToothBar extends State<BlueToothBar> {
       case blueStates.connected:
         return Icon(Icons.bluetooth_connected, color: Colors.green.shade500,);
     }
-  }
+  }*/
 }

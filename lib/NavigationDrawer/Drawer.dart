@@ -36,9 +36,10 @@ class NavigationDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            enabled: false,
+            enabled: true,
             title: Text('Advanced GameSettings'),
             onTap: () {
+              Navigator.pushNamed(context, DebugBlePage.routeName);
             },
           ),
         ],

@@ -3,6 +3,7 @@ import 'package:flutter_app/AppBar/BlueToothBar.dart';
 import 'package:flutter_app/Bodies/ActiveGame/ActiveGame.dart';
 import 'package:flutter_app/Bodies/BlueToothDevices/BlueToothDevices.dart';
 import 'package:flutter_app/Bodies/Dashboard/Dashboard.dart';
+import 'package:flutter_app/Bodies/DebugBle.dart';
 import 'package:flutter_app/Bodies/GameMode/CompetitionSettings.dart';
 import 'package:flutter_app/Bodies/GameMode/GameMode.dart';
 import 'package:flutter_app/Bodies/GameSettings/GameSettings.dart';
@@ -141,4 +142,19 @@ class UsersPage extends StatelessWidget {
         body: UsersBody(),
       );
   }
+}
+
+class DebugBlePage extends StatelessWidget {
+  static const routeName = 'Debug BLE';
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: BlueToothBar(title: routeName),
+      drawer: NavigationDrawer(currentPage: routeName),
+      body: DebugBle(),
+    );
+
+  }
+
 }
