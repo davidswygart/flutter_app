@@ -12,6 +12,8 @@ class GameModeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Box<Preset> presetBox = Hive.box(Preset.boxName);
+    Hive.openBox(Preset.boxName);
     Box<Preset> presetBox = Hive.box(Preset.boxName);
     List<ListTile> customPresetList = [];
 

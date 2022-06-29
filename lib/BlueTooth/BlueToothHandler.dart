@@ -57,11 +57,25 @@ class BlueToothHandler {
     debugPrint("BluetoothHandler: 1 Attempting connection");
     BluetoothDevice? device;
 
-    Stream<ScanResult> scanStream = fb.scan(timeout: Duration(seconds: 5));
-    ScanResult r = await scanStream.firstWhere((r) => r.device.name == info.deviceName);
-    await fb.stopScan();
+    Stream<ScanResult> scanStream = fb.scan().timeout(
+      Duration(seconds: 10),
+
+    );
+    
+    future<ScanResult> r = scanStream.firstWhere((r) => r.device.name == info.deviceName);
+    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(duration)
+
+    //scanStream.listen((r) => debugPrint(r.device.name));
+
+    debugPrint("BluetoothHandler: still waiting");
+    //await fb.stopScan();
 
 
+    if (device == null) {
+      debugPrint("BluetoothHandler: 4 Device not found in scan results");
+      return false;
+    }
 
     // Connect to device //
     debugPrint("BluetoothHandler: 5 Attempting connection");

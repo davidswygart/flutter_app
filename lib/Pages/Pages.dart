@@ -93,7 +93,8 @@ class PlayersPage extends StatelessWidget {
       drawer: NavigationDrawer(currentPage: routeName),
       body: PlayerBody(preset: p),
       floatingActionButton: AdvanceButton(
-          navigationFunction: (){Navigator.pushNamed(
+          navigationFunction: (){
+            Navigator.pushNamed(
               context,
               ActiveGamePage.routeName,
               arguments: p
@@ -130,7 +131,6 @@ class BlueToothDevicesPage extends StatelessWidget {
   }
 }
 
-
 class UsersPage extends StatelessWidget {
   const UsersPage({Key? key}) : super(key: key);
   static const routeName = 'Users';
@@ -154,7 +154,6 @@ class DebugBlePage extends StatelessWidget {
       drawer: NavigationDrawer(currentPage: routeName),
       body: DebugBle(),
     );
-
   }
 
 }

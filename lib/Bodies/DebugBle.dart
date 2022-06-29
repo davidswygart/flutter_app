@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/BlueTooth/BlueToothHandler.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 class DebugBle extends StatelessWidget {
   const DebugBle({Key? key}) : super(key: key);
@@ -18,8 +19,11 @@ class DebugBle extends StatelessWidget {
               },
               child: Text('Pair')),
           ElevatedButton(
-              onPressed: (){
-                Navigator.
+              onPressed: () async {
+                FlutterBlue fb = FlutterBlue.instance;
+                bool isScan = await fb.isScanning.first;
+                debugPrint("BluetoothHandler: Is scanning " + isScan.toString());
+
               },
               child: Text('OFF')),
         ],

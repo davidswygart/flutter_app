@@ -60,7 +60,7 @@ class CompetitionCarousel extends StatelessWidget {
 
     return GFCarousel(
       items: cardList,
-      pagination: true,
+      hasPagination: true,
       //enlargeMainPage: true,
       //viewportFraction: 1,
       height: height / 3,
