@@ -1,3 +1,6 @@
+
+
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_app/AppBar/BlueToothBar.dart';
 import 'package:flutter_app/Bodies/ActiveGame/ActiveGame.dart';
@@ -10,7 +13,9 @@ import 'package:flutter_app/Bodies/Players/PlayerBody.dart';
 import 'package:flutter_app/Bodies/Users/Users.dart';
 import 'package:flutter_app/NavigationDrawer/Drawer.dart';
 
-import '../AdvanceButton.dart';
+import '../advance_button.dart';
+
+
 
 class DashPage extends StatelessWidget {
   const DashPage({Key? key}) : super(key: key);
@@ -29,15 +34,23 @@ class DashPage extends StatelessWidget {
           return true;
         }
       },
-      child: Scaffold(
+      child: const Scaffold(
+
         appBar: BlueToothBar(title: routeName),
         drawer: NavigationDrawer(currentPage: routeName),
         body: DashBody(),
+
         floatingActionButton: AdvanceButton(
           navigationFunction: () {Navigator.pushNamed(context, GameModePage.routeName);}, //TODO: Add dialog if not connected to bluetooth
           text: 'New Game',
         ),
+
+
+
+
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
+
       ),
     );
   }
@@ -129,7 +142,6 @@ class BlueToothDevicesPage extends StatelessWidget {
   }
 }
 
-
 class UsersPage extends StatelessWidget {
   const UsersPage({Key? key}) : super(key: key);
   static const routeName = 'Users';
@@ -142,3 +154,5 @@ class UsersPage extends StatelessWidget {
       );
   }
 }
+
+ */
