@@ -1,18 +1,31 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/bluetooth/characteristics/hit_sensor.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_app/BlueTooth/bluetooth_handler.dart';
 
-import '../bluetooth/bluetooth_handler.dart';
+import '../BlueTooth/characteristics/hit_sensor.dart';
+import '../BlueTooth/characteristics/led_display.dart';
 
 class Game {
+
+  LedDisplay leds = LedDisplay();
   BlueToothHandler bth = BlueToothHandler();
+  Random rng = Random();
+
+  int numColors = 4;
+  int numRounds = 4;
+  late List<int> score;
+  late List<int> correctHits;
+
+  Game(){
+    score = List.filled(numColors, 0, growable: false); // fill with zeros
+    correctHits = List.filled(numColors, 0, growable: false); // fill with zeros
+  }
 
   Future<void> start() async {
-    Random rng = Random();
 
-    List<List<int>> offArray = bth.genUniformColorArray(val:0);
-    await bth.writeLEDs(offArray);
+    List<List<int>> offArray = leds.genUniformColorArray(val:0);
+    await leds.writeLEDs(offArray);
 
     List<List<int>> onArray = [[0,0,0,0],[0,0,0,0]];
 
@@ -25,14 +38,14 @@ class Game {
 
 
       debugPrint("game: writing - $onArray");
-      await bth.writeLEDs(onArray);
+      await leds.writeLEDs(onArray);
 
       debugPrint("game: Waiting for hit");
       HitResults hitResult = await bth.getHit();
 
       debugPrint("game: Hit paddle = ${hitResult.targetNum}");
       debugPrint("game: Reaction time = ${hitResult.reactionTime}");
-      await bth.writeLEDs(offArray);
+      await leds.writeLEDs(offArray);
     }
   }
   }

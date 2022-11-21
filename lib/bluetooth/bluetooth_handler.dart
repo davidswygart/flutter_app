@@ -1,11 +1,8 @@
-import 'dart:async';
-import 'dart:math';
-import 'package:async/async.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bluetooth/characteristics/hit_sensor.dart';
-import 'package:flutter_app/bluetooth/single_target.dart';
+import 'package:flutter_app/BlueTooth/single_target.dart';
 
+import 'characteristics/hit_sensor.dart';
 
 class BlueToothHandler {
   // create a constructor that only creates 1 instance and can then easily access that instance
@@ -16,7 +13,6 @@ class BlueToothHandler {
   }
 
   List<SingleTarget> targetList = [];
-
 
   addTarget() async {
     SingleTarget t = SingleTarget();
@@ -46,46 +42,5 @@ class BlueToothHandler {
     }
     HitResults result = await Future.any(futureHitResults);
     return result;
-  }
-
-  writeLEDs(List<List<int>> ledColors){
-    for (int i=0; i<targetList.length; i++){
-      targetList[i].led.writeLED(ledColors[i]);
-    }
-  }
-
-  List<List<int>> genUniformColorArray( {int val=0}){
-    int numColors = 4;
-    List<int> singleTargetArray = List.filled(numColors, val, growable: false); // fill with zeros
-    List<List<int>> fullArray = List.filled(targetList.length, singleTargetArray, growable: false);
-    return fullArray;
-  }
-
-  randomColors() async {
-    Random rng = Random();
-    List<List<int>> colors = genUniformColorArray();
-
-    for (int i=0; i< colors.length ; i++) {
-      for (int ii=0; ii < colors[0].length ; ii++) {
-        colors[i][ii] = rng.nextInt(256);
-      }
-    }
-    writeLEDs(colors);
-  }
-
-  Future<void> showPaddleNumber() async {
-    List<List<int>> offArray = genUniformColorArray(val:0);
-    await writeLEDs(offArray);
-    await Future.delayed(const Duration(seconds: 1));
-    int numColors = 4;
-
-    for (int i=0; i< offArray.length ; i++) {
-      offArray[i] = List.filled(numColors, 255, growable: false); // turn on a single target
-      await writeLEDs(offArray);
-      offArray[i] = List.filled(numColors, 0, growable: false);
-      await Future.delayed(const Duration(seconds: 1));
-      await writeLEDs(offArray);
-      await Future.delayed(const Duration(seconds: 1));
-    }
   }
 }
