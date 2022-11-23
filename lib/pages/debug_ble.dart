@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bluetooth/characteristics/led_display.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
 
 import '../Game/game.dart';
@@ -14,13 +15,12 @@ class DebugBlePage extends StatefulWidget {
 
 class _DebugBlePage extends State<DebugBlePage> {
   BlueToothHandler bth = BlueToothHandler();
-  Game game = Game();
+  LedDisplay ledDisplay = LedDisplay();
   final ValueNotifier<int> _notifierNumTargets = ValueNotifier<int>(0);
 
   @override
   Widget build(BuildContext context) {
 
-    String connectMessage = "connect: # connected = ${bth.targetList.length}";
     Widget connectButton = ElevatedButton(
       onPressed: () {
         debugPrint('debug_ble: connect button pressed');
@@ -36,7 +36,7 @@ class _DebugBlePage extends State<DebugBlePage> {
     Widget ledRandButton = ElevatedButton(
       onPressed: () {
         debugPrint('debug_ble: rand button pressed');
-        bth.randomColors();
+        ledDisplay.randomColors();
       },
       child: const Text("LED rand intensity"),
     );
@@ -45,6 +45,7 @@ class _DebugBlePage extends State<DebugBlePage> {
     Widget playGameButton = ElevatedButton(
       onPressed: () {
         debugPrint('debug_ble: Play game button pressed');
+        Game game = Game();
         game.start();
       },
       child: const Text("Play a game"),
@@ -53,7 +54,7 @@ class _DebugBlePage extends State<DebugBlePage> {
     Widget paddleNumberButton = ElevatedButton(
       onPressed: () {
         debugPrint('debug_ble: paddle number button pressed');
-        bth.showPaddleNumber();
+        ledDisplay.showPaddleNumber();
       },
       child: const Text("Show paddle #"),
     );

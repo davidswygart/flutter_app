@@ -51,4 +51,16 @@ class LedDisplay {
       await Future.delayed(const Duration(seconds: 1));
     }
   }
+
+  writeSingleColorPerPaddle(List<int> colors) async {
+    int numLeds = 4;
+    int numTargets =targetList.length;
+    for (int i=0; i<numTargets; i++){
+      List<int> tmp = List.filled(numLeds, 0, growable: false); // fill with zeros
+      tmp[colors[i]] = 255;
+      await targetList[i].led.writeLED(tmp);
+    }
+
+
+  }
 }

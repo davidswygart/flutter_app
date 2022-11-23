@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/BlueTooth/single_target.dart';
+import 'package:flutter_app/bluetooth/single_target.dart';
 
 import 'characteristics/hit_sensor.dart';
 

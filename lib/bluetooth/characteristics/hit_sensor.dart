@@ -12,7 +12,7 @@ class HitResults {
   HitResults({required this.targetNum, required this.reactionTime});
 
   int getTargetNum() => targetNum;
-  int getTeactionTime() => reactionTime;
+  int getReactionTime() => reactionTime;
 }
 
 class HitSensorCharacteristic {
