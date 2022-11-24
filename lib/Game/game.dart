@@ -24,6 +24,9 @@ class Game {
 
 
   Future<void> start() async {
+    score = List.filled(numColors, 0, growable: false); // fill with zeros
+    correctHits = List.filled(numColors, 0, growable: false); // fill with zeros
+
     List<List<int>> offArray = leds.genUniformColorArray(val:0);
 
     for (int rNum = 0; rNum<numRounds; rNum++){
@@ -33,7 +36,6 @@ class Game {
       colors.shuffle(); //Index is the paddle, Value is the color
       debugPrint("game: colors for game $colors");
       await leds.writeSingleColorPerPaddle(colors);
-
 
       debugPrint("game: Waiting for hit");
       HitResults hitResult = await bth.getHit();
@@ -48,7 +50,6 @@ class Game {
       correctHits[winner] += 1;
 
       debugPrint("game: correct hits = $correctHits");
-
 
       await leds.writeLEDs(offArray);
       await Future.delayed(const Duration(milliseconds: 1000));

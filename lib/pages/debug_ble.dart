@@ -17,6 +17,8 @@ class _DebugBlePage extends State<DebugBlePage> {
   BlueToothHandler bth = BlueToothHandler();
   LedDisplay ledDisplay = LedDisplay();
   final ValueNotifier<int> _notifierNumTargets = ValueNotifier<int>(0);
+  Game game = Game();
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,6 @@ class _DebugBlePage extends State<DebugBlePage> {
     Widget playGameButton = ElevatedButton(
       onPressed: () {
         debugPrint('debug_ble: Play game button pressed');
-        Game game = Game();
         game.start();
       },
       child: const Text("Play a game"),
@@ -59,18 +60,57 @@ class _DebugBlePage extends State<DebugBlePage> {
       child: const Text("Show paddle #"),
     );
 
+    title(String str){
+      return Center(
+          child: Text( str,
+              textScaleFactor: 1.5,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              )));
+    }
 
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          connectButton,
-          ledRandButton,
-          paddleNumberButton,
-          playGameButton,
-        ],
-      ),
-    );
+    resultsDisplay(resList) {
+      return Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(resList[0].toString(),
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+                textScaleFactor: 1.5,
+              ),
+              Text(resList[1].toString(),
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+                textScaleFactor: 1.5,
+              ),
+            ],
+          )
+      );
+    }
+
+      return Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            connectButton,
+            const Divider(),
+            ledRandButton,
+            const Divider(),
+            paddleNumberButton,
+            const Divider(),
+            playGameButton,
+            title("hits"),
+            resultsDisplay(game.correctHits),
+            title("score"),
+            resultsDisplay(game.score),
+          ],
+        ),
+      );
+    }
   }
-}
