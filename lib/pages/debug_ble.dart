@@ -1,10 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/characteristics/led_display.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
+import 'package:flutter_app/bluetooth/single_target.dart';
 
-import '../Game/game.dart';
+import '../game/game.dart';
 
 class DebugBlePage extends StatefulWidget {
   DebugBlePage({Key? key}) : super(key: key);
@@ -14,35 +13,24 @@ class DebugBlePage extends StatefulWidget {
 }
 
 class _DebugBlePage extends State<DebugBlePage> {
-  BlueToothHandler bth = BlueToothHandler();
+  final BlueToothHandler bth = BlueToothHandler();
+  final Game game = Game();
   LedDisplay ledDisplay = LedDisplay();
-  final ValueNotifier<int> _notifierNumTargets = ValueNotifier<int>(0);
-  Game game = Game();
-
+  final ValueNotifier<List<SingleTarget>> _notifierTargets =
+      ValueNotifier<List<SingleTarget>>(BlueToothHandler().targetList);
+  int testNum = 0;
 
   @override
   Widget build(BuildContext context) {
 
-    Widget connectButton = ElevatedButton(
-      onPressed: () {
-        debugPrint('debug_ble: connect button pressed');
-        bth.addTarget();
-      },
-      child: ValueListenableBuilder<int>(
-        builder: (BuildContext context, int value, Widget? child) {
-          return Text("connect: # connected = ${bth.targetList.length}");},
-        valueListenable: _notifierNumTargets,
-      ),
-    );
-
-    Widget ledRandButton = ElevatedButton(
-      onPressed: () {
-        debugPrint('debug_ble: rand button pressed');
-        ledDisplay.randomColors();
-      },
-      child: const Text("LED rand intensity"),
-    );
-
+    title(String str) {
+      return Center(
+          child: Text(str,
+              textScaleFactor: 1.5,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              )));
+    }
 
     Widget playGameButton = ElevatedButton(
       onPressed: () {
@@ -50,6 +38,45 @@ class _DebugBlePage extends State<DebugBlePage> {
         game.start();
       },
       child: const Text("Play a game"),
+    );
+
+    Widget connectButton = ElevatedButton(
+      onPressed: () {
+        debugPrint('debug_ble: connect button pressed');
+        bth.addTarget();
+      },
+      child: Text("connect: # connected = ${bth.targetList.length.toString()}"),
+    );
+
+    coloredText(int val, Color color) {
+      return Text(
+        val.toString(),
+        textScaleFactor: 1.5,
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
+
+    resultsDisplay(resList) {
+      return Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            coloredText(resList[0], Colors.red),
+            coloredText(resList[1], Colors.green),
+          ],
+        ),
+      );
+    }
+
+    Widget ledRandButton = ElevatedButton(
+      onPressed: () {
+        debugPrint('debug_ble: rand button pressed');
+        ledDisplay.randomColors();
+      },
+      child: const Text("LED rand intensity"),
     );
 
     Widget paddleNumberButton = ElevatedButton(
@@ -60,57 +87,34 @@ class _DebugBlePage extends State<DebugBlePage> {
       child: const Text("Show paddle #"),
     );
 
-    title(String str){
-      return Center(
-          child: Text( str,
-              textScaleFactor: 1.5,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              )));
-    }
+    Widget forceUpdateButton = ElevatedButton(
+      onPressed: () {
+        debugPrint('debug_ble: force update button pressed');
+        setState(() {});
+      },
+      child: const Text("force update"),
+    );
 
-    resultsDisplay(resList) {
-      return Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(resList[0].toString(),
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                ),
-                textScaleFactor: 1.5,
-              ),
-              Text(resList[1].toString(),
-                style: const TextStyle(
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
-                ),
-                textScaleFactor: 1.5,
-              ),
-            ],
-          )
-      );
-    }
-
-      return Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            connectButton,
-            const Divider(),
-            ledRandButton,
-            const Divider(),
-            paddleNumberButton,
-            const Divider(),
-            playGameButton,
-            title("hits"),
-            resultsDisplay(game.correctHits),
-            title("score"),
-            resultsDisplay(game.score),
-          ],
-        ),
-      );
-    }
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          connectButton,
+          const Divider(),
+          ledRandButton,
+          const Divider(),
+          paddleNumberButton,
+          const Divider(),
+          playGameButton,
+          title("hits"),
+          resultsDisplay(game.correctHits),
+          title("score"),
+          resultsDisplay(game.score),
+          const Divider(),
+          forceUpdateButton,
+        ],
+      ),
+    );
   }
+}
