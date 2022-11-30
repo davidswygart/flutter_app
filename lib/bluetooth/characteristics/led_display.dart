@@ -6,12 +6,14 @@ import '../single_target.dart';
 
 class LedDisplay {
   late final List<SingleTarget> targetList;
+
+
   LedDisplay(){
     BlueToothHandler bth = BlueToothHandler();
     targetList = bth.targetList;
   }
 
-  writeLEDs(List<List<int>> ledColors){
+  writeLEDs(List<List<int>> ledColors) {
     for (int i=0; i<targetList.length; i++){
       targetList[i].led.writeLED(ledColors[i]);
     }
@@ -19,9 +21,11 @@ class LedDisplay {
 
   List<List<int>> genUniformColorArray( {int val=0}){
     int numColors = 4;
-    List<int> singleTargetArray = List.filled(numColors, val, growable: false); // fill with zeros
-    List<List<int>> fullArray = List.filled(targetList.length, singleTargetArray, growable: false);
-    return fullArray;
+    List<List<int>> cArray = [];
+    for(int i=0; i < targetList.length; i++) {
+      cArray.add(List.filled(numColors, val, growable: false));
+    }
+    return cArray;
   }
 
   randomColors() async {
@@ -33,7 +37,20 @@ class LedDisplay {
         colors[i][ii] = rng.nextInt(256);
       }
     }
-    writeLEDs(colors);
+    await writeLEDs(colors);
+  }
+
+  cycleLeds() async {
+    List<List<int>> colors = genUniformColorArray();
+    for (int i=0; i< colors.length ; i++) {
+      for (int ii=0; ii < colors[0].length ; ii++) {
+        colors[i][ii] = 255;
+        await writeLEDs(colors);
+        await Future.delayed(const Duration(milliseconds: 500));
+        colors[i][ii] = 0;
+      }
+    }
+    await writeLEDs(colors);
   }
 
   Future<void> showPaddleNumber() async {
@@ -60,7 +77,18 @@ class LedDisplay {
       tmp[colors[i]] = 255;
       await targetList[i].led.writeLED(tmp);
     }
+  }
 
+  writeOnePaddle(int paddle, List<int> color) async {
+    await targetList[paddle].led.writeLED(color);
+  }
 
+  int toggledIntensity = 128;
+  toggleIntensity() async {
+    await writeLEDs(genUniformColorArray(val: toggledIntensity));
+    toggledIntensity += 84; //Adds about 25% brighter each time
+    if(toggledIntensity>255){
+      toggledIntensity = 0;
+    }
   }
 }
