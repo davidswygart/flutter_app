@@ -30,7 +30,7 @@ class _DebugBlePage extends State<DebugBlePage> {
       },
       child: const Text("Play a game"),
     );
-    
+
     Widget playColorDisc = ElevatedButton(
       onPressed: () {
         debugPrint('debug_ble: Color Discrimination game button pressed');
