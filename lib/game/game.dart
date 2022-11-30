@@ -194,4 +194,41 @@ class Game {
     }
   }
 
+  Future<void> startMovingTargets() async {
+    await preGameUpdate();
+
+    for (int rNum = 0; rNum<numRounds; rNum++){
+      await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
+      List<int> colors = List<int>.generate(numTargets, (i) => i);
+
+      colors.shuffle(); //Index is the paddle, Value is the color
+
+      bool hitDetected = false;
+      Future(() async {
+        while(!hitDetected){
+          colors.add(colors[0]); // add the first color to the end
+          colors.removeAt(0); // remove the first color
+          await leds.writeSingleColorPerPaddle(colors);
+          await Future.delayed(const Duration(milliseconds: 1000));
+        }
+      });
+      HitResults hitResult = await bth.getHit();
+      hitDetected = true;
+
+      int winner = colors[hitResult.targetNum];
+      double points = 100000 / hitResult.reactionTime;
+
+      debugPrint("game: Hit paddle = ${hitResult.targetNum}");
+      debugPrint("game: Reaction time = ${hitResult.reactionTime}");
+
+      score[winner] += points.round();
+      correctHits[winner] += 1;
+
+      debugPrint("game: correct hits = $correctHits");
+
+      streamController.add(rNum);
+      await Future.delayed(const Duration(milliseconds: 1000));
+    }
+  }
+
 }

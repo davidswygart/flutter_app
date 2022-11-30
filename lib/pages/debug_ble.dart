@@ -55,6 +55,14 @@ class _DebugBlePage extends State<DebugBlePage> {
       child: const Text("Play Go / No-go"),
     );
 
+    Widget playMovingTargets = ElevatedButton(
+      onPressed: () {
+        debugPrint('debug_ble: play moving target button pressed');
+        game.startMovingTargets();
+      },
+      child: const Text("Play Moving targets"),
+    );
+
     addTargetAndUpdate() async {
       debugPrint('debug_ble: connect button pressed');
       await bth.addTarget();

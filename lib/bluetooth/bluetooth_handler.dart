@@ -43,4 +43,5 @@ class BlueToothHandler {
     HitResults result = await Future.any(futureHitResults);
     return result;
   }
+
 }
