@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/characteristics/led_display.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
-import 'package:flutter_app/bluetooth/single_target.dart';
 
 import '../game/game.dart';
 
 class DebugBlePage extends StatefulWidget {
-  DebugBlePage({Key? key}) : super(key: key);
+  const DebugBlePage({Key? key}) : super(key: key);
 
   @override
   State<DebugBlePage> createState() => _DebugBlePage();
@@ -16,19 +15,16 @@ class _DebugBlePage extends State<DebugBlePage> {
   final BlueToothHandler bth = BlueToothHandler();
   final Game game = Game();
   LedDisplay ledDisplay = LedDisplay();
-  final ValueNotifier<List<SingleTarget>> _notifierTargets =
-      ValueNotifier<List<SingleTarget>>(BlueToothHandler().targetList);
-  int testNum = 0;
 
   @override
   Widget build(BuildContext context) {
 
     Widget playShootYourColor = ElevatedButton(
       onPressed: () {
-        debugPrint('debug_ble: Play game button pressed');
+        debugPrint('debug_ble: play shoot your color button pressed');
         game.startShootYourColor();
       },
-      child: const Text("Play a game"),
+      child: const Text("Play shoot your color"),
     );
 
     Widget playColorDisc = ElevatedButton(
@@ -44,12 +40,12 @@ class _DebugBlePage extends State<DebugBlePage> {
         debugPrint('debug_ble: Memory game button pressed');
         game.startMemorySequence();
       },
-      child: const Text("Play Color Discrimination"),
+      child: const Text("Play sequential memory"),
     );
 
     Widget playGoNoGo = ElevatedButton(
       onPressed: () {
-        debugPrint('debug_ble: Memory game button pressed');
+        debugPrint('debug_ble: GoNoGo game button pressed');
         game.startGoNoGo();
       },
       child: const Text("Play Go / No-go"),
@@ -74,14 +70,6 @@ class _DebugBlePage extends State<DebugBlePage> {
         addTargetAndUpdate();
       },
       child: Text("connect: # connected = ${bth.targetList.length.toString()}"),
-    );
-
-    Widget ledRandButton = ElevatedButton(
-      onPressed: () {
-        debugPrint('debug_ble: rand button pressed');
-        ledDisplay.randomColors();
-      },
-      child: const Text("Show paddle #"),
     );
 
     Widget toggleLedButton = ElevatedButton(
@@ -117,29 +105,33 @@ class _DebugBlePage extends State<DebugBlePage> {
               )));
     }
 
-    coloredText(int val, Color color) {
-      return Text(
-        val.toString(),
-        textScaleFactor: 1.5,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.bold,
-        ),
-      );
+    List<Text> coloredTextList(scoreList) {
+      List<Color> colorOrder = [Colors.red.shade800, Colors.green.shade800, Colors.blue.shade800, Colors.black];
+      List<Text> textList = [];
+      for (int i =0 ; i < scoreList.length; i++) {
+        debugPrint(scoreList[i].toString());
+        textList.add( Text(
+          scoreList[i].toString(),
+          textScaleFactor: 1.5,
+          style: TextStyle(
+            color: colorOrder[i],
+            fontWeight: FontWeight.bold,
+          ),
+        )
+        );
+      }
+      return textList;
     }
 
     resultsDisplay(resList) {
       return Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            coloredText(resList[0], Colors.red),
-            coloredText(resList[1], Colors.green),
-          ],
+          children: coloredTextList(resList),
         ),
       );
     }
-
+    
     return Scaffold(
       body: StreamBuilder(
         stream: game.streamController.stream,
@@ -155,9 +147,10 @@ class _DebugBlePage extends State<DebugBlePage> {
               paddleNumberButton,
               const Divider(),
               playGoNoGo,
+              playColorDisc,
               playMemory,
               playShootYourColor,
-              playColorDisc,
+              playMovingTargets,
               title("hits"),
               resultsDisplay(game.correctHits),
               title("score"),

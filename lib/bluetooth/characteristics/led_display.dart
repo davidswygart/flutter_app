@@ -40,7 +40,7 @@ class LedDisplay {
     await writeLEDs(colors);
   }
 
-  cycleLeds() async {
+  cycleLeds() async { //ToDo clean this up to write single Paddles instead of writing 0 values to other paddles
     List<List<int>> colors = genUniformColorArray();
     for (int i=0; i< colors.length ; i++) {
       for (int ii=0; ii < colors[0].length ; ii++) {
