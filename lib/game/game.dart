@@ -12,9 +12,9 @@ class Game {
   LedDisplay leds = LedDisplay();
   BlueToothHandler bth = BlueToothHandler();
   Random rng = Random();
-  final streamController = StreamController(); //this is just as a dirty way to force screen rebuilding
+  final StreamController<int> streamController = StreamController(); //this is just as a dirty way to force screen rebuilding
 
-  int numRounds = 6;
+  int numRounds = 4;
 
   // This number needs to be updated before starting a game
   int numTargets = 0;
@@ -56,21 +56,30 @@ class Game {
       Future<HitResults?> timeout = Future.delayed(Duration(milliseconds: timeoutMs), (){return null;});
 
       HitResults? hitResult = await Future.any([hR, timeout]);
+      debugPrint("game: hit detected or timeout reached");
       await leds.writeOnePaddle(0, [0,0,0,0]); // Turn the target back off
+      debugPrint("game: paddle turned back off");
 
-      if (shouldGo & (hitResult != null)){ // correct go
-        score[1] += timeoutMs - hitResult!.reactionTime;
-        correctHits[1] += 1;
+      if (shouldGo & (hitResult != null)) { // correct go
+        debugPrint("game: correct go");
+        score[0] += timeoutMs - hitResult!.reactionTime;
+        correctHits[0] += 1;
+      }
+      else if (!shouldGo & (hitResult == null)){
+        debugPrint("game: correct no go");
       } else {
-        score[1] -= timeoutMs;
-        correctHits[1] -= 1;
+        debugPrint("game: incorrect go or no go");
+        score[0] -= timeoutMs;
+        correctHits[0] -= 1;
       }
 
       debugPrint("game: correct hits = $correctHits");
-      streamController.add(correctHits[1]);
+      streamController.add(correctHits[0]);
+      debugPrint("game: written to stream controller");
 
       await Future.delayed(const Duration(milliseconds: 1000));
     }
+    debugPrint("game: game over");
   }
 
   Future<void> startMemorySequence() async {
@@ -78,6 +87,7 @@ class Game {
     bool perfection = true;
 
     while (perfection){
+      debugPrint("game: Round # $rNum");
       await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
 
       List<int> paddleSequence = [];
@@ -89,12 +99,18 @@ class Game {
         await leds.writeOnePaddle(chosenPaddle, [0,0,0,0]);
         await Future.delayed(const Duration(milliseconds: 100));
       }
+      debugPrint("game: correct sequence # $paddleSequence");
+
+
 
       bool continueSubround = true;
       int subRoundNum = 0;
       while(continueSubround){
+        debugPrint("game: subround # $subRoundNum");
         debugPrint("game: Waiting for hit");
         HitResults hitResult = await bth.getHit();
+        debugPrint("game: Hit paddle = ${hitResult.targetNum}");
+        debugPrint("game: Reaction time = ${hitResult.reactionTime}");
 
         if (paddleSequence[subRoundNum] == hitResult.targetNum){
           double points = (subRoundNum+1) * 100000 / hitResult.reactionTime;
@@ -103,18 +119,18 @@ class Game {
         } else {
           perfection = false;
           continueSubround = false;
+          await leds.flashAllTargetsOneLed(0);
         }
-        debugPrint("game: Hit paddle = ${hitResult.targetNum}");
-        debugPrint("game: Reaction time = ${hitResult.reactionTime}");
 
-        subRoundNum++;
         streamController.add(subRoundNum);
         if (subRoundNum == rNum){
           continueSubround = false;
         }
+        subRoundNum++;
       }
       rNum++;
     }
+    debugPrint("game: game over");
   }
 
   Future<void> startColorDiscrimination() async {
@@ -149,10 +165,12 @@ class Game {
       if (greenerTarget == hitResult.targetNum){
         score[1] += points.round();
         correctHits[1] += 1;
+        await leds.flashAllTargetsOneLed(1);
       } else {
         perfection = false;
         score[0] += points.round();
         correctHits[0] += 1;
+        await leds.flashAllTargetsOneLed(0);
       }
       debugPrint("game: Hit paddle = ${hitResult.targetNum}");
       debugPrint("game: Reaction time = ${hitResult.reactionTime}");
@@ -162,6 +180,7 @@ class Game {
 
       await Future.delayed(const Duration(milliseconds: 1000));
     }
+    debugPrint("game: game over");
   }
 
   Future<void> startShootYourColor() async {
@@ -190,8 +209,10 @@ class Game {
       debugPrint("game: correct hits = $correctHits");
 
       streamController.add(rNum);
+      await leds.flashAllTargetsOneLed(winner);
       await Future.delayed(const Duration(milliseconds: 1000));
     }
+    debugPrint("game: game over");
   }
 
   Future<void> startMovingTargets() async {
@@ -209,11 +230,13 @@ class Game {
           colors.add(colors[0]); // add the first color to the end
           colors.removeAt(0); // remove the first color
           await leds.writeSingleColorPerPaddle(colors);
-          await Future.delayed(const Duration(milliseconds: 1000));
+          await Future.delayed(const Duration(milliseconds: 400));
         }
       });
       HitResults hitResult = await bth.getHit();
       hitDetected = true;
+
+
 
       int winner = colors[hitResult.targetNum];
       double points = 100000 / hitResult.reactionTime;
@@ -227,8 +250,12 @@ class Game {
       debugPrint("game: correct hits = $correctHits");
 
       streamController.add(rNum);
+
+      await leds.flashAllTargetsOneLed(winner);
       await Future.delayed(const Duration(milliseconds: 1000));
+      await leds.writeLEDs(offArray); // I waited to turn it off until now in case the moving loop is still running
     }
+    debugPrint("game: game over");
   }
 
 }

@@ -91,4 +91,23 @@ class LedDisplay {
       toggledIntensity = 0;
     }
   }
+
+  flashAllTargetsOneLed(int ledNumber) async {
+    int numBlinks = 3;
+    Duration delay = const Duration(milliseconds: 200);
+
+    List<List<int>> offArray = genUniformColorArray(val: 0);
+    int numTargets = offArray.length;
+    List<int> color = [0,0,0,0];
+    color[ledNumber] = 255;
+    List<List<int>> onArray = List.filled(numTargets, color, growable: false);
+
+    await Future.delayed(delay);
+    for (int i=0; i<numBlinks; i++){
+      await writeLEDs(onArray);
+      await Future.delayed(delay);
+      await writeLEDs(offArray);
+      await Future.delayed(delay);
+    }
+  }
 }
