@@ -20,6 +20,7 @@ class Game {
   int numTargets = 0;
   List<int> score =[0];
   List<int> correctHits = [0];
+  List<int> reactionTimeArray = [0];
   List<List<int>> offArray = [[0,0,0,0]]; // array of zeros for all paddles that is often used to turn them all off
   int rNum = 0; // current round number
 
@@ -28,10 +29,12 @@ class Game {
     numTargets = bth.targetList.length;
     score = List.filled(numTargets, 0, growable: false); // fill with zeros
     correctHits = List.filled(numTargets, 0, growable: false); // fill with zeros
+    reactionTimeArray = List.filled(numTargets, 0, growable: false); // fill with zeros
     offArray = leds.genUniformColorArray(val:0);
     await leds.writeLEDs(offArray);
     rNum = 0;
     streamController.add(rNum);
+    await Future.delayed(const Duration(milliseconds: 3000));
   }
 
   Future<void> startGoNoGo() async {
@@ -64,6 +67,7 @@ class Game {
         debugPrint("game: correct go");
         score[0] += timeoutMs - hitResult!.reactionTime;
         correctHits[0] += 1;
+        reactionTimeArray[0] = hitResult.reactionTime;
       }
       else if (!shouldGo & (hitResult == null)){
         debugPrint("game: correct no go");
@@ -78,6 +82,60 @@ class Game {
       debugPrint("game: written to stream controller");
 
       await Future.delayed(const Duration(milliseconds: 1000));
+    }
+    debugPrint("game: game over");
+  }
+
+  Future<void> startSingleSwitcher() async {
+    await preGameUpdate();
+
+    for (int rNum = 0; rNum<numRounds; rNum++){
+      await Future.delayed(Duration(milliseconds: rng.nextInt(1000)));
+      List<int> ledArray = [0,1,2,3]; // Index RGBW
+
+      ledArray.shuffle();
+
+      bool hitDetected = false;
+      int currentArrayIndex = 0;
+      int currentLed = 0;
+      int delayMillis = 40;
+      Future(() async {
+        while(!hitDetected){
+          currentLed = ledArray[currentArrayIndex];
+          await leds.writeOnePaddleOneColor(0, currentLed); // Only write the first target
+          currentArrayIndex++;
+          if (currentArrayIndex == ledArray.length){currentArrayIndex = 0;} // restart at beginning of array
+          await Future.delayed(Duration(milliseconds: delayMillis));
+          delayMillis = (delayMillis * 1.05).round(); //increase delay by 5%
+          debugPrint("game: current delay = $delayMillis");
+        }
+      });
+      HitResults hitResult = await bth.getHit();
+      hitDetected = true;
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      int points = (100000 / delayMillis).round();
+      if (currentLed == 1){
+        score[0] += points;
+        correctHits[0] += 1;
+        await leds.flashAllTargetsOneLed(1);
+      } else {
+        score[0] -= points;
+        correctHits[0] -= 1;
+        await leds.flashAllTargetsOneLed(0);
+      }
+
+      debugPrint("game: Hit paddle = ${hitResult.targetNum}");
+      debugPrint("game: Reaction time = ${hitResult.reactionTime}");
+
+
+      debugPrint("game: correct hits = $correctHits");
+
+      streamController.add(rNum);
+
+
+      await Future.delayed(const Duration(milliseconds: 1000));
+      await leds.writeLEDs(offArray); // I waited to turn it off until now in case the moving loop is still running
     }
     debugPrint("game: game over");
   }
@@ -101,8 +159,6 @@ class Game {
       }
       debugPrint("game: correct sequence # $paddleSequence");
 
-
-
       bool continueSubround = true;
       int subRoundNum = 0;
       while(continueSubround){
@@ -116,6 +172,7 @@ class Game {
           double points = (subRoundNum+1) * 100000 / hitResult.reactionTime;
           score[0] += points.round();
           correctHits[0] += 1;
+          reactionTimeArray[0] = hitResult.reactionTime;
         } else {
           perfection = false;
           continueSubround = false;
@@ -165,11 +222,13 @@ class Game {
       if (greenerTarget == hitResult.targetNum){
         score[1] += points.round();
         correctHits[1] += 1;
+        reactionTimeArray[1] = hitResult.reactionTime;
         await leds.flashAllTargetsOneLed(1);
       } else {
         perfection = false;
         score[0] += points.round();
         correctHits[0] += 1;
+        reactionTimeArray[0] = hitResult.reactionTime;
         await leds.flashAllTargetsOneLed(0);
       }
       debugPrint("game: Hit paddle = ${hitResult.targetNum}");
@@ -198,13 +257,13 @@ class Game {
       await leds.writeLEDs(offArray);
 
       int winner = colors[hitResult.targetNum];
-      double points = 100000 / hitResult.reactionTime;
 
       debugPrint("game: Hit paddle = ${hitResult.targetNum}");
       debugPrint("game: Reaction time = ${hitResult.reactionTime}");
 
-      score[winner] += points.round();
+      score[winner] += (100000 / hitResult.reactionTime).round();
       correctHits[winner] += 1;
+      reactionTimeArray[winner] = hitResult.reactionTime;
 
       debugPrint("game: correct hits = $correctHits");
 
@@ -219,32 +278,33 @@ class Game {
     await preGameUpdate();
 
     for (int rNum = 0; rNum<numRounds; rNum++){
-      await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
+      await Future.delayed(Duration(milliseconds: rng.nextInt(2000)));
       List<int> colors = List<int>.generate(numTargets, (i) => i);
 
       colors.shuffle(); //Index is the paddle, Value is the color
 
       bool hitDetected = false;
+      int numCycled = 1;
       Future(() async {
         while(!hitDetected){
           colors.add(colors[0]); // add the first color to the end
           colors.removeAt(0); // remove the first color
           await leds.writeSingleColorPerPaddle(colors);
           await Future.delayed(const Duration(milliseconds: 400));
+          numCycled++;
         }
       });
       HitResults hitResult = await bth.getHit();
       hitDetected = true;
-
-
+      await Future.delayed(const Duration(milliseconds: 100));
 
       int winner = colors[hitResult.targetNum];
-      double points = 100000 / hitResult.reactionTime;
+      int points = (100 / numCycled).round();
 
       debugPrint("game: Hit paddle = ${hitResult.targetNum}");
       debugPrint("game: Reaction time = ${hitResult.reactionTime}");
 
-      score[winner] += points.round();
+      score[winner] += points;
       correctHits[winner] += 1;
 
       debugPrint("game: correct hits = $correctHits");
@@ -252,10 +312,9 @@ class Game {
       streamController.add(rNum);
 
       await leds.flashAllTargetsOneLed(winner);
-      await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(const Duration(milliseconds: 500));
       await leds.writeLEDs(offArray); // I waited to turn it off until now in case the moving loop is still running
     }
     debugPrint("game: game over");
   }
-
 }

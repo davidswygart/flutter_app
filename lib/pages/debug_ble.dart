@@ -16,8 +16,22 @@ class _DebugBlePage extends State<DebugBlePage> {
   final Game game = Game();
   LedDisplay ledDisplay = LedDisplay();
 
+
+  double numRoundsSlideVal = 4;
+
   @override
   Widget build(BuildContext context) {
+
+    Widget roundSlider = Slider(
+        min: 1,
+        max: 15,
+        value: game.numRounds.toDouble(),
+        label: game.numRounds.toString(),
+        divisions: 14,
+        onChanged: (double value) {
+          setState((){game.numRounds = value.toInt();});
+        }
+    );
 
     Widget playShootYourColor = ElevatedButton(
       onPressed: () {
@@ -25,6 +39,14 @@ class _DebugBlePage extends State<DebugBlePage> {
         game.startShootYourColor();
       },
       child: const Text("Play shoot your color"),
+    );
+
+    Widget playSingleSwitcher = ElevatedButton(
+      onPressed: () {
+        debugPrint('debug_ble: SingleSwitcher button pressed');
+        game.startSingleSwitcher();
+      },
+      child: const Text("Play Single Switcher"),
     );
 
     Widget playColorDisc = ElevatedButton(
@@ -73,10 +95,10 @@ class _DebugBlePage extends State<DebugBlePage> {
     );
 
     Widget toggleLedButton = ElevatedButton(
-        onPressed: () {
-      debugPrint('debug_ble: toggle LED button pressed');
-      ledDisplay.toggleIntensity();
-    },
+      onPressed: () {
+        debugPrint('debug_ble: toggle LED button pressed');
+        ledDisplay.toggleIntensity();
+      },
       child: const Text("toggle LED intensity"),
     );
 
@@ -106,19 +128,23 @@ class _DebugBlePage extends State<DebugBlePage> {
     }
 
     List<Text> coloredTextList(scoreList) {
-      List<Color> colorOrder = [Colors.red.shade800, Colors.green.shade800, Colors.blue.shade800, Colors.black];
+      List<Color> colorOrder = [
+        Colors.red.shade800,
+        Colors.green.shade800,
+        Colors.blue.shade800,
+        Colors.black
+      ];
       List<Text> textList = [];
-      for (int i =0 ; i < scoreList.length; i++) {
+      for (int i = 0; i < scoreList.length; i++) {
         debugPrint(scoreList[i].toString());
-        textList.add( Text(
+        textList.add(Text(
           scoreList[i].toString(),
           textScaleFactor: 1.5,
           style: TextStyle(
             color: colorOrder[i],
             fontWeight: FontWeight.bold,
           ),
-        )
-        );
+        ));
       }
       return textList;
     }
@@ -131,33 +157,42 @@ class _DebugBlePage extends State<DebugBlePage> {
         ),
       );
     }
-    
+
     return Scaffold(
       body: StreamBuilder(
         stream: game.streamController.stream,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              connectButton,
-              const Divider(),
-              toggleLedButton,
-              const Divider(),
-              paddleNumberButton,
-              const Divider(),
-              playGoNoGo,
-              playColorDisc,
-              playMemory,
-              playShootYourColor,
-              playMovingTargets,
-              title("hits"),
-              resultsDisplay(game.correctHits),
-              title("score"),
-              resultsDisplay(game.score),
-              const Divider(),
-              forceUpdateButton,
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Divider(),
+                connectButton,
+                const Divider(),
+                toggleLedButton,
+                const Divider(),
+                paddleNumberButton,
+                const Divider(),
+                playGoNoGo,
+                playSingleSwitcher,
+                playColorDisc,
+                playMemory,
+                playShootYourColor,
+                playMovingTargets,
+                title("# rounds = ${game.numRounds}"),
+                roundSlider,
+                title("Round: ${game.rNum}/ ${game.numRounds}"),
+                title("hits"),
+                resultsDisplay(game.correctHits),
+                title("reaction time (ms)"),
+                resultsDisplay(game.reactionTimeArray),
+                title("score"),
+                resultsDisplay(game.score),
+                const Divider(),
+                forceUpdateButton,
+              ],
+            ),
           );
         },
       ),

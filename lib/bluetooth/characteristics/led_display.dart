@@ -82,6 +82,11 @@ class LedDisplay {
   writeOnePaddle(int paddle, List<int> color) async {
     await targetList[paddle].led.writeLED(color);
   }
+  writeOnePaddleOneColor(int targetIndex, int ledIndex) async {
+    List<int> colorArray = [0,0,0,0];
+    colorArray[ledIndex] = 255;
+    await targetList[targetIndex].led.writeLED(colorArray);
+  }
 
   int toggledIntensity = 128;
   toggleIntensity() async {
