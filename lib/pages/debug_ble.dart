@@ -180,9 +180,8 @@ class _DebugBlePage extends State<DebugBlePage> {
                 playMemory,
                 playShootYourColor,
                 playMovingTargets,
-                title("# rounds = ${game.numRounds}"),
+                title("Round: ${game.rNum+1}/ ${game.numRounds}"),
                 roundSlider,
-                title("Round: ${game.rNum}/ ${game.numRounds}"),
                 title("hits"),
                 resultsDisplay(game.correctHits),
                 title("reaction time (ms)"),
@@ -191,6 +190,7 @@ class _DebugBlePage extends State<DebugBlePage> {
                 resultsDisplay(game.score),
                 const Divider(),
                 forceUpdateButton,
+                Table()
               ],
             ),
           );
