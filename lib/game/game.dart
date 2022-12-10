@@ -3,9 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../bluetooth/characteristics/hit_sensor.dart';
 import '../bluetooth/characteristics/led_display.dart';
+
 
 class Game {
 
@@ -35,10 +37,13 @@ class Game {
     rNum = 0;
     streamController.add(rNum);
     await Future.delayed(const Duration(milliseconds: 3000));
+
   }
 
   Future<void> startGoNoGo() async {
     await preGameUpdate();
+
+    AudioPlayer player = AudioPlayer();
 
     while (rNum < numRounds){
       await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
@@ -63,19 +68,31 @@ class Game {
       await leds.writeOnePaddle(0, [0,0,0,0]); // Turn the target back off
       debugPrint("game: paddle turned back off");
 
+
+
+
+
+
       if (shouldGo & (hitResult != null)) { // correct go
         debugPrint("game: correct go");
         score[0] += timeoutMs - hitResult!.reactionTime;
         correctHits[0] += 1;
         reactionTimeArray[0] = hitResult.reactionTime;
+        await player.setAsset('assets/audio/dingDing.mp3');
       }
       else if (!shouldGo & (hitResult == null)){
         debugPrint("game: correct no go");
-      } else {
-        debugPrint("game: incorrect go or no go");
+        await player.setAsset('assets/audio/dingDing.mp3');
+      } else if (shouldGo & (hitResult == null)){
+        debugPrint("game: incorrect no go");
         score[0] -= timeoutMs;
-        correctHits[0] -= 1;
+        await player.setAsset('assets/audio/buzzer.mp3');
+      } else if (!shouldGo & (hitResult != null)){
+        debugPrint("game: incorrect go");
+        score[0] -= timeoutMs;
+        await player.setAsset('assets/audio/owOw.mp3');
       }
+      await player.play();
 
       debugPrint("game: correct hits = $correctHits");
       streamController.add(correctHits[0]);
