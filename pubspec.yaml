@@ -24,11 +24,18 @@ dependencies:
   flutter:
     sdk: flutter
 
+
+  flutter_blue: ^0.8.0
+  just_audio: ^0.9.30
   #cupertino_icons: ^1.0.2 ## Use with the CupertinoIcons class for iOS style icons.
   #hive: ^2.2.3
-  flutter_blue: ^0.8.0
-  #async: ^2.9.0
-  just_audio: ^0.9.30
+#  getwidget: ^2.0.4
+#  reorderables: ^0.4.1
+#  carousel_slider: ^4.0.0
+#  app_settings: ^4.1.1
+#  firebase_core: ^1.7.0
+#  firebase_auth: ^3.1.2
+#  google_sign_in: ^5.1.1
 
 dev_dependencies:
   flutter_test:
