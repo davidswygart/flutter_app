@@ -5,10 +5,6 @@ import '../bluetooth/bluetooth_handler.dart';
 
 class DevicesPage extends StatelessWidget {
   DevicesPage({super.key});
-  final BlueToothHandler bth = BlueToothHandler();
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +31,18 @@ class DevicesPage extends StatelessWidget {
 
 
   Future<DataTable> getDeviceTable() async {
-    FlutterBlue fb = FlutterBlue.instance;
-    Stream<ScanResult> scanStream = fb.scan(timeout: const Duration(seconds: 3));
-
     List<DataColumn> columns = [];
     columns.add(const DataColumn(label: Text("name")));
     columns.add(const DataColumn(label: Text("rssi")));
     columns.add(const DataColumn(label: Text("power")));
 
     List<DataRow> rows = [];
-    await for (ScanResult r in scanStream) {
+    List<ScanResult> scanList = await BlueToothHandler().updateAvailableDevices();
+    for (ScanResult r in scanList) {
       List<DataCell> rowCells = [];
-
       rowCells.add(DataCell(Text(r.device.name)));
       rowCells.add(DataCell(Text(r.rssi.toString())));
       rowCells.add(DataCell(Text(r.advertisementData.txPowerLevel.toString())));
-
       rows.add(DataRow(cells: rowCells));
     }
     return DataTable(
