@@ -7,29 +7,10 @@ class Device {
   late final BluetoothDevice fbDevice;
 
   Future<void> init() async {
-/*    bool isConnected = await _checkConnected();
-    if (isConnected) {
-      debugPrint("device: 2 Already connected no need to scan");
-      return;
-    } else {*/
       await _scan();
       await _connect();
     //}
   }
-/*
-  Future<bool> _checkConnected() async {
-    FlutterBlue fb = FlutterBlue.instance;
-
-    List<BluetoothDevice> devList = await fb.connectedDevices;
-    for (BluetoothDevice d in devList) {
-      debugPrint(d.name == _deviceName);
-      if (d.name.startsWith(_deviceName)) {
-        fbDevice = d;
-        return true;
-      }
-    }
-    return false;
-  }*/
 
   Future<BluetoothDevice> _scan() async {
     FlutterBlue fb = FlutterBlue.instance;
@@ -42,12 +23,12 @@ class Device {
     Stream<ScanResult> scanStream =
         fb.scan(timeout: const Duration(seconds: 2));
     await for (ScanResult r in scanStream) {
-      debugPrint("device: device found; name = ${r.device.name}");
-      if (r.device.name.startsWith(_deviceName)) {
-        await fb.stopScan();
-        fbDevice = r.device;
-        return fbDevice;
-      }
+        debugPrint("device: device found; name = ${r.device.name}");
+        if (r.device.name.startsWith(_deviceName)) {
+          await fb.stopScan();
+          fbDevice = r.device;
+          return fbDevice;
+        }
     }
 
     debugPrint("device: 4 Device not found in scan results");
