@@ -1,54 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 
 import '../bluetooth/bluetooth_handler.dart';
+import '../bluetooth/single_target.dart';
 
-class DevicesPage extends StatelessWidget {
-  DevicesPage({super.key});
+class DevicesPage extends StatefulWidget {
+  DevicesPage({Key? key}) : super(key: key);
 
   @override
+  State<DevicesPage> createState() => _DevicesPage();
+}
+
+class _DevicesPage extends State<DevicesPage> {
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: getFuture(),
+    Widget connectButton = ElevatedButton(
+      onPressed: () {
+        addTargetAndUpdate();
+      },
+      child: const Text("Scan for targets"),
+    );
+
+    return Container(
+      alignment: Alignment.topCenter,
+      padding: const EdgeInsets.only(top:50),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            connectButton,
+            targetTable(),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget getFuture() {
-    return FutureBuilder<Widget>(
-        future: getDeviceTable(),
-        initialData: const Text('please wait for scan'),
-        builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-          debugPrint("starting future build");
-          if (snapshot.hasData) {
-            return snapshot.data!;
-          }
-          else {
-            debugPrint("No data in snapshot");
-            return const Text("No data in snapshot");
-          }
-        });
-  }
-
-
-  Future<DataTable> getDeviceTable() async {
+  DataTable targetTable() {
+    final targetList = BlueToothHandler().targetList;
     List<DataColumn> columns = [];
     columns.add(const DataColumn(label: Text("name")));
     columns.add(const DataColumn(label: Text("rssi")));
-    columns.add(const DataColumn(label: Text("power")));
 
     List<DataRow> rows = [];
-    List<ScanResult> scanList = await BlueToothHandler().updateAvailableDevices();
-    for (ScanResult r in scanList) {
+    for (SingleTarget target in targetList) {
       List<DataCell> rowCells = [];
-      rowCells.add(DataCell(Text(r.device.name)));
-      rowCells.add(DataCell(Text(r.rssi.toString())));
-      rowCells.add(DataCell(Text(r.advertisementData.txPowerLevel.toString())));
+      rowCells.add(DataCell(Text(target.device.name)));
+      rowCells.add(DataCell(Text(target.device.rssi.toString())));
       rows.add(DataRow(cells: rowCells));
     }
-    return DataTable(
-        columns: columns,
-        rows: rows
-    );
+    return DataTable(columns: columns, rows: rows);
   }
 
+  addTargetAndUpdate() async {
+    await BlueToothHandler().connectToTargets();
+    setState(() {});
+  }
 }

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import '../bluetooth_handler.dart';
 import '../single_target.dart';
+/*
 
 class LedDisplay {
   late final List<SingleTarget> targetList;
@@ -116,3 +117,4 @@ class LedDisplay {
     }
   }
 }
+*/
