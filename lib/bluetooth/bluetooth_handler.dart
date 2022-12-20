@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/single_target.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
-import 'characteristics/hit_sensor.dart';
+
 import 'id.dart';
 
 class BlueToothHandler {
@@ -55,7 +55,7 @@ class BlueToothHandler {
   Future<HitResults> getHit() async {
     List<Future<HitResults>> futureHitResults =[];
     for (int i=0; i<targetList.length; i++){
-      futureHitResults.add(targetList[i].hitSensor.getHit(i));
+      futureHitResults.add(targetList[i].getHit(i));
     }
     HitResults result = await Future.any(futureHitResults);
     return result;
