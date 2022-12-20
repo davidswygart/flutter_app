@@ -16,7 +16,6 @@ class HitResults {
 }
 
 class HitSensorCharacteristic {
-/*
 
   Future<void> init(Service s) async {
     debugPrint("hit_sensor: Looking for characteristic");
@@ -42,14 +41,13 @@ class HitSensorCharacteristic {
     await _fbChar?.setNotifyValue(true); // Definitely needs to be set if you want to receive values
 
   }
-*/
 
-/*  Future<HitResults> getHit(int tNum) async {
+  Future<HitResults> getHit(int tNum) async {
     debugPrint("hit_sensor: waiting for hit value");
     List<int> byteList = await _fbChar!.value.firstWhere((b) => b.isNotEmpty);
     ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));
     int rTime = byteData.getUint32(0, Endian.little);
 
     return HitResults(targetNum: tNum, reactionTime: rTime);
-  }*/
+  }
 }

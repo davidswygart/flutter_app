@@ -5,12 +5,10 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 import 'characteristics/hit_sensor.dart';
 import 'characteristics/led.dart';
+import 'id.dart';
 
 
 class SingleTarget{
-  final Uuid _serviceId = Uuid.parse('00000000-151b-11ec-82a8-0242ac130003');
-  final Uuid _hitId = Uuid.parse('00000000-151b-11ec-82a8-0242ac130003');
-  final Uuid _ledId = Uuid.parse('00000000-151b-11ec-82a8-0242ac130003');
 
   final DiscoveredDevice device;
   SingleTarget(this.device);
@@ -23,14 +21,14 @@ class SingleTarget{
     await _connect();
 
     final hitCharacteristic = QualifiedCharacteristic(
-        serviceId: _serviceId,
-        characteristicId: _ledId,
+        serviceId: ID().service,
+        characteristicId: ID().hit,
         deviceId: device.id
     );
 
     final ledCharacteristic = QualifiedCharacteristic(
-        serviceId: _serviceId,
-        characteristicId: _hitId,
+        serviceId: ID().service,
+        characteristicId: ID().led,
         deviceId: device.id
     );
 

@@ -5,16 +5,13 @@ import 'package:flutter_app/bluetooth/single_target.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 import 'characteristics/hit_sensor.dart';
+import 'id.dart';
 
 class BlueToothHandler {
   // create a constructor that only creates 1 instance and can then easily access that instance
-  static final BlueToothHandler _instance = BlueToothHandler
-      ._internal(); // nothing special about _internal() keyword. Just the name of the method.
-  BlueToothHandler._internal() {
-    debugPrint("bluetooth_handler: Created instance");
-  }
-  factory BlueToothHandler() =>
-      _instance; // Factory keyword specifies that the constructor doesn't always create a new instance of this class
+  static final BlueToothHandler _instance = BlueToothHandler._internal();
+  BlueToothHandler._internal() {debugPrint("bluetooth_handler: Created instance");}
+  factory BlueToothHandler() => _instance;
 
   final bleLibrary = FlutterReactiveBle();
 
@@ -22,7 +19,7 @@ class BlueToothHandler {
 
   Future<List<SingleTarget>> connectToTargets(
       {Duration timeout = const Duration(seconds: 3)}) async {
-    List<Uuid> id = [Uuid.parse('aaaaaaaa-151b-11ec-82a8-0242ac130003')];
+    List<Uuid> id = [ID().advertising];
     debugPrint("bluetoothHandler: starting scan");
 
     final Map<String, DiscoveredDevice> availableDevices = {};
@@ -55,8 +52,6 @@ class BlueToothHandler {
 
   // ToDo: check if devices in list are still connected. Maybe run before game or periodically? Clear from list if no connection.
 
-/*
-
   Future<HitResults> getHit() async {
     List<Future<HitResults>> futureHitResults =[];
     for (int i=0; i<targetList.length; i++){
@@ -65,6 +60,4 @@ class BlueToothHandler {
     HitResults result = await Future.any(futureHitResults);
     return result;
   }
-*/
-
 }
