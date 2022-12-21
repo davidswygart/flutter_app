@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bluetooth/characteristics/led_display.dart';
+import 'package:flutter_app/bluetooth/led_display.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
 
 import '../game/game.dart';

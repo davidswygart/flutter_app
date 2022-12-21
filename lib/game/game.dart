@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
 import 'package:just_audio/just_audio.dart';
 
-import '../bluetooth/characteristics/led_display.dart';
+import '../bluetooth/led_display.dart';
 import '../bluetooth/single_target.dart';
 
 
@@ -326,8 +326,6 @@ class Game {
     await preGameUpdate(1); // display minimum time in reaction time
 
     int delayMillis = 500;
-
-
     int start;
     int delay = 500;
     while (delayMillis > 0){
