@@ -81,6 +81,13 @@ class _DebugBlePage extends State<DebugBlePage> {
       child: const Text("Play Moving targets"),
     );
 
+    Widget testSwitchingLimit = ElevatedButton(
+      onPressed: () {
+        game.testSwitchingLimit();
+      },
+      child: const Text("Test Switching Limit"),
+    );
+
     addTargetAndUpdate() async {
       debugPrint('debug_ble: connect button pressed');
       await BlueToothHandler().connectToTargets();
@@ -189,6 +196,7 @@ class _DebugBlePage extends State<DebugBlePage> {
                 title("score"),
                 resultsDisplay(game.score),
                 const Divider(),
+                testSwitchingLimit,
                 forceUpdateButton,
                 Table()
               ],
