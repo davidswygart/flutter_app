@@ -110,7 +110,7 @@ class Game {
       bool hitDetected = false;
       int currentArrayIndex = 0;
       int currentLed = 0;
-      int delayMillis = 40;
+      int delayMillis = 10;
       Future(() async {
         while(!hitDetected){
           currentLed = ledArray[currentArrayIndex];
@@ -320,5 +320,34 @@ class Game {
       await leds.writeLEDs(offArray); // I waited to turn it off until now in case the moving loop is still running
     }
     debugPrint("game: game over");
+  }
+
+  Future<void> testSwitchingLimit() async {
+    await preGameUpdate(1); // display minimum time in reaction time
+
+    int delayMillis = 500;
+
+
+    int start;
+    int delay = 500;
+    while (delayMillis > 0){
+      start = DateTime.now().millisecondsSinceEpoch;
+
+      await Future.delayed(Duration(milliseconds: delayMillis));
+      await leds.writeOnePaddle(0, [250,250,250,250]);
+
+      await Future.delayed(Duration(milliseconds: delayMillis));
+      await leds.writeOnePaddle(0, [0,0,0,0]);
+      delayMillis = ((delayMillis * .95) - 1).round();
+
+      delay = ((DateTime.now().millisecondsSinceEpoch - start)/2).round();
+      debugPrint("actual = $delay"); // Takes about 15 ms to write one
+      debugPrint("target = $delayMillis");
+    }
+
+    reactionTimeArray[0] = delay;
+    streamController.add(rNum);
+    await leds.writeLEDs(offArray);
+
   }
 }

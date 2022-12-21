@@ -13,11 +13,19 @@ class DevicesPage extends StatefulWidget {
 class _DevicesPage extends State<DevicesPage> {
   @override
   Widget build(BuildContext context) {
+
     Widget connectButton = ElevatedButton(
       onPressed: () {
-        addTargetAndUpdate();
+        addTargetsAndUpdate();
       },
       child: const Text("Scan for targets"),
+    );
+
+    Widget clearTargetsButton = ElevatedButton(
+      onPressed: () {
+        clearTargetsAndUpdate();
+      },
+      child: const Text("Clear Targets"),
     );
 
     return Container(
@@ -30,6 +38,7 @@ class _DevicesPage extends State<DevicesPage> {
           children: [
             connectButton,
             targetTable(),
+            clearTargetsButton,
           ],
         ),
       ),
@@ -52,8 +61,13 @@ class _DevicesPage extends State<DevicesPage> {
     return DataTable(columns: columns, rows: rows);
   }
 
-  addTargetAndUpdate() async {
+  addTargetsAndUpdate() async {
     await BlueToothHandler().connectToTargets();
+    setState(() {});
+  }
+
+  clearTargetsAndUpdate() async {
+    await BlueToothHandler().clearTargets();
     setState(() {});
   }
 }
