@@ -3,7 +3,6 @@ import 'dart:math';
 
 import '../bluetooth_handler.dart';
 import '../single_target.dart';
-/*
 
 class LedDisplay {
   late final List<SingleTarget> targetList;
@@ -16,7 +15,7 @@ class LedDisplay {
 
   writeLEDs(List<List<int>> ledColors) {
     for (int i=0; i<targetList.length; i++){
-      targetList[i].led.writeLED(ledColors[i]);
+      targetList[i].writeLED(ledColors[i]);
     }
   }
 
@@ -76,17 +75,17 @@ class LedDisplay {
     for (int i=0; i<numTargets; i++){
       List<int> tmp = List.filled(numLeds, 0, growable: false); // fill with zeros
       tmp[colors[i]] = 255;
-      await targetList[i].led.writeLED(tmp);
+      await targetList[i].writeLED(tmp);
     }
   }
 
   writeOnePaddle(int paddle, List<int> color) async {
-    await targetList[paddle].led.writeLED(color);
+    await targetList[paddle].writeLED(color);
   }
   writeOnePaddleOneColor(int targetIndex, int ledIndex) async {
     List<int> colorArray = [0,0,0,0];
     colorArray[ledIndex] = 255;
-    await targetList[targetIndex].led.writeLED(colorArray);
+    await targetList[targetIndex].writeLED(colorArray);
   }
 
   int toggledIntensity = 128;
@@ -117,4 +116,3 @@ class LedDisplay {
     }
   }
 }
-*/

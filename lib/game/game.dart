@@ -1,4 +1,3 @@
-/*
 import 'dart:async';
 import 'dart:math';
 
@@ -6,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
 import 'package:just_audio/just_audio.dart';
 
-import '../bluetooth/characteristics/hit_sensor.dart';
 import '../bluetooth/characteristics/led_display.dart';
+import '../bluetooth/single_target.dart';
 
 
 class Game {
@@ -44,7 +43,9 @@ class Game {
   Future<void> startGoNoGo() async {
     await preGameUpdate();
 
+
     AudioPlayer player = AudioPlayer();
+    debugPrint("game: numRounds = $numRounds");
 
     while (rNum < numRounds){
       await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
@@ -52,7 +53,6 @@ class Game {
       bool shouldGo = rng.nextBool();
       if (shouldGo){
         await leds.writeOnePaddle(0, [0,255,0,0]); // assumes single paddle and uses the first one on the list
-        rNum++; // Only advance the round for go trials
       } else {
         int redInt = rng.nextInt(255);
         int blueInt = 255-redInt; // use a random combination of red and blue for No Go
@@ -68,10 +68,6 @@ class Game {
       debugPrint("game: hit detected or timeout reached");
       await leds.writeOnePaddle(0, [0,0,0,0]); // Turn the target back off
       debugPrint("game: paddle turned back off");
-
-
-
-
 
 
       if (shouldGo & (hitResult != null)) { // correct go
@@ -100,6 +96,7 @@ class Game {
       debugPrint("game: written to stream controller");
 
       await Future.delayed(const Duration(milliseconds: 1000));
+      if (shouldGo){rNum++;}
     }
     debugPrint("game: game over");
   }
@@ -107,7 +104,7 @@ class Game {
   Future<void> startSingleSwitcher() async {
     await preGameUpdate();
 
-    for (int rNum = 0; rNum<numRounds; rNum++){
+    for (rNum = 0; rNum<numRounds; rNum++){
       await Future.delayed(Duration(milliseconds: rng.nextInt(1000)));
       List<int> ledArray = [0,1,2,3]; // Index RGBW
 
@@ -252,8 +249,9 @@ class Game {
       debugPrint("game: Hit paddle = ${hitResult.targetNum}");
       debugPrint("game: Reaction time = ${hitResult.reactionTime}");
 
-      rNum++;
+
       streamController.add(rNum);
+      rNum++;
 
       await Future.delayed(const Duration(milliseconds: 1000));
     }
@@ -263,7 +261,7 @@ class Game {
   Future<void> startShootYourColor() async {
     await preGameUpdate();
 
-    for (int rNum = 0; rNum<numRounds; rNum++){
+    for (rNum = 0; rNum<numRounds; rNum++){
       await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
       List<int> colors = List<int>.generate(numTargets, (i) => i);
       colors.shuffle(); //Index is the paddle, Value is the color
@@ -295,7 +293,7 @@ class Game {
   Future<void> startMovingTargets() async {
     await preGameUpdate();
 
-    for (int rNum = 0; rNum<numRounds; rNum++){
+    for (rNum = 0; rNum<numRounds; rNum++){
       await Future.delayed(Duration(milliseconds: rng.nextInt(2000)));
       List<int> colors = List<int>.generate(numTargets, (i) => i);
 
@@ -335,4 +333,4 @@ class Game {
     }
     debugPrint("game: game over");
   }
-}*/
+}

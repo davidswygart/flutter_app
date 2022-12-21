@@ -46,18 +46,24 @@ class SingleTarget{
     });
   }
 
-  void writeLED(List<int> intList) async {
-    debugPrint("led: writing to LEDs: $intList");
+  Future<bool> writeLED(List<int> intList) async {
+    //debugPrint("led: writing to LEDs: $intList");
     if (intList.length != 4){
       throw Exception("Wrong list length for writing to LEDs (should be 4, RGBW)");
     }
-    await FlutterReactiveBle().writeCharacteristicWithoutResponse(
-        led, value: [0x00]
+    led = QualifiedCharacteristic(
+        serviceId: ID().service,
+        characteristicId: ID().led,
+        deviceId: device.id
     );
+    await FlutterReactiveBle().writeCharacteristicWithoutResponse(
+        led, value: intList
+    );
+    return true;
   }
 
   Future<HitResults> getHit(int tNum) async {
-    debugPrint("hit_sensor: waiting for hit value");
+    //debugPrint("hit_sensor: waiting for hit value");
     Stream<List<int>> hitStream =  FlutterReactiveBle().subscribeToCharacteristic(hitSensor);
     List<int> byteList = await hitStream.firstWhere((b) => b.isNotEmpty);
     ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));

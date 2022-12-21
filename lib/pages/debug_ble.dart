@@ -12,13 +12,6 @@ class DebugBlePage extends StatefulWidget {
 }
 
 class _DebugBlePage extends State<DebugBlePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    BlueToothHandler bth = BlueToothHandler();
-    return const Center(child: Text("Games Page"));
-  }
-  /*
   final BlueToothHandler bth = BlueToothHandler();
   final Game game = Game();
   LedDisplay ledDisplay = LedDisplay();
@@ -90,7 +83,7 @@ class _DebugBlePage extends State<DebugBlePage> {
 
     addTargetAndUpdate() async {
       debugPrint('debug_ble: connect button pressed');
-      await bth.addTarget();
+      await BlueToothHandler().connectToTargets();
       setState(() {});
     }
 
@@ -204,5 +197,5 @@ class _DebugBlePage extends State<DebugBlePage> {
         },
       ),
     );
-  }*/
+  }
 }
