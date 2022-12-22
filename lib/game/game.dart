@@ -25,7 +25,6 @@ class Game {
   List<List<int>> offArray = [[0,0,0,0]]; // array of zeros for all paddles that is often used to turn them all off
   int rNum = 0; // current round number
 
-
   preGameUpdate(int numPlayers) async {
     score = List.filled(numPlayers, 0, growable: false); // fill with zeros
     correctHits = List.filled(numPlayers, 0, growable: false); // fill with zeros
@@ -51,9 +50,7 @@ class Game {
       if (shouldGo){
         await leds.writeOnePaddle(0, [0,255,0,0]); // assumes single paddle and uses the first one on the list
       } else {
-        int redInt = rng.nextInt(255);
-        int blueInt = 255-redInt; // use a random combination of red and blue for No Go
-        await leds.writeOnePaddle(0, [redInt,0,blueInt,0]);
+        await leds.writeOnePaddle(0, [255,0,0,0]);
       }
 
       debugPrint("game: Waiting for hit");

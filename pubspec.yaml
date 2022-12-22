@@ -28,11 +28,11 @@ dependencies:
   #flutter_blue: ^0.8.0
   flutter_reactive_ble: ^5.0.3
   just_audio: ^0.9.30
+  carousel_slider: ^4.2.1
   #cupertino_icons: ^1.0.2 ## Use with the CupertinoIcons class for iOS style icons.
   #hive: ^2.2.3
 #  getwidget: ^2.0.4
 #  reorderables: ^0.4.1
-#  carousel_slider: ^4.0.0
 #  app_settings: ^4.1.1
 #  firebase_core: ^1.7.0
 #  firebase_auth: ^3.1.2
