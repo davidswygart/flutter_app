@@ -22,7 +22,7 @@ class _GamesPage extends State<GamesPage> {
     ));
 
     carouselPages.add(const CarouselPage(
-      imageName: 'McBride.gif',
+      imageName: 'bender.gif',
       gameName: 'Speed Switcher',
       numPlayers: '1-3',
       numPaddles: '1',
@@ -159,11 +159,10 @@ class CarouselPage extends StatelessWidget {
 class GameSettings{
   final int numberOfRounds;
   final double maxPreRoundDelaySeconds;
-  final int switchDelaySeconds; //Move delay, sequential memory delay,
 
   const GameSettings({
     this.numberOfRounds = 5,
     this.maxPreRoundDelaySeconds = 3.0,
-    this.switchDelaySeconds,
+
   });
 }
