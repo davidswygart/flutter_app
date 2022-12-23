@@ -4,7 +4,7 @@ import '../bluetooth/bluetooth_handler.dart';
 import '../bluetooth/single_target.dart';
 
 class DevicesPage extends StatefulWidget {
-  DevicesPage({Key? key}) : super(key: key);
+  const DevicesPage({Key? key}) : super(key: key);
 
   @override
   State<DevicesPage> createState() => _DevicesPage();
@@ -28,6 +28,14 @@ class _DevicesPage extends State<DevicesPage> {
       child: const Text("Clear Targets"),
     );
 
+    Widget forceUpdateButton = ElevatedButton(
+      onPressed: () {
+        debugPrint('debug_ble: force update button pressed');
+        setState(() {});
+      },
+      child: const Text("force update"),
+    );
+
     return Container(
       alignment: Alignment.topCenter,
       padding: const EdgeInsets.only(top:50),
@@ -39,6 +47,7 @@ class _DevicesPage extends State<DevicesPage> {
             connectButton,
             targetTable(),
             clearTargetsButton,
+            forceUpdateButton,
           ],
         ),
       ),
@@ -57,6 +66,8 @@ class _DevicesPage extends State<DevicesPage> {
       rowCells.add(DataCell(Text(target.device.name)));
       rowCells.add(DataCell(Text(target.device.rssi.toString())));
       rows.add(DataRow(cells: rowCells));
+
+
     }
     return DataTable(columns: columns, rows: rows);
   }

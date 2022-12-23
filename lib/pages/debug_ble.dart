@@ -197,7 +197,6 @@ class _DebugBlePage extends State<DebugBlePage> {
                 const Divider(),
                 testSwitchingLimit,
                 forceUpdateButton,
-                Table()
               ],
             ),
           );
