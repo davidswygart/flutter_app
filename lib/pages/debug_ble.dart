@@ -136,10 +136,9 @@ class _DebugBlePage extends State<DebugBlePage> {
 
     List<Text> coloredTextList(scoreList) {
       List<Color> colorOrder = [
-        Colors.red.shade800,
         Colors.green.shade800,
         Colors.blue.shade800,
-        Colors.black
+        Colors.red.shade800,
       ];
       List<Text> textList = [];
       for (int i = 0; i < scoreList.length; i++) {

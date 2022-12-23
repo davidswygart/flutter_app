@@ -7,7 +7,6 @@ import 'single_target.dart';
 class LedDisplay {
   late final List<SingleTarget> targetList;
 
-
   LedDisplay(){
     BlueToothHandler bth = BlueToothHandler();
     targetList = bth.targetList;
@@ -20,7 +19,7 @@ class LedDisplay {
   }
 
   List<List<int>> genUniformColorArray( {int val=0}){
-    int numColors = 4;
+    int numColors = 3;
     List<List<int>> cArray = [];
     for(int i=0; i < targetList.length; i++) {
       cArray.add(List.filled(numColors, val, growable: false));
@@ -57,7 +56,7 @@ class LedDisplay {
     List<List<int>> offArray = genUniformColorArray(val:0);
     await writeLEDs(offArray);
     await Future.delayed(const Duration(seconds: 1));
-    int numColors = 4;
+    int numColors = 3;
 
     for (int i=0; i< offArray.length ; i++) {
       offArray[i] = List.filled(numColors, 255, growable: false); // turn on a single target
@@ -70,7 +69,7 @@ class LedDisplay {
   }
 
   writeSingleColorPerPaddle(List<int> colors) async {
-    int numLeds = 4;
+    int numLeds = 3;
     int numTargets =targetList.length;
     for (int i=0; i<numTargets; i++){
       List<int> tmp = List.filled(numLeds, 0, growable: false); // fill with zeros
@@ -83,7 +82,7 @@ class LedDisplay {
     await targetList[paddle].writeLED(color);
   }
   writeOnePaddleOneColor(int targetIndex, int ledIndex) async {
-    List<int> colorArray = [0,0,0,0];
+    List<int> colorArray = [0,0,0];
     colorArray[ledIndex] = 255;
     await targetList[targetIndex].writeLED(colorArray);
   }
@@ -103,7 +102,7 @@ class LedDisplay {
 
     List<List<int>> offArray = genUniformColorArray(val: 0);
     int numTargets = offArray.length;
-    List<int> color = [0,0,0,0];
+    List<int> color = [0,0,0];
     color[ledNumber] = 255;
     List<List<int>> onArray = List.filled(numTargets, color, growable: false);
 

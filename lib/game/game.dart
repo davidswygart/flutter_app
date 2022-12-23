@@ -22,7 +22,7 @@ class Game {
   List<int> score =[0];
   List<int> correctHits = [0];
   List<int> reactionTimeArray = [0];
-  List<List<int>> offArray = [[0,0,0,0]]; // array of zeros for all paddles that is often used to turn them all off
+  List<List<int>> offArray = [[0,0,0]]; // array of zeros for all paddles that is often used to turn them all off
   int rNum = 0; // current round number
 
   preGameUpdate(int numPlayers) async {
@@ -47,10 +47,15 @@ class Game {
       await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
 
       bool shouldGo = rng.nextBool();
+
       if (shouldGo){
-        await leds.writeOnePaddle(0, [0,255,0,0]); // assumes single paddle and uses the first one on the list
+        await leds.writeOnePaddle(0, [255,0,0]); // green on paddle #1
       } else {
-        await leds.writeOnePaddle(0, [255,0,0,0]);
+        if (rng.nextBool()){
+          await leds.writeOnePaddle(0, [0,255,0]); // blue on paddle #1
+        } else {
+          await leds.writeOnePaddle(0, [0,0,255]); // red on paddle #1
+        }
       }
 
       debugPrint("game: Waiting for hit");
@@ -60,7 +65,7 @@ class Game {
 
       HitResults? hitResult = await Future.any([hR, timeout]);
       debugPrint("game: hit detected or timeout reached");
-      await leds.writeOnePaddle(0, [0,0,0,0]); // Turn the target back off
+      await leds.writeOnePaddle(0, [0,0,0]); // Turn the target back off
       debugPrint("game: paddle turned back off");
 
 
@@ -96,11 +101,11 @@ class Game {
   }
 
   Future<void> startSingleSwitcher() async {
-    await preGameUpdate(4); // 4 players using 1 paddle
+    await preGameUpdate(3); // 3 players using 1 paddle
 
     for (rNum = 0; rNum<numRounds; rNum++){
       await Future.delayed(Duration(milliseconds: rng.nextInt(1000)));
-      List<int> ledArray = [0,1,2,3]; // Index RGBW
+      List<int> ledArray = [0,1,2]; // Index RGBW
 
       ledArray.shuffle();
 
@@ -153,9 +158,9 @@ class Game {
       for (int i=0; i<rNum+1; i++){
         int chosenPaddle = rng.nextInt(bth.targetList.length);
         paddleSequence.add(chosenPaddle);
-        await leds.writeOnePaddle(chosenPaddle, [0,255,0,0]); //write the paddle green
+        await leds.writeOnePaddle(chosenPaddle, [0,255,0]); //write the paddle green
         await Future.delayed(const Duration(milliseconds: 500));
-        await leds.writeOnePaddle(chosenPaddle, [0,0,0,0]);
+        await leds.writeOnePaddle(chosenPaddle, [0,0,0]);
         await Future.delayed(const Duration(milliseconds: 100));
       }
       debugPrint("game: correct sequence # $paddleSequence");
@@ -177,7 +182,7 @@ class Game {
         } else {
           perfection = false;
           continueSubround = false;
-          await leds.flashAllTargetsOneLed(0);
+          await leds.flashAllTargetsOneLed(2);
         }
 
         streamController.add(subRoundNum);
@@ -194,8 +199,8 @@ class Game {
   Future<void> startColorDiscrimination() async {
     await preGameUpdate(1); // 1 players using 2 paddles
     bool perfection = true;
-    int moreGreen = 125;
-    List<int> equalMix = [128,128,50,50];
+    int moreGreen = 127;
+    List<int> equalMix = [127,127,0];
     List<int> usedTargets = [0,1]; // Needs 2 targets and only uses the first 2
 
     if (bth.targetList.length<2){throw("error, need at least 2 targets for this game") ;}
@@ -204,16 +209,21 @@ class Game {
       await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
 
       List<int> greenerMix = List<int>.from(equalMix);
-      greenerMix[0] -= moreGreen;
-      greenerMix[1] += moreGreen;
+      greenerMix[0] += moreGreen;
+      greenerMix[1] -= moreGreen;
+
+      List<int> bluerMix = List<int>.from(equalMix);
+      bluerMix[0] -= moreGreen;
+      bluerMix[1] += moreGreen;
+
       moreGreen = ((moreGreen-1)*0.8).round();
 
       usedTargets.shuffle();
       int greenerTarget = usedTargets[0];
-      int redderTarget = usedTargets[1];
+      int bluerTarget = usedTargets[1];
 
       await leds.writeOnePaddle(greenerTarget, greenerMix);
-      await leds.writeOnePaddle(redderTarget, equalMix);
+      await leds.writeOnePaddle(bluerTarget, bluerMix);
 
       debugPrint("game: Waiting for hit");
       HitResults hitResult = await bth.getHit();
@@ -224,16 +234,15 @@ class Game {
         score[0] += points.round();
         correctHits[0] += 1;
         reactionTimeArray[0] = hitResult.reactionTime;
-        await leds.flashAllTargetsOneLed(1);
+        await leds.flashAllTargetsOneLed(0);
       } else {
         perfection = false;
         score[0] -= points.round();
         reactionTimeArray[0] = hitResult.reactionTime;
-        await leds.flashAllTargetsOneLed(0);
+        await leds.flashAllTargetsOneLed(2);
       }
       debugPrint("game: Hit paddle = ${hitResult.targetNum}");
       debugPrint("game: Reaction time = ${hitResult.reactionTime}");
-
 
       streamController.add(rNum);
       rNum++;
@@ -244,7 +253,7 @@ class Game {
   }
 
   Future<void> startShootYourColor() async {
-    await preGameUpdate(bth.targetList.length); // as many players as connected targets
+    await preGameUpdate(bth.targetList.length); // as many players as connected targets //TODO: need to limit to 3 players with current 3 led logic
 
     for (rNum = 0; rNum<numRounds; rNum++){
       await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
@@ -329,10 +338,10 @@ class Game {
       start = DateTime.now().millisecondsSinceEpoch;
 
       await Future.delayed(Duration(milliseconds: delayMillis));
-      await leds.writeOnePaddle(0, [250,250,250,250]);
+      await leds.writeOnePaddle(0, [250,250,250]);
 
       await Future.delayed(Duration(milliseconds: delayMillis));
-      await leds.writeOnePaddle(0, [0,0,0,0]);
+      await leds.writeOnePaddle(0, [0,0,0]);
       delayMillis = ((delayMillis * .95) - 1).round();
 
       delay = ((DateTime.now().millisecondsSinceEpoch - start)/2).round();
