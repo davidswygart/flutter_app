@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'debug_ble.dart';
 import 'devices_page.dart';
-import 'games_page.dart';
+import 'game/choose_game_page.dart';
 import 'main_scaffold.dart';
 
 class NavigationDrawer extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/led_display.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
 
-import '../game/game.dart';
+import '../game/game_debug.dart';
 
 class DebugBlePage extends StatefulWidget {
   const DebugBlePage({Key? key}) : super(key: key);
