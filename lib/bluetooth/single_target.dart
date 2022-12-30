@@ -51,11 +51,6 @@ class SingleTarget{
     if (intList.length != 3){
       throw Exception("Wrong list length for writing to LEDs (should be 3, RGB)");
     }
-    led = QualifiedCharacteristic(
-        serviceId: ID().service,
-        characteristicId: ID().led,
-        deviceId: device.id
-    );
     await FlutterReactiveBle().writeCharacteristicWithoutResponse(
         led, value: intList
     );
