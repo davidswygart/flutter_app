@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 class ActiveGamePage extends StatefulWidget {
-  game
   const ActiveGamePage({Key? key}) : super(key: key);
 
   @override
@@ -15,10 +14,10 @@ class _ActiveGamePage extends State<ActiveGamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: StreamBuilder(
-        stream: game.streamController.stream,
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {},
-        )
+        // body: StreamBuilder(
+        // stream: game.streamController.stream,
+        // builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {},
+        // )
     );
   }
 }

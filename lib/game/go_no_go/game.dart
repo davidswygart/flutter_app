@@ -50,6 +50,8 @@ class GameGoNoGo{
     await preGameUpdate(1); // 1 players using 1 paddle
     int goPercent = 80;
 
+    int numRounds = 4;
+
     AudioPlayer player = AudioPlayer();
     debugPrint("game: numRounds = $numRounds");
 
