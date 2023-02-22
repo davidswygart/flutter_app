@@ -45,7 +45,7 @@ class Game {
     debugPrint("game: numRounds = $numRounds");
 
     while (rNum < numRounds){
-      await Future.delayed(Duration(milliseconds: rng.nextInt(4000)));
+      await Future.delayed(Duration(milliseconds: rng.nextInt(1000)));
 
       int rand100 = rng.nextInt(100);
       bool shouldGo = rand100 < goPercent;
@@ -62,7 +62,7 @@ class Game {
 
       debugPrint("game: Waiting for hit");
       Future<HitResults> hR = bth.getHit();
-      int timeoutMs = 4000;
+      int timeoutMs = 1000;
       Future<HitResults?> timeout = Future.delayed(Duration(milliseconds: timeoutMs), (){return null;});
 
       HitResults? hitResult = await Future.any([hR, timeout]);
@@ -96,7 +96,7 @@ class Game {
       streamController.add(correctHits[0]);
       debugPrint("game: written to stream controller");
 
-      await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(const Duration(milliseconds: 100));
       if (shouldGo){rNum++;}
     }
     debugPrint("game: game over");
