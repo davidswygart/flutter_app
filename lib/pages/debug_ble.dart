@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/led_display.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../game/game_debug.dart';
 
@@ -118,8 +119,12 @@ class _DebugBlePage extends State<DebugBlePage> {
     );
 
     Widget forceUpdateButton = ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         debugPrint('debug_ble: force update button pressed');
+        AudioPlayer player = AudioPlayer();
+        await player.setAsset('assets/audio/dingDing.mp3');
+        await player.play();
+
         setState(() {});
       },
       child: const Text("force update"),
