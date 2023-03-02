@@ -5,9 +5,9 @@ import 'devices_page.dart';
 import 'game/choose_game_page.dart';
 import 'main_scaffold.dart';
 
-class NavigationDrawer extends StatelessWidget {
+class NavDrawer extends StatelessWidget {
   final String currentPage;
-  const NavigationDrawer({super.key, this.currentPage = 'nan'});
+  const NavDrawer({super.key, this.currentPage = 'nan'});
 
   @override
   Widget build(BuildContext context) {

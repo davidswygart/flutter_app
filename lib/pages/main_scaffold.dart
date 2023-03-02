@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'navigation_drawer.dart';
+import 'nav_drawer.dart';
 
 class MainScaffold extends StatelessWidget {
   final Widget bodyPage;
@@ -13,7 +13,7 @@ class MainScaffold extends StatelessWidget {
     return Scaffold(
       //body: DebugBlePage(),
       body: bodyPage,
-      drawer: NavigationDrawer(),
+      drawer: NavDrawer(),
     );
   }
 }
