@@ -15,6 +15,7 @@ class SingleTarget{
   late QualifiedCharacteristic led;
   late QualifiedCharacteristic hitSensor;
   late QualifiedCharacteristic hitThreshold;
+  late QualifiedCharacteristic hitTimeout;
 
   Future<void> init () async { // init needs to be its own function because constructor cannot be async
     await _connect();
@@ -34,6 +35,12 @@ class SingleTarget{
     hitThreshold = QualifiedCharacteristic(
         serviceId: ID().service,
         characteristicId: ID().hitThreshold,
+        deviceId: device.id
+    );
+
+    hitTimeout = QualifiedCharacteristic(
+        serviceId: ID().service,
+        characteristicId: ID().hitTimeout,
         deviceId: device.id
     );
   }
@@ -76,6 +83,12 @@ class SingleTarget{
   Future<void> setHitThreshold(int thresh) async {
     await FlutterReactiveBle().writeCharacteristicWithoutResponse(
         hitThreshold, value: [thresh]
+    );
+  }
+
+  Future<void> setHitTimeout(int timeout) async {
+    await FlutterReactiveBle().writeCharacteristicWithoutResponse(
+        hitTimeout, value: [timeout]
     );
   }
 }
