@@ -74,7 +74,7 @@ class SingleTarget{
   Future<HitResults> getHit(int tNum) async {
     //debugPrint("hit_sensor: waiting for hit value");
     Stream<List<int>> hitStream =  FlutterReactiveBle().subscribeToCharacteristic(hitSensor);
-    List<int> byteList = await hitStream.skip(1).firstWhere((b) => b.isNotEmpty); // Skip the first item because it is the current value, not the next hit.
+    List<int> byteList = await hitStream.firstWhere((b) => b.isNotEmpty); // Skip the first item because it is the current value, not the next hit.
     ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));
     int rTime = byteData.getUint32(0, Endian.little);
     return HitResults(targetNum: tNum, reactionTime: rTime);
