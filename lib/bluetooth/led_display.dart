@@ -81,6 +81,7 @@ class LedDisplay {
   writeOnePaddle(int paddle, List<int> color) async {
     await targetList[paddle].writeLED(color);
   }
+
   writeOnePaddleOneColor(int targetIndex, int ledIndex) async {
     List<int> colorArray = [0,0,0];
     colorArray[ledIndex] = 255;
@@ -94,6 +95,12 @@ class LedDisplay {
     if(toggledIntensity>255){
       toggledIntensity = 0;
     }
+  }
+
+  flashOnePaddle({required int targetIndex}) async {
+    await targetList[targetIndex].writeLED([0,255,0]);
+    await Future.delayed(const Duration(milliseconds: 50));
+    await targetList[targetIndex].writeLED([0,0,0]);
   }
 
   flashAllTargetsOneLed(int ledNumber) async {

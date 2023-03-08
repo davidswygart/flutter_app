@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bluetooth/led_display.dart';
+import 'package:flutter_app/bluetooth/single_target.dart';
 
 import '../bluetooth/bluetooth_handler.dart';
 
@@ -41,10 +43,11 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
 
   watchForHits() async {
     debugPrint("watching");
-    await BlueToothHandler().getHit();
+    HitResults res = await BlueToothHandler().getHit();
+    LedDisplay().flashOnePaddle(targetIndex: res.targetNum);
+    watchForHits();
     numHits++;
     setState((){numHits;});
-    watchForHits();
   }
 
   ElevatedButton functionButton({required Function func, required String label}){
