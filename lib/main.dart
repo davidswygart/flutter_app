@@ -8,7 +8,11 @@ void main() {
  // await Hive.openBox<User>(User.boxName);
   runApp(
     MaterialApp(
-      home: HomePage(),
+      home: const HomePage(),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.white,
+      )
     ),
   );
 }

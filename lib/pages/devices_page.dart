@@ -13,7 +13,6 @@ class DevicesPage extends StatefulWidget {
 class _DevicesPage extends State<DevicesPage> {
   @override
   Widget build(BuildContext context) {
-
     Widget connectButton = ElevatedButton(
       onPressed: () {
         addTargetsAndUpdate();
@@ -38,14 +37,14 @@ class _DevicesPage extends State<DevicesPage> {
 
     return Container(
       alignment: Alignment.topCenter,
-      padding: const EdgeInsets.only(top:50),
+      padding: const EdgeInsets.only(top: 50),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             connectButton,
-            targetTable(),
+            Container(color: Colors.white70,child: targetTable(),),
             clearTargetsButton,
             forceUpdateButton,
           ],
@@ -55,20 +54,21 @@ class _DevicesPage extends State<DevicesPage> {
   }
 
   DataTable targetTable() {
-    final targetList = BlueToothHandler().targetList;
-    List<DataColumn> columns = [];
-    columns.add(const DataColumn(label: Text("name")));
-    columns.add(const DataColumn(label: Text("rssi")));
+    List<DataColumn> columns = [
+    const DataColumn(label: Text("name")),
+    const DataColumn(label: Text("rssi")),
+    ];
 
     List<DataRow> rows = [];
-    for (SingleTarget target in targetList) {
-      List<DataCell> rowCells = [];
-      rowCells.add(DataCell(Text(target.device.name)));
-      rowCells.add(DataCell(Text(target.device.rssi.toString())));
+    for (SingleTarget target in BlueToothHandler().targetList) {
+      debugPrint(target.device.name);
+      List<DataCell> rowCells = [
+        DataCell(Text(target.device.name)),
+        DataCell(Text(target.device.rssi.toString())),
+      ];
       rows.add(DataRow(cells: rowCells));
-
-
     }
+
     return DataTable(columns: columns, rows: rows);
   }
 
