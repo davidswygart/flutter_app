@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../bluetooth/bluetooth_handler.dart';
+import '../bluetooth/led_display.dart';
 import '../bluetooth/single_target.dart';
 
 class DevicesPage extends StatefulWidget {
@@ -27,6 +28,7 @@ class _DevicesPage extends State<DevicesPage> {
             ),
             child: targetTable(),),
           functionButton(func: clearTargets, label: "Disconnect from targets"),
+          functionButton(func:LedDisplay().cycleLeds, label: "Flash LEDs")
         ],
       ),
     );
