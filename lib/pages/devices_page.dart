@@ -14,41 +14,32 @@ class _DevicesPage extends State<DevicesPage> {
   @override
   Widget build(BuildContext context) {
     Widget connectButton = ElevatedButton(
-      onPressed: () {
-        addTargetsAndUpdate();
-      },
-      child: const Text("Scan for targets"),
+      onPressed: () {addTargetsAndUpdate();},
+      child: const Text("Connect to targets"),
     );
 
     Widget clearTargetsButton = ElevatedButton(
-      onPressed: () {
-        clearTargetsAndUpdate();
-      },
-      child: const Text("Clear Targets"),
+      onPressed: () {clearTargetsAndUpdate();},
+      child: const Text("Disconnect from targets"),
     );
 
     Widget forceUpdateButton = ElevatedButton(
-      onPressed: () {
-        debugPrint('debug_ble: force update button pressed');
-        setState(() {});
-      },
+      onPressed: () {setState(() {});},
       child: const Text("force update"),
     );
 
     return Container(
       alignment: Alignment.topCenter,
       padding: const EdgeInsets.only(top: 50),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            connectButton,
-            Container(color: Colors.white70,child: targetTable(),),
-            clearTargetsButton,
-            forceUpdateButton,
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          connectButton,
+          Container(color: Colors.white70,child: targetTable(),),
+          clearTargetsButton,
+          forceUpdateButton,
+        ],
       ),
     );
   }
