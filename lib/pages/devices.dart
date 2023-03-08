@@ -22,11 +22,7 @@ class _DevicesPage extends State<DevicesPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           functionButton(func: addTargetsAndUpdate, label: "Connect to targets"),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all()
-            ),
-            child: targetTable(),),
+          getDeviceTable(),
           functionButton(func: clearTargets, label: "Disconnect from targets"),
           functionButton(func:LedDisplay().cycleLeds, label: "Flash LEDs")
         ],
@@ -34,12 +30,11 @@ class _DevicesPage extends State<DevicesPage> {
     );
   }
 
-  DataTable targetTable() {
+  Container getDeviceTable() {
     List<DataColumn> columns = [
     const DataColumn(label: Text("name")),
     const DataColumn(label: Text("rssi")),
     ];
-
     List<DataRow> rows = [];
     for (SingleTarget target in BlueToothHandler().targetList) {
       debugPrint(target.device.name);
@@ -49,7 +44,12 @@ class _DevicesPage extends State<DevicesPage> {
       ];
       rows.add(DataRow(cells: rowCells));
     }
-    return DataTable(columns: columns, rows: rows);
+    return Container(
+        decoration: BoxDecoration(
+            border: Border.all()
+        ),
+        child: DataTable(columns: columns, rows: rows)
+    );
   }
 
   ElevatedButton functionButton({required Function func, required String label}){
