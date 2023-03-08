@@ -52,6 +52,13 @@ class BlueToothHandler {
 
   // ToDo: check if devices in list are still connected. Maybe run before game or periodically? Clear from list if no connection.
 
+  void setHitThreshold(double thresh){
+    for (int i=0; i<targetList.length; i++){
+      targetList[i].setHitThreshold(thresh);
+    }
+
+  }
+
   Future<HitResults> getHit() async {
     List<Future<HitResults>> futureHitResults =[];
     for (int i=0; i<targetList.length; i++){

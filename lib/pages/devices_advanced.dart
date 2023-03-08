@@ -16,6 +16,8 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   int numHits = 0;
   double lastAcceleration = 0;
   AudioPlayer player = AudioPlayer();
+  double threshold = 2;
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
           Text("Hits: $numHits"),
           Text("Acceleration: ${lastAcceleration.toStringAsFixed(1)}"),
           functionButton(func:clearHits, label: "clear hits"),
+          functionButton(func: setThreshold, label:"set threshold"),
 
       ],),
     );
@@ -37,6 +40,7 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
     watchForHits();
     super.initState();
   }
+  void setThreshold(){BlueToothHandler().setHitThreshold(threshold);}
 
   clearHits(){
     numHits=0;
@@ -61,4 +65,6 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
       child: Text(label),
     );
   }
+
+
 }

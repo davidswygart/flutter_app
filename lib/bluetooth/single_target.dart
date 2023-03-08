@@ -87,9 +87,14 @@ class SingleTarget{
     return HitResults(targetNum: tNum, reactionTime: rTime);
   }
 
-  Future<void> setHitThreshold(int thresh) async {
+  Future<void> setHitThreshold(double thresh) async {
+    debugPrint("thresh in Gs = $thresh");
+    int threshInt = (32768 * thresh / 16).round(); //convert from Gs to 16-bit int with 16g range
+    debugPrint("thresh in int = $threshInt");
+    List<int> intList = Uint8List(2)..buffer.asByteData().setInt16(0, threshInt, Endian.little); //convert to list of bytes
+
     await FlutterReactiveBle().writeCharacteristicWithoutResponse(
-        hitThreshold, value: [thresh]
+        hitThreshold, value: intList
     );
   }
   Future<double> readHitAcceleration() async {
