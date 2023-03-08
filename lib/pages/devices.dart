@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/scaffold_wrapper.dart';
 
 import '../bluetooth/bluetooth_handler.dart';
 import '../bluetooth/led_display.dart';
 import '../bluetooth/single_target.dart';
+import 'devices_advanced.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({Key? key}) : super(key: key);
@@ -24,7 +26,8 @@ class _DevicesPage extends State<DevicesPage> {
           functionButton(func: addTargetsAndUpdate, label: "Connect to targets"),
           getDeviceTable(),
           functionButton(func: clearTargets, label: "Disconnect from targets"),
-          functionButton(func:LedDisplay().cycleLeds, label: "Flash LEDs")
+          functionButton(func:LedDisplay().cycleLeds, label: "Flash LEDs"),
+          navigateToAdvanced(context: context),
         ],
       ),
     );
@@ -67,5 +70,17 @@ class _DevicesPage extends State<DevicesPage> {
   clearTargets() async {
     await BlueToothHandler().clearTargets(); //TODO make disconnect if connected and ESP32 start advertising again
     setState(() {});
+  }
+
+  Widget navigateToAdvanced({required BuildContext context}){
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ScaffoldWrapper(bodyPage: DevicesPageAdvanced())),
+        );
+      },
+      child: const Text("advanced settings"),
+    );
   }
 }
