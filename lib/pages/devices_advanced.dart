@@ -14,7 +14,7 @@ class DevicesPageAdvanced extends StatefulWidget {
 
 class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   int numHits = 0;
-  int lastAcceleration = 0;
+  double lastAcceleration = 0;
   AudioPlayer player = AudioPlayer();
 
   @override
@@ -25,7 +25,7 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text("Hits: $numHits"),
-          Text("Acceleration: $lastAcceleration"),
+          Text("Acceleration: ${lastAcceleration.toStringAsFixed(1)}"),
           functionButton(func:clearHits, label: "clear hits"),
 
       ],),
