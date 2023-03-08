@@ -49,6 +49,7 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
     watchForHits();
     numHits++;
     LedDisplay().flashOnePaddle(targetIndex: res.targetNum);
+    lastAcceleration = await BlueToothHandler().targetList[res.targetNum].readHitAcceleration();
     await player.setAsset('assets/audio/clash.mp3');
     player.play();
     setState((){numHits;});

@@ -16,6 +16,7 @@ class SingleTarget{
   late QualifiedCharacteristic hitSensor;
   late QualifiedCharacteristic hitThreshold;
   late QualifiedCharacteristic hitTimeout;
+  late QualifiedCharacteristic hitAcceleration;
 
   Future<void> init () async { // init needs to be its own function because constructor cannot be async
     await _connect();
@@ -41,6 +42,12 @@ class SingleTarget{
     hitTimeout = QualifiedCharacteristic(
         serviceId: ID().service,
         characteristicId: ID().hitTimeout,
+        deviceId: device.id
+    );
+
+    hitAcceleration = QualifiedCharacteristic(
+        serviceId: ID().service,
+        characteristicId: ID().hitAcceleration,
         deviceId: device.id
     );
   }
@@ -85,6 +92,12 @@ class SingleTarget{
         hitThreshold, value: [thresh]
     );
   }
+  Future<int> readHitAcceleration() async {
+    List<int> byteList = await FlutterReactiveBle().readCharacteristic(hitAcceleration);
+    ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));
+    int acceleration = byteData.getUint32(0, Endian.little);
+    return acceleration;
+  }
 
   Future<void> setHitTimeout(int timeout) async {
     await FlutterReactiveBle().writeCharacteristicWithoutResponse(
@@ -94,11 +107,9 @@ class SingleTarget{
 }
 
 class HitResults {
-
   int reactionTime;
   int targetNum;
   HitResults({required this.targetNum, required this.reactionTime});
-
   int getTargetNum() => targetNum;
   int getReactionTime() => reactionTime;
 }

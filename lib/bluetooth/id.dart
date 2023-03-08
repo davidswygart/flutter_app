@@ -7,4 +7,5 @@ class ID {
   final Uuid led = Uuid.parse('00000001-151b-11ec-82a8-0242ac130003');
   final Uuid hitThreshold = Uuid.parse('00000004-151b-11ec-82a8-0242ac130003');
   final Uuid hitTimeout = Uuid.parse('00000005-151b-11ec-82a8-0242ac130003');
+  final Uuid hitAcceleration = Uuid.parse('00000006-151b-11ec-82a8-0242ac130003');
 }
