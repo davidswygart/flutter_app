@@ -63,7 +63,7 @@ class _DevicesPage extends State<DevicesPage> {
   }
 
   clearTargets() async {
-    await BlueToothHandler().clearTargets();
+    await BlueToothHandler().clearTargets(); //TODO make disconnect if connected and ESP32 start advertising again
     setState(() {});
   }
 }
