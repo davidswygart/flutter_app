@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/scaffold_wrapper.dart';
 
 import 'debug_ble.dart';
 import 'devices_page.dart';
@@ -23,7 +24,7 @@ class HomePage extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => page),
+          MaterialPageRoute(builder: (context) => ScaffoldWrapper(bodyPage: page)),
         );
       },
       child: Text(label),
