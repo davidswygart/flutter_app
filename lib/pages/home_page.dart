@@ -12,25 +12,23 @@ class HomePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const DevicesPage()),
-            );
-          },
-          child: const Text("Devices"),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const DebugBlePage()),
-            );
-          },
-          child: const Text("Debug"),
-        ),
+        navigationButton(context:context, page:const DevicesPage(), label:"Devices"),
+        navigationButton(context:context, page:const DebugBlePage(), label:"Debug"),
       ],
     );
   }
+
+  Widget navigationButton({required BuildContext context, required Widget page, required String label}){
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
+      child: Text(label),
+    );
+  }
 }
+
+
