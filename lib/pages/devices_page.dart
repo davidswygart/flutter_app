@@ -36,7 +36,11 @@ class _DevicesPage extends State<DevicesPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           connectButton,
-          Container(color: Colors.white70,child: targetTable(),),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all()
+            ),
+            child: targetTable(),),
           clearTargetsButton,
           forceUpdateButton,
         ],
