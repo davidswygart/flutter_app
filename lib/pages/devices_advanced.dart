@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/led_display.dart';
 import 'package:flutter_app/bluetooth/single_target.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../bluetooth/bluetooth_handler.dart';
 
@@ -14,6 +15,7 @@ class DevicesPageAdvanced extends StatefulWidget {
 class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   int numHits = 0;
   int lastAcceleration = 0;
+  AudioPlayer player = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +46,11 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   watchForHits() async {
     debugPrint("watching");
     HitResults res = await BlueToothHandler().getHit();
-    LedDisplay().flashOnePaddle(targetIndex: res.targetNum);
     watchForHits();
     numHits++;
+    LedDisplay().flashOnePaddle(targetIndex: res.targetNum);
+    await player.setAsset('assets/audio/clash.mp3');
+    player.play();
     setState((){numHits;});
   }
 
