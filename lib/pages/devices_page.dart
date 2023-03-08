@@ -13,21 +13,6 @@ class DevicesPage extends StatefulWidget {
 class _DevicesPage extends State<DevicesPage> {
   @override
   Widget build(BuildContext context) {
-    Widget connectButton = ElevatedButton(
-      onPressed: () {addTargetsAndUpdate();},
-      child: const Text("Connect to targets"),
-    );
-
-    Widget clearTargetsButton = ElevatedButton(
-      onPressed: () {clearTargetsAndUpdate();},
-      child: const Text("Disconnect from targets"),
-    );
-
-    Widget forceUpdateButton = ElevatedButton(
-      onPressed: () {setState(() {});},
-      child: const Text("force update"),
-    );
-
     return Container(
       alignment: Alignment.topCenter,
       padding: const EdgeInsets.only(top: 50),
@@ -35,14 +20,13 @@ class _DevicesPage extends State<DevicesPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          connectButton,
+          functionButton(func: addTargetsAndUpdate, label: "Connect to targets"),
           Container(
             decoration: BoxDecoration(
               border: Border.all()
             ),
             child: targetTable(),),
-          clearTargetsButton,
-          forceUpdateButton,
+          functionButton(func: clearTargets, label: "Disconnect from targets"),
         ],
       ),
     );
@@ -63,8 +47,14 @@ class _DevicesPage extends State<DevicesPage> {
       ];
       rows.add(DataRow(cells: rowCells));
     }
-
     return DataTable(columns: columns, rows: rows);
+  }
+
+  ElevatedButton functionButton({required Function func, required String label}){
+    return ElevatedButton(
+      onPressed: () {func();},
+      child: Text(label),
+    );
   }
 
   addTargetsAndUpdate() async {
@@ -72,7 +62,7 @@ class _DevicesPage extends State<DevicesPage> {
     setState(() {});
   }
 
-  clearTargetsAndUpdate() async {
+  clearTargets() async {
     await BlueToothHandler().clearTargets();
     setState(() {});
   }
