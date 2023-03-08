@@ -44,7 +44,6 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
     await BlueToothHandler().getHit();
     numHits++;
     setState((){numHits;});
-    await Future.delayed(Duration(milliseconds: 1000));
     watchForHits();
   }
 
