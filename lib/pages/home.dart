@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/scaffold_wrapper.dart';
 
 import 'debug_ble.dart';
-import 'devices_page.dart';
+import 'devices.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

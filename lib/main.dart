@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/home_page.dart';
+import 'package:flutter_app/pages/home.dart';
 import 'package:flutter_app/pages/scaffold_wrapper.dart';
 
 void main() {
