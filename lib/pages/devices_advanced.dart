@@ -19,8 +19,24 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   double threshold = 2;
 
 
+
   @override
   Widget build(BuildContext context) {
+    Widget thresholdSlider = Slider(
+        min: 0.5,
+        max: 16,
+        value: threshold,
+        label: threshold.toString(),
+        divisions: 31,
+        onChanged: (double value) {
+          setState((){threshold = value;});
+        },
+        onChangeEnd: (double value){
+          BlueToothHandler().setHitThreshold(threshold);
+          },
+    );
+
+
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -29,7 +45,8 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
           Text("Hits: $numHits"),
           Text("Acceleration: ${lastAcceleration.toStringAsFixed(1)}"),
           functionButton(func:clearHits, label: "clear hits"),
-          functionButton(func: setThreshold, label:"set threshold"),
+          Text("threshold: $threshold gs"),
+          thresholdSlider,
 
       ],),
     );
@@ -40,7 +57,6 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
     watchForHits();
     super.initState();
   }
-  void setThreshold(){BlueToothHandler().setHitThreshold(threshold);}
 
   clearHits(){
     numHits=0;
