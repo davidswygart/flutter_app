@@ -103,9 +103,10 @@ class SingleTarget{
     return acceleration;
   }
 
-  Future<void> setHitTimeout(int timeout) async {
+  Future<void> setHitRefractoryPeriod(double buffer) async {
+    List<int> bufferInt = [buffer~/10]; //Divide by 10 to fit in an 8-bit value. Expand back to original value in ESP32.
     await FlutterReactiveBle().writeCharacteristicWithoutResponse(
-        hitTimeout, value: [timeout]
+        hitTimeout, value: bufferInt
     );
   }
 }

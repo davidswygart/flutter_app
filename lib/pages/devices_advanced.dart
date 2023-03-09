@@ -17,26 +17,10 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   double lastAcceleration = 0;
   AudioPlayer player = AudioPlayer();
   double threshold = 2;
-
-
+  double refractoryPeriod = 100;
 
   @override
   Widget build(BuildContext context) {
-    Widget thresholdSlider = Slider(
-        min: 0.5,
-        max: 16,
-        value: threshold,
-        label: threshold.toString(),
-        divisions: 31,
-        onChanged: (double value) {
-          setState((){threshold = value;});
-        },
-        onChangeEnd: (double value){
-          BlueToothHandler().setHitThreshold(threshold);
-          },
-    );
-
-
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -44,11 +28,13 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
         children: [
           Text("Hits: $numHits"),
           Text("Acceleration: ${lastAcceleration.toStringAsFixed(1)}"),
-          functionButton(func:clearHits, label: "clear hits"),
+          functionButton(func: clearHits, label: "clear hits"),
           Text("threshold: $threshold gs"),
-          thresholdSlider,
-
-      ],),
+          getThresholdSlider(),
+          Text("Refractory period: ${refractoryPeriod.toStringAsFixed(0)} ms"),
+          getRefractorySlider(),
+        ],
+      ),
     );
   }
 
@@ -58,9 +44,11 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
     super.initState();
   }
 
-  clearHits(){
-    numHits=0;
-    setState((){numHits;});
+  clearHits() {
+    numHits = 0;
+    setState(() {
+      numHits;
+    });
   }
 
   watchForHits() async {
@@ -69,18 +57,57 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
     watchForHits();
     numHits++;
     LedDisplay().flashOnePaddle(targetIndex: res.targetNum);
-    lastAcceleration = await BlueToothHandler().targetList[res.targetNum].readHitAcceleration();
+    lastAcceleration = await BlueToothHandler()
+        .targetList[res.targetNum]
+        .readHitAcceleration();
     await player.setAsset('assets/audio/clash.mp3');
     player.play();
-    setState((){numHits;});
+    setState(() {
+      numHits;
+    });
   }
 
-  ElevatedButton functionButton({required Function func, required String label}){
+  ElevatedButton functionButton(
+      {required Function func, required String label}) {
     return ElevatedButton(
-      onPressed: () {func();},
+      onPressed: () {
+        func();
+      },
       child: Text(label),
     );
   }
 
+  Widget getThresholdSlider() {
+    return Slider(
+        min: 0.5,
+        max: 16,
+        value: threshold,
+        label: threshold.toStringAsFixed(1),
+        divisions: 31,
+        onChanged: (double value) {
+          setState(() {
+            threshold = value;
+          });
+        },
+        onChangeEnd: (double value) {
+          BlueToothHandler().setHitThreshold(threshold);
+        });
+  }
 
+  Widget getRefractorySlider(){
+    return Slider(
+        min: 0,
+        max: 2500,
+        value: refractoryPeriod,
+        label: refractoryPeriod.toStringAsFixed(0),
+        divisions: 100,
+        onChanged: (double value) {
+          setState(() {
+            refractoryPeriod = value;
+          });
+        },
+        onChangeEnd: (double value) {
+          BlueToothHandler().setHitRefractoryPeriod(refractoryPeriod);
+        });
+  }
 }

@@ -56,7 +56,11 @@ class BlueToothHandler {
     for (int i=0; i<targetList.length; i++){
       targetList[i].setHitThreshold(thresh);
     }
-
+  }
+  void setHitRefractoryPeriod(double buffer){
+    for (int i=0; i<targetList.length; i++){
+      targetList[i].setHitRefractoryPeriod(buffer);
+    }
   }
 
   Future<HitResults> getHit() async {
