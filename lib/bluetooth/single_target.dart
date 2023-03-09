@@ -98,7 +98,7 @@ class SingleTarget{
   Future<double> readHitAcceleration() async {
     List<int> byteList = await FlutterReactiveBle().readCharacteristic(hitAcceleration);
     ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));
-    int accel16 = byteData.getUint32(0, Endian.little);
+    int accel16 = byteData.getInt16(0, Endian.little);
     double acceleration  =  16 * accel16 / 32767; // convert 16-bit value for 16g range
     return acceleration;
   }
