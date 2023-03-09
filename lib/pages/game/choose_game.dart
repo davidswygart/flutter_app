@@ -18,16 +18,6 @@ class _ChooseGamesPage extends State<ChooseGamesPage> {
     List<Widget> carouselPages = [];
 
     carouselPages.add(const SettingsGoNoGo());
-
-    carouselPages.add(CarouselPage(
-      imageName: 'FamilyGuy.gif',
-      gameName: 'Go / No Go',
-      numPlayers: '1',
-      numPaddles: '1',
-      description: "Shoot on green, don't shoot on red.",
-      settings: GameSettings(),
-    ));
-
     carouselPages.add(CarouselPage(
       imageName: 'bender.gif',
       gameName: 'Speed Switcher',
