@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/single_target.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 import 'id.dart';
@@ -19,6 +20,13 @@ class BlueToothHandler {
 
   Future<List<SingleTarget>> connectToTargets(
       {Duration timeout = const Duration(seconds: 3)}) async {
+
+    if (await Permission.location.isDenied) {
+      PermissionStatus result = await Permission.location.request();
+      if(!result.isGranted){return [];}
+    }
+
+
     List<Uuid> id = [ID().advertising];
     debugPrint("bluetoothHandler: starting scan");
 
