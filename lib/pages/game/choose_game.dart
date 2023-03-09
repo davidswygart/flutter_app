@@ -4,14 +4,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../../game/game_settings.dart';
 import 'game_carousel.dart';
 
-class GamesPage extends StatefulWidget {
-  const GamesPage({Key? key}) : super(key: key);
+class ChooseGamesPage extends StatefulWidget {
+  const ChooseGamesPage({Key? key}) : super(key: key);
 
   @override
-  State<GamesPage> createState() => _GamesPage();
+  State<ChooseGamesPage> createState() => _ChooseGamesPage();
 }
 
-class _GamesPage extends State<GamesPage> {
+class _ChooseGamesPage extends State<ChooseGamesPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> carouselPages = [];

@@ -3,6 +3,7 @@ import 'package:flutter_app/pages/scaffold_wrapper.dart';
 
 import 'debug_ble.dart';
 import 'devices.dart';
+import 'game/choose_game.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,6 +17,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           navigationButton(context:context, page:const DevicesPage(), label:"Devices"),
+          navigationButton(context: context, page: const ChooseGamesPage(), label: "Choose game"),
           navigationButton(context:context, page:const DebugBlePage(), label:"Debug"),
         ],
       ),
