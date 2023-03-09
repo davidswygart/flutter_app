@@ -81,7 +81,7 @@ class _DevicesPage extends State<DevicesPage> {
           MaterialPageRoute(builder: (context) => ScaffoldWrapper(bodyPage: DevicesPageAdvanced())),
         );
       },
-      child: const Text("advanced settings",textScaleFactor: 1.5,),
+      child: const Text("Advanced settings",textScaleFactor: 1.5,),
     );
   }
 }
