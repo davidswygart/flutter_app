@@ -14,6 +14,7 @@ class SingleTarget{
   late StreamSubscription<ConnectionStateUpdate> stateStream;
   late QualifiedCharacteristic led;
   late QualifiedCharacteristic hitSensor;
+  late Stream<List<int>> hitStream;
   late QualifiedCharacteristic hitThreshold;
   late QualifiedCharacteristic hitTimeout;
   late QualifiedCharacteristic hitAcceleration;
@@ -32,6 +33,10 @@ class SingleTarget{
         characteristicId: ID().hit,
         deviceId: device.id
     );
+
+    StreamController<List<int>> sc = StreamController.broadcast();
+    sc.addStream(FlutterReactiveBle().subscribeToCharacteristic(hitSensor));
+    hitStream = sc.stream;
 
     hitThreshold = QualifiedCharacteristic(
         serviceId: ID().service,
@@ -78,10 +83,12 @@ class SingleTarget{
     return true;
   }
 
+
+
   Future<HitResults> getHit(int tNum) async {
     //debugPrint("hit_sensor: waiting for hit value");
-    Stream<List<int>> hitStream =  FlutterReactiveBle().subscribeToCharacteristic(hitSensor);
-    List<int> byteList = await hitStream.firstWhere((b) => b.isNotEmpty); // Skip the first item because it is the current value, not the next hit.
+
+    List<int> byteList = await hitStream.firstWhere((b) => b.isNotEmpty);
     ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));
     int rTime = byteData.getUint32(0, Endian.little);
     return HitResults(targetNum: tNum, reactionTime: rTime);
