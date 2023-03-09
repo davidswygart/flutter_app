@@ -1,17 +1,18 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/game/play_go_no_go.dart';
 
 import '../scaffold_wrapper.dart';
 import 'active_game_page.dart';
 import 'choose_game.dart';
 
-class GoNoGoPage extends StatefulWidget{
-  const GoNoGoPage({super.key,});
+class SettingsGoNoGo extends StatefulWidget{
+  const SettingsGoNoGo({super.key,});
   @override
-  State<GoNoGoPage> createState() => _GoNoGoPage();
+  State<SettingsGoNoGo> createState() => _SettingsGoNoGo();
 }
 
-class _GoNoGoPage extends State<GoNoGoPage> {
+class _SettingsGoNoGo extends State<SettingsGoNoGo> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -44,7 +45,14 @@ class _GoNoGoPage extends State<GoNoGoPage> {
 
   startGame(){
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const ScaffoldWrapper(bodyPage: ActiveGamePage());
+      return const ScaffoldWrapper(
+          bodyPage: PlayGoNoGo(
+            numberOfRounds: 5,
+            maxPreRoundDelayMs: 2000,
+            percentGo: 80,
+            timeoutMs: 3000,
+          ),
+      );
     }));
   }
 

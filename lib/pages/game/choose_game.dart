@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../game_logic/game_settings.dart';
 import 'game_carousel.dart';
-import 'go_no_go.dart';
+import 'settings_go_no_go.dart';
 
 class ChooseGamesPage extends StatefulWidget {
   const ChooseGamesPage({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _ChooseGamesPage extends State<ChooseGamesPage> {
   Widget build(BuildContext context) {
     List<Widget> carouselPages = [];
 
-    carouselPages.add(const GoNoGoPage());
+    carouselPages.add(const SettingsGoNoGo());
 
     carouselPages.add(CarouselPage(
       imageName: 'FamilyGuy.gif',

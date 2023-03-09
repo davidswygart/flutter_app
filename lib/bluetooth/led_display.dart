@@ -97,6 +97,11 @@ class LedDisplay {
     }
   }
 
+  allOff() async {
+    List<List<int>> offArray = genUniformColorArray(val:0);
+    await writeLEDs(offArray);
+  }
+
   flashOnePaddle({required int targetIndex}) async {
     await targetList[targetIndex].writeLED([0,255,0]);
     await Future.delayed(const Duration(milliseconds: 50));
