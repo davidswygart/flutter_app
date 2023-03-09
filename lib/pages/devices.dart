@@ -16,17 +16,18 @@ class DevicesPage extends StatefulWidget {
 class _DevicesPage extends State<DevicesPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topCenter,
-      padding: const EdgeInsets.only(top: 50),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           functionButton(func: addTargetsAndUpdate, label: "Connect to targets"),
           getDeviceTable(),
           functionButton(func: clearTargets, label: "Disconnect from targets"),
+          const Divider(),
           functionButton(func:LedDisplay().cycleLeds, label: "Flash LEDs"),
+          const Divider(),
           navigateToAdvanced(context: context),
         ],
       ),
@@ -35,8 +36,8 @@ class _DevicesPage extends State<DevicesPage> {
 
   Container getDeviceTable() {
     List<DataColumn> columns = [
-    const DataColumn(label: Text("name")),
-    const DataColumn(label: Text("rssi")),
+    const DataColumn(label: Text("name",textScaleFactor: 1.5,)),
+    const DataColumn(label: Text("rssi",textScaleFactor: 1.5,)),
     ];
     List<DataRow> rows = [];
     for (SingleTarget target in BlueToothHandler().targetList) {
@@ -58,7 +59,7 @@ class _DevicesPage extends State<DevicesPage> {
   ElevatedButton functionButton({required Function func, required String label}){
     return ElevatedButton(
       onPressed: () {func();},
-      child: Text(label),
+      child: Text(label,textScaleFactor: 1.5,),
     );
   }
 
@@ -80,7 +81,7 @@ class _DevicesPage extends State<DevicesPage> {
           MaterialPageRoute(builder: (context) => ScaffoldWrapper(bodyPage: DevicesPageAdvanced())),
         );
       },
-      child: const Text("advanced settings"),
+      child: const Text("advanced settings",textScaleFactor: 1.5,),
     );
   }
 }

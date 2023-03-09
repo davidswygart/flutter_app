@@ -21,17 +21,20 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text("Hits: $numHits"),
-          Text("Acceleration: ${lastAcceleration.toStringAsFixed(1)}"),
+          Text("Hits: $numHits",textScaleFactor: 1.5,),
+          Text("Acceleration: ${lastAcceleration.toStringAsFixed(1)} gs", textScaleFactor: 1.5,),
           functionButton(func: clearHits, label: "clear hits"),
-          Text("threshold: $threshold gs"),
+          const Divider(),
+          Text("threshold: $threshold gs", textScaleFactor: 1.5,),
           getThresholdSlider(),
-          Text("Refractory period: ${refractoryPeriod.toStringAsFixed(0)} ms"),
+          const Divider(),
+          Text("Refractory period: ${refractoryPeriod.toStringAsFixed(0)} ms", textScaleFactor: 1.5,),
           getRefractorySlider(),
         ],
       ),
@@ -73,7 +76,7 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
       onPressed: () {
         func();
       },
-      child: Text(label),
+      child: Text(label, textScaleFactor: 1.5,),
     );
   }
 
