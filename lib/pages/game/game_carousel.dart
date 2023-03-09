@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../game/game_settings.dart';
+import '../../game_logic/game_settings.dart';
 
 class CarouselPage extends StatefulWidget{
   final String imageName;

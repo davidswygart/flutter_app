@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import '../../game/game_settings.dart';
+import '../../game_logic/game_settings.dart';
 import 'game_carousel.dart';
 
 class ChooseGamesPage extends StatefulWidget {
