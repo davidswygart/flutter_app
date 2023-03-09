@@ -98,6 +98,9 @@ class _PlayGoNoGo extends State<PlayGoNoGo>{
 
       if (shouldGo){currentRound++;}
     }
+
+    currentView = makeScoreBoardAndPlayButton();
+    setState(() {currentView;});
   }
 
   countDown() async {
@@ -128,6 +131,25 @@ class _PlayGoNoGo extends State<PlayGoNoGo>{
       hits: hits,
       reactionTimes: reactionTimes,
       scores: scores,
+    );
+  }
+
+  Widget makeScoreBoardAndPlayButton(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          getScoreBoard(),
+          makePlayAgainButton(),
+        ],
+    );
+  }
+
+  makePlayAgainButton() {
+    return ElevatedButton(
+      onPressed: () {
+        startGameLogic();
+      },
+      child: const Text('Play again', textScaleFactor: 1.5,),
     );
   }
 }

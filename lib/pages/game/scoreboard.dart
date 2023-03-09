@@ -23,12 +23,16 @@ class ScoreBoard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           formatTitles("Round: ${currentRound+1}/ $totalRounds"), // add 1 with the assumption of 0 indexing
-          formatTitles("hits"),
+          const Divider(),
+          formatTitles("Hits:"),
           makeColoredNumbersRow(hits),
-          formatTitles("reaction time (ms)"),
+          const Divider(),
+          formatTitles("Reaction time (ms):"),
           makeColoredNumbersRow(reactionTimes),
-          formatTitles("score"),
+          const Divider(),
+          formatTitles("Score:"),
           makeColoredNumbersRow(scores),
+          const Divider(),
           ]
     );
   }
