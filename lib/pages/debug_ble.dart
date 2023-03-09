@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/led_display.dart';
 import 'package:flutter_app/bluetooth/bluetooth_handler.dart';
-import 'package:just_audio/just_audio.dart';
 
 import '../game/game_debug.dart';
 
@@ -82,53 +81,6 @@ class _DebugBlePage extends State<DebugBlePage> {
       child: const Text("Play Moving targets"),
     );
 
-    Widget testSwitchingLimit = ElevatedButton(
-      onPressed: () {
-        game.testSwitchingLimit();
-      },
-      child: const Text("Test Switching Limit"),
-    );
-
-    addTargetAndUpdate() async {
-      debugPrint('debug_ble: connect button pressed');
-      await BlueToothHandler().connectToTargets();
-      setState(() {});
-    }
-
-    Widget connectButton = ElevatedButton(
-      onPressed: () {
-        addTargetAndUpdate();
-      },
-      child: Text("connect: # connected = ${bth.targetList.length.toString()}"),
-    );
-
-    Widget toggleLedButton = ElevatedButton(
-      onPressed: () {
-        debugPrint('debug_ble: toggle LED button pressed');
-        ledDisplay.toggleIntensity();
-      },
-      child: const Text("toggle LED intensity"),
-    );
-
-    Widget paddleNumberButton = ElevatedButton(
-      onPressed: () {
-        debugPrint('debug_ble: paddle number button pressed');
-        ledDisplay.cycleLeds();
-      },
-      child: const Text("Show paddle #"),
-    );
-
-    Widget forceUpdateButton = ElevatedButton(
-      onPressed: () async {
-        debugPrint('debug_ble: force update button pressed');
-        AudioPlayer player = AudioPlayer();
-        await player.setAsset('assets/audio/dingDing.mp3');
-        await player.play();
-
-        setState(() {});
-      },
-      child: const Text("force update"),
-    );
 
     title(String str) {
       return Center(
@@ -178,13 +130,6 @@ class _DebugBlePage extends State<DebugBlePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Divider(),
-                connectButton,
-                const Divider(),
-                toggleLedButton,
-                const Divider(),
-                paddleNumberButton,
-                const Divider(),
                 playGoNoGo,
                 playSingleSwitcher,
                 playColorDisc,
@@ -199,9 +144,6 @@ class _DebugBlePage extends State<DebugBlePage> {
                 resultsDisplay(game.reactionTimeArray),
                 title("score"),
                 resultsDisplay(game.score),
-                const Divider(),
-                testSwitchingLimit,
-                forceUpdateButton,
               ],
             ),
           );
