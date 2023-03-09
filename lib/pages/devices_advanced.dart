@@ -41,10 +41,19 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
     );
   }
 
+
+  bool shouldWatchForHits = true;
   @override
   void initState() {
+    shouldWatchForHits = true;
     watchForHits();
     super.initState();
+  }
+
+  @override
+  void dispose(){
+    shouldWatchForHits = false;
+    super.dispose();
   }
 
   clearHits() {
@@ -55,19 +64,20 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   }
 
   watchForHits() async {
-    debugPrint("watching");
-    HitResults res = await BlueToothHandler().getHit();
-    watchForHits();
-    numHits++;
-    LedDisplay().flashOnePaddle(targetIndex: res.targetNum);
-    lastAcceleration = await BlueToothHandler()
-        .targetList[res.targetNum]
-        .readHitAcceleration();
-    await player.setAsset('assets/audio/clash.mp3');
-    player.play();
-    setState(() {
-      numHits;
-    });
+    while(shouldWatchForHits) {
+      debugPrint("watching");
+      HitResults res = await BlueToothHandler().getHit();
+      if (mounted) { //check if mounted in case user has moved from page since listening
+        numHits++;
+        LedDisplay().flashOnePaddle(targetIndex: res.targetNum);
+        lastAcceleration = await BlueToothHandler()
+            .targetList[res.targetNum]
+            .readHitAcceleration();
+        await player.setAsset('assets/audio/clash.mp3');
+        await player.play();
+        setState(() {numHits;});
+      }
+    }
   }
 
   ElevatedButton functionButton(
