@@ -1,18 +1,25 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/game/play_go_no_go.dart';
 
 import '../scaffold_wrapper.dart';
-import 'active_game_page.dart';
 import 'choose_game.dart';
 
-class SettingsGoNoGo extends StatefulWidget{
+class SettingsGoNoGo extends StatefulWidget {
   const SettingsGoNoGo({super.key,});
+
   @override
   State<SettingsGoNoGo> createState() => _SettingsGoNoGo();
 }
 
 class _SettingsGoNoGo extends State<SettingsGoNoGo> {
+  double numberOfRounds = 5;
+  double maxDelaySeconds = 1;
+  double percentGo = 80;
+  double timeoutSeconds = 3;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -23,11 +30,17 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
             Image.asset("assets/images/FamilyGuy.gif"),
             const IntroFormat(gameName: 'Go / No Go', numPlayers: '1', numPaddles: '1', description: "Shoot on green, don't shoot on red."),
             const Divider(),
-            //roundTitle,
-            //roundSlider,
+            Text("rounds: ${numberOfRounds.toStringAsFixed(0)}", textScaleFactor: 1.2,),
+            getRoundSlider(),
             const Divider(),
-            //roundDelayTitle,
-            //roundDelaySlider,
+            Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
+            getDelaySlider(),
+            const Divider(),
+            Text("Timeout: ${timeoutSeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
+            getTimeoutSlider(),
+            const Divider(),
+            Text("Go percentage: ${percentGo.toStringAsFixed(0)}%", textScaleFactor: 1.2,),
+            getGoPercentSlider(),
             const Divider(),
             makePlayButton(),
           ],
@@ -45,50 +58,68 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
 
   startGame(){
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const ScaffoldWrapper(
+      return ScaffoldWrapper(
           bodyPage: PlayGoNoGo(
-            numberOfRounds: 5,
-            maxPreRoundDelayMs: 2000,
-            percentGo: 80,
-            timeoutMs: 3000,
+            numberOfRounds: numberOfRounds.toInt(),
+            maxPreRoundDelayMs: (maxDelaySeconds*1000).toInt(),
+            percentGo: percentGo.toInt(),
+            timeoutMs: (timeoutSeconds*1000).toInt(),
           ),
       );
     }));
   }
 
+  getRoundSlider(){
+    return Slider(
+        min: 1,
+        max: 20,
+        divisions: 19,
+        value: numberOfRounds,
+        label: numberOfRounds.toStringAsFixed(0),
+        onChanged: (double value) {
+          setState((){numberOfRounds = value;});
+        }
+    );
+  }
 
-  //
-  // Widget roundTitle = Text(
-  //   "${widget.settings.numberOfRounds} rounds",
-  //   textScaleFactor: 1.2,
-  // );
-  //
-  // Widget roundSlider = Slider(
-  //     min: 1,
-  //     max: 20,
-  //     value: widget.settings.numberOfRounds.toDouble(),
-  //     label: widget.settings.numberOfRounds.toString(),
-  //     divisions: 19,
-  //     onChanged: (double value) {
-  //       setState((){widget.settings.numberOfRounds = value.toInt();});
-  //     }
-  // );
-  //
-  // Widget roundDelayTitle = Text(
-  //   "${widget.settings.maxPreRoundDelaySeconds} s max round delay",
-  //   textScaleFactor: 1.2,
-  // );
-  //
-  // Widget roundDelaySlider = Slider(
-  //     min: 0,
-  //     max: 5,
-  //     value: widget.settings.maxPreRoundDelaySeconds,
-  //     label: widget.settings.maxPreRoundDelaySeconds.toString(),
-  //     divisions: 25,
-  //     onChanged: (double value) {
-  //       String roundedString = value.toStringAsFixed(2);
-  //       double newVal = double.parse(roundedString);
-  //       setState((){widget.settings.maxPreRoundDelaySeconds = newVal;});
-  //     }
-  // );
+  getDelaySlider(){
+    return Slider(
+        min: 0,
+        max: 20,
+        divisions: 200,
+        value: maxDelaySeconds,
+        label: maxDelaySeconds.toStringAsFixed(1),
+        onChanged: (double value) {
+          setState((){maxDelaySeconds = value;});
+        }
+    );
+  }
+
+  getTimeoutSlider(){
+    return Slider(
+        min: 0.5,
+        max: 10,
+        divisions: 95,
+        value: timeoutSeconds,
+        label: timeoutSeconds.toStringAsFixed(1),
+        onChanged: (double value) {
+          setState((){timeoutSeconds = value;});
+        }
+    );
+  }
+
+  getGoPercentSlider(){
+    return Slider(
+        min: 1,
+        max: 100,
+        divisions: 99,
+        value: percentGo,
+        label: percentGo.toStringAsFixed(0),
+        onChanged: (double value) {
+          setState((){percentGo = value;});
+        }
+    );
+  }
+
+
 }

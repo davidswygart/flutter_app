@@ -52,7 +52,7 @@ class _PlayGoNoGo extends State<PlayGoNoGo>{
     setState(() {currentView;});
 
     while (currentRound < widget.numberOfRounds){
-      await Future.delayed(Duration(milliseconds: Random().nextInt(widget.maxPreRoundDelayMs)));
+      await Future.delayed(Duration(milliseconds: Random().nextInt(widget.maxPreRoundDelayMs+1))); // add 1 ms in case the user set equal to 0
       bool shouldGo = Random().nextInt(100) < widget.percentGo;
 
       if (shouldGo){
