@@ -17,24 +17,19 @@ class _SettingsMemory extends State<SettingsMemory> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Image.asset("assets/images/Office.gif"),
-            const IntroFormat(gameName: 'Sequential Memory', numPlayers: '1', numPaddles: '2+', description: "Shoot the target in the same order as the prompt."),
-            const Divider(),
-            Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
-            getDelaySlider(),
-            const Divider(),
-            Text("Switching speed: ${moveSpeedHz.toStringAsFixed(1)} Hz", textScaleFactor: 1.2,),
-            getSpeedSlider(),
-            const Divider(),
-            makePlayButton(),
-          ],
-        ),
-      ),
+    return Column(
+      children: [
+        Image.asset("assets/images/Office.gif"),
+        const IntroFormat(gameName: 'Sequential Memory', numPlayers: '1', numPaddles: '2+', description: "Shoot the target in the same order as the prompt."),
+        const Divider(),
+        Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
+        getDelaySlider(),
+        const Divider(),
+        Text("Switching speed: ${moveSpeedHz.toStringAsFixed(1)} Hz", textScaleFactor: 1.2,),
+        getSpeedSlider(),
+        const Divider(),
+        makePlayButton(),
+      ],
     );
   }
 

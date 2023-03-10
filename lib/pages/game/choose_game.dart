@@ -13,29 +13,37 @@ class ChooseGamesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     CarouselOptions options = CarouselOptions(
       height: MediaQuery.of(context).size.height,
-      viewportFraction: 0.8,
+      viewportFraction: 0.7,
       enableInfiniteScroll: false,
+      enlargeCenterPage: false,
     );
 
     return CarouselSlider(
       options: options,
-      items: const [
-        SettingsGoNoGo(),
-        SettingsSpeedSwitcher(),
-        SettingsShootYourColor(),
-        SettingsMovingTarget(),
-        SettingsMemory(),
-        SettingsColorDiscrimination(),
+      items: [
+        makePage(const SettingsGoNoGo()),
+        makePage(const SettingsSpeedSwitcher()),
+        makePage(const SettingsShootYourColor()),
+        makePage(const SettingsMovingTarget()),
+        makePage(const SettingsMemory()),
+        makePage(const SettingsColorDiscrimination()),
       ],
     );
+  }
 
+  Widget makePage(Widget SettingsPage) {
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        child: SettingsPage,
+      ),
+    );
   }
 }
 
-class IntroFormat extends StatelessWidget{
+class IntroFormat extends StatelessWidget {
   final String gameName;
   final String numPlayers;
   final String numPaddles;
@@ -73,30 +81,29 @@ class IntroFormat extends StatelessWidget{
 
   Widget makeRequirements() {
     return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      Text(
-        "players: $numPlayers",
-        textScaleFactor: 1.5,
-        style: const TextStyle(fontStyle: FontStyle.italic),
-      ),
-      Text(
-        "targets: $numPaddles",
-        textScaleFactor: 1.5,
-        style: const TextStyle(fontStyle: FontStyle.italic),
-      )
-    ],
-  );
-    }
-
-  Widget makeDescription(){
-    return Padding(
-        padding: const EdgeInsets.all(5),
-        child: Text(
-          description,
-          textScaleFactor: 1.1,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          "players: $numPlayers",
+          textScaleFactor: 1.5,
+          style: const TextStyle(fontStyle: FontStyle.italic),
         ),
+        Text(
+          "targets: $numPaddles",
+          textScaleFactor: 1.5,
+          style: const TextStyle(fontStyle: FontStyle.italic),
+        )
+      ],
     );
   }
 
+  Widget makeDescription() {
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: Text(
+        description,
+        textScaleFactor: 1.1,
+      ),
+    );
+  }
 }

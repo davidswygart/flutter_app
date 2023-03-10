@@ -18,27 +18,22 @@ class _SettingsSpeedSwitcher extends State<SettingsSpeedSwitcher> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Image.asset("assets/images/bender.gif"),
-            const IntroFormat(gameName: 'Speed Switcher', numPlayers: '1-3', numPaddles: '1', description: "Target switches between red, green, and blue. Shoot your color as fast as possible."),
-            const Divider(),
-            Text("rounds: ${numberOfRounds.toStringAsFixed(0)}", textScaleFactor: 1.2,),
-            getRoundSlider(),
-            const Divider(),
-            Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
-            getDelaySlider(),
-            const Divider(),
-            Text("Speed Decrease: ${speedDecreasePercent.toStringAsFixed(0)}%", textScaleFactor: 1.2,),
-            getSpeedSlider(),
-            const Divider(),
-            makePlayButton(),
-          ],
-        ),
-      ),
+    return Column(
+      children: [
+        Image.asset("assets/images/bender.gif"),
+        const IntroFormat(gameName: 'Speed Switcher', numPlayers: '1-3', numPaddles: '1', description: "Target switches between red, green, and blue. Shoot your color as fast as possible."),
+        const Divider(),
+        Text("rounds: ${numberOfRounds.toStringAsFixed(0)}", textScaleFactor: 1.2,),
+        getRoundSlider(),
+        const Divider(),
+        Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
+        getDelaySlider(),
+        const Divider(),
+        Text("Speed Decrease: ${speedDecreasePercent.toStringAsFixed(0)}%", textScaleFactor: 1.2,),
+        getSpeedSlider(),
+        const Divider(),
+        makePlayButton(),
+      ],
     );
   }
 
@@ -99,6 +94,4 @@ class _SettingsSpeedSwitcher extends State<SettingsSpeedSwitcher> {
         }
     );
   }
-
-
 }

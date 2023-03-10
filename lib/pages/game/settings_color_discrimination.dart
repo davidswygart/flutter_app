@@ -17,24 +17,19 @@ class _SettingsColorDiscrimination extends State<SettingsColorDiscrimination> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Image.asset("assets/images/Mcgrubber.gif"),
-            const IntroFormat(gameName: 'Color Discrimination', numPlayers: '1', numPaddles: '2', description: "Shoot the target that is more green."),
-            const Divider(),
-            Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
-            getDelaySlider(),
-            const Divider(),
-            Text("Rate of convergence: ${convergencePercent.toStringAsFixed(0)}%", textScaleFactor: 1.2,),
-            getConvergenceSlider(),
-            const Divider(),
-            makePlayButton(),
-          ],
-        ),
-      ),
+    return Column(
+      children: [
+        Image.asset("assets/images/Mcgrubber.gif"),
+        const IntroFormat(gameName: 'Color Discrimination', numPlayers: '1', numPaddles: '2', description: "Shoot the target that is more green."),
+        const Divider(),
+        Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
+        getDelaySlider(),
+        const Divider(),
+        Text("Rate of convergence: ${convergencePercent.toStringAsFixed(0)}%", textScaleFactor: 1.2,),
+        getConvergenceSlider(),
+        const Divider(),
+        makePlayButton(),
+      ],
     );
   }
 
@@ -69,7 +64,6 @@ class _SettingsColorDiscrimination extends State<SettingsColorDiscrimination> {
     );
   }
 
-
   getConvergenceSlider(){
     return Slider(
         min: 10,
@@ -82,6 +76,4 @@ class _SettingsColorDiscrimination extends State<SettingsColorDiscrimination> {
         }
     );
   }
-
-
 }

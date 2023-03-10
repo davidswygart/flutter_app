@@ -1,6 +1,3 @@
-
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/game/play_go_no_go.dart';
 
@@ -22,30 +19,25 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Image.asset("assets/images/FamilyGuy.gif"),
-            const IntroFormat(gameName: 'Go / No Go', numPlayers: '1', numPaddles: '1', description: "Shoot on green, don't shoot on red."),
-            const Divider(),
-            Text("rounds: ${numberOfRounds.toStringAsFixed(0)}", textScaleFactor: 1.2,),
-            getRoundSlider(),
-            const Divider(),
-            Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
-            getDelaySlider(),
-            const Divider(),
-            Text("Timeout: ${timeoutSeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
-            getTimeoutSlider(),
-            const Divider(),
-            Text("Go percentage: ${percentGo.toStringAsFixed(0)}%", textScaleFactor: 1.2,),
-            getGoPercentSlider(),
-            const Divider(),
-            makePlayButton(),
-          ],
-        ),
-      ),
+    return Column(
+      children: [
+        Image.asset("assets/images/FamilyGuy.gif"),
+        const IntroFormat(gameName: 'Go / No Go', numPlayers: '1', numPaddles: '1', description: "Shoot on green, don't shoot on red."),
+        const Divider(),
+        Text("rounds: ${numberOfRounds.toStringAsFixed(0)}", textScaleFactor: 1.2,),
+        getRoundSlider(),
+        const Divider(),
+        Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
+        getDelaySlider(),
+        const Divider(),
+        Text("Timeout: ${timeoutSeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
+        getTimeoutSlider(),
+        const Divider(),
+        Text("Go percentage: ${percentGo.toStringAsFixed(0)}%", textScaleFactor: 1.2,),
+        getGoPercentSlider(),
+        const Divider(),
+        makePlayButton(),
+      ],
     );
   }
 
@@ -120,6 +112,4 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
         }
     );
   }
-
-
 }

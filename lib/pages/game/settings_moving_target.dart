@@ -18,27 +18,22 @@ class _SettingsMovingTarget extends State<SettingsMovingTarget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Image.asset("assets/images/McBride.gif"),
-            const IntroFormat(gameName: 'Moving Target', numPlayers: '1-3', numPaddles: '2+', description: "Pick a color and shoot it. But they switch between targets."),
-            const Divider(),
-            Text("rounds: ${numberOfRounds.toStringAsFixed(0)}", textScaleFactor: 1.2,),
-            getRoundSlider(),
-            const Divider(),
-            Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
-            getDelaySlider(),
-            const Divider(),
-            Text("Switching speed: ${moveSpeedHz.toStringAsFixed(1)} Hz", textScaleFactor: 1.2,),
-            getSpeedSlider(),
-            const Divider(),
-            makePlayButton(),
-          ],
-        ),
-      ),
+    return Column(
+      children: [
+        Image.asset("assets/images/McBride.gif"),
+        const IntroFormat(gameName: 'Moving Target', numPlayers: '1-3', numPaddles: '2+', description: "Pick a color and shoot it. But they switch between targets."),
+        const Divider(),
+        Text("rounds: ${numberOfRounds.toStringAsFixed(0)}", textScaleFactor: 1.2,),
+        getRoundSlider(),
+        const Divider(),
+        Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
+        getDelaySlider(),
+        const Divider(),
+        Text("Switching speed: ${moveSpeedHz.toStringAsFixed(1)} Hz", textScaleFactor: 1.2,),
+        getSpeedSlider(),
+        const Divider(),
+        makePlayButton(),
+      ],
     );
   }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/game/play_shoot_your_color.dart';
-import 'package:flutter_app/pages/game/play_speed_switcher.dart';
 
 import '../scaffold_wrapper.dart';
 import 'choose_game.dart';
@@ -18,24 +17,19 @@ class _SettingsShootYourColor extends State<SettingsShootYourColor> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Image.asset("assets/images/Smosh.gif"),
-            const IntroFormat(gameName: 'Shoot your color', numPlayers: '1-3', numPaddles: '2+', description: "Pick a color and shoot it."),
-            const Divider(),
-            Text("rounds: ${numberOfRounds.toStringAsFixed(0)}", textScaleFactor: 1.2,),
-            getRoundSlider(),
-            const Divider(),
-            Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
-            getDelaySlider(),
-            const Divider(),
-            makePlayButton(),
-          ],
-        ),
-      ),
+    return Column(
+      children: [
+        Image.asset("assets/images/Smosh.gif"),
+        const IntroFormat(gameName: 'Shoot your color', numPlayers: '1-3', numPaddles: '2+', description: "Pick a color and shoot it."),
+        const Divider(),
+        Text("rounds: ${numberOfRounds.toStringAsFixed(0)}", textScaleFactor: 1.2,),
+        getRoundSlider(),
+        const Divider(),
+        Text("Pre-round delay: ${maxDelaySeconds.toStringAsFixed(1)} s", textScaleFactor: 1.2,),
+        getDelaySlider(),
+        const Divider(),
+        makePlayButton(),
+      ],
     );
   }
 
