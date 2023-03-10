@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_app/pages/game/settings_shoot_your_color.dart';
 import 'package:flutter_app/pages/game/settings_speed_switcher.dart';
 
 import '../../game_logic/game_settings.dart';
@@ -20,6 +21,7 @@ class _ChooseGamesPage extends State<ChooseGamesPage> {
 
     carouselPages.add(const SettingsGoNoGo());
     carouselPages.add(const SettingsSpeedSwitcher());
+    carouselPages.add(const SettingsShootYourColor());
 
     carouselPages.add(CarouselPage(
       imageName: 'Mcgrubber.gif',
@@ -36,15 +38,6 @@ class _ChooseGamesPage extends State<ChooseGamesPage> {
       numPlayers: '1',
       numPaddles: '2+',
       description: "Shoot the target in the same order as the prompt.",
-      settings: GameSettings(),
-    ));
-
-    carouselPages.add(CarouselPage(
-      imageName: 'Smosh.gif',
-      gameName: 'Shoot your color',
-      numPlayers: '1-3',
-      numPaddles: '2+',
-      description: "Pick a color and shoot it.",
       settings: GameSettings(),
     ));
 
