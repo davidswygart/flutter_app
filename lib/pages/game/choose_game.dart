@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_app/pages/game/settings_memory.dart';
 import 'package:flutter_app/pages/game/settings_moving_target.dart';
 import 'package:flutter_app/pages/game/settings_shoot_your_color.dart';
 import 'package:flutter_app/pages/game/settings_speed_switcher.dart';
@@ -24,6 +25,7 @@ class _ChooseGamesPage extends State<ChooseGamesPage> {
     carouselPages.add(const SettingsSpeedSwitcher());
     carouselPages.add(const SettingsShootYourColor());
     carouselPages.add(const SettingsMovingTarget());
+    carouselPages.add(const SettingsMemory());
 
     carouselPages.add(CarouselPage(
       imageName: 'Mcgrubber.gif',
@@ -31,15 +33,6 @@ class _ChooseGamesPage extends State<ChooseGamesPage> {
       numPlayers: '1',
       numPaddles: '2+',
       description: "Shoot the target that is more green.",
-      settings: GameSettings(),
-    ));
-
-    carouselPages.add(CarouselPage(
-      imageName: 'Office.gif',
-      gameName: 'Sequential Memory',
-      numPlayers: '1',
-      numPaddles: '2+',
-      description: "Shoot the target in the same order as the prompt.",
       settings: GameSettings(),
     ));
 
