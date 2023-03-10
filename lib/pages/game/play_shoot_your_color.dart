@@ -51,7 +51,7 @@ class _PlayShootYourColor extends State<PlayShootYourColor>{
 
     for (currentRound=0; currentRound<widget.numberOfRounds;currentRound++){
       await Future.delayed(Duration(milliseconds: Random().nextInt(widget.maxPreRoundDelayMs+1))); // add 1 ms in case the user set equal to 0
-      List<int> colors = List<int>.generate(BlueToothHandler().targetList.length, (i) => i);
+      List<int> colors = List<int>.generate(numPlayers, (i) => i);
       colors.shuffle(); //Index is the paddle, Value is the color
       await LedDisplay().writeSingleColorPerPaddle(colors);
       HitResults hitResult = await BlueToothHandler().getHit();
@@ -82,15 +82,17 @@ class _PlayShootYourColor extends State<PlayShootYourColor>{
     }
   }
 
-  int currentRound = 0;
-  List<int> hits = [0,0,0];
-  List<int> reactionTimes = [0,0,0];
-  List<int> scores =[0,0,0];
+  late int numPlayers;
+  late int currentRound;
+  late List<int> hits;
+  late List<int> reactionTimes;
+  late List<int> scores;
   clearScores(){
+    numPlayers = BlueToothHandler().targetList.length;
     currentRound = 0;
-    hits = [0,0,0];
-    reactionTimes = [0,0,0];
-    scores = [0,0,0];
+    hits = List.filled(numPlayers, 0, growable: false);
+    reactionTimes = List.filled(numPlayers, 0, growable: false);
+    scores = List.filled(numPlayers, 0, growable: false);
   }
 
   ScoreBoard getScoreBoard() {
