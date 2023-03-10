@@ -22,16 +22,6 @@ class _ChooseGamesPage extends State<ChooseGamesPage> {
     carouselPages.add(const SettingsSpeedSwitcher());
 
     carouselPages.add(CarouselPage(
-      imageName: 'bender.gif',
-      gameName: 'Speed Switcher',
-      numPlayers: '1-3',
-      numPaddles: '1',
-      description:
-          "Target switches between red, green, and blue. Shoot your color as fast as possible.",
-      settings: GameSettings(),
-    ));
-
-    carouselPages.add(CarouselPage(
       imageName: 'Mcgrubber.gif',
       gameName: 'Color Discrimination',
       numPlayers: '1',
