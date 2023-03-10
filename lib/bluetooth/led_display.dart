@@ -39,32 +39,15 @@ class LedDisplay {
     await writeLEDs(colors);
   }
 
-  cycleLeds() async { //ToDo clean this up to write single Paddles instead of writing 0 values to other paddles
-    List<List<int>> colors = genUniformColorArray();
-    for (int i=0; i< colors.length ; i++) {
-      for (int ii=0; ii < colors[0].length ; ii++) {
-        colors[i][ii] = 255;
-        await writeLEDs(colors);
-        await Future.delayed(const Duration(milliseconds: 500));
-        colors[i][ii] = 0;
-      }
-    }
-    await writeLEDs(colors);
-  }
-
-  Future<void> showPaddleNumber() async {
-    List<List<int>> offArray = genUniformColorArray(val:0);
-    await writeLEDs(offArray);
-    await Future.delayed(const Duration(seconds: 1));
-    int numColors = 3;
-
-    for (int i=0; i< offArray.length ; i++) {
-      offArray[i] = List.filled(numColors, 255, growable: false); // turn on a single target
-      await writeLEDs(offArray);
-      offArray[i] = List.filled(numColors, 0, growable: false);
-      await Future.delayed(const Duration(seconds: 1));
-      await writeLEDs(offArray);
-      await Future.delayed(const Duration(seconds: 1));
+  cycleLeds() async {
+    for (int t=0; t<targetList.length ; t++) {
+      await writeOnePaddle(t, [255,0,0]);
+      await Future.delayed(const Duration(seconds:1));
+      await writeOnePaddle(t, [0,255,0]);
+      await Future.delayed(const Duration(seconds:1));
+      await writeOnePaddle(t, [0,0,255]);
+      await Future.delayed(const Duration(seconds:1));
+      await writeOnePaddle(t, [0,0,0]);
     }
   }
 
