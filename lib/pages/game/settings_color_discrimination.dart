@@ -13,7 +13,7 @@ class SettingsColorDiscrimination extends StatefulWidget {
 
 class _SettingsColorDiscrimination extends State<SettingsColorDiscrimination> {
   double maxDelaySeconds = 1;
-  double convergencePercent = 20;
+  double convergencePercent = 30;
 
   @override
   Widget build(BuildContext context) {
