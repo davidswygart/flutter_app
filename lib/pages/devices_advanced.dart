@@ -74,7 +74,7 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
             .targetList[res.targetNum]
             .readHitAcceleration();
         await player.setAsset('assets/audio/clash.mp3');
-        await player.play();
+        player.play();
         setState(() {numHits;});
       }
     }
