@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_app/pages/game/settings_speed_switcher.dart';
 
 import '../../game_logic/game_settings.dart';
 import 'game_carousel.dart';
@@ -18,6 +19,8 @@ class _ChooseGamesPage extends State<ChooseGamesPage> {
     List<Widget> carouselPages = [];
 
     carouselPages.add(const SettingsGoNoGo());
+    carouselPages.add(const SettingsSpeedSwitcher());
+
     carouselPages.add(CarouselPage(
       imageName: 'bender.gif',
       gameName: 'Speed Switcher',
