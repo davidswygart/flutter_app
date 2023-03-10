@@ -6,8 +6,6 @@ import 'package:flutter_app/pages/game/settings_moving_target.dart';
 import 'package:flutter_app/pages/game/settings_shoot_your_color.dart';
 import 'package:flutter_app/pages/game/settings_speed_switcher.dart';
 
-import '../../game_logic/game_settings.dart';
-import 'game_carousel.dart';
 import 'settings_go_no_go.dart';
 
 class ChooseGamesPage extends StatefulWidget {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/scaffold_wrapper.dart';
 
-import 'debug_ble.dart';
 import 'devices.dart';
 import 'game/choose_game.dart';
 
@@ -18,7 +17,6 @@ class HomePage extends StatelessWidget {
         children: [
           navigationButton(context:context, page:const DevicesPage(), label:"Devices"),
           navigationButton(context: context, page: const ChooseGamesPage(), label: "Choose game"),
-          navigationButton(context:context, page:const DebugBlePage(), label:"Debug"),
         ],
       ),
     );
