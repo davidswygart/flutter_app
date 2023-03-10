@@ -75,6 +75,7 @@ class _PlayShootYourColor extends State<PlayShootYourColor>{
     for (int i=0; i<scores.length;i++) {
       if (scores[i] > scores[winningPlayer]) {winningPlayer = i;}
     }
+    await Future.delayed(const Duration(seconds:2)); //Give time for any audio to complete
     List<String> audioClips = ["GreenWins", "BlueWins", "RedWins"];
     await player.setAsset('assets/audio/${audioClips[winningPlayer]}.mp3');
     await player.play();

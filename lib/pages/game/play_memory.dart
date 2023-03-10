@@ -105,6 +105,7 @@ class _PlayMemory extends State<PlayMemory> {
         await LedDisplay().flashAllTargetsOneLed(2);
       }
     }
+    await Future.delayed(const Duration(seconds:2)); //Give time for any audio to complete
     await player.setAsset('assets/audio/gameOverVoice.mp3');
     player.play();
     currentRound -= 1;

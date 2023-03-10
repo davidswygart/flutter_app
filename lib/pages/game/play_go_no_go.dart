@@ -93,6 +93,7 @@ class _PlayGoNoGo extends State<PlayGoNoGo>{
         debugPrint("game: incorrect go");
         scores[0] -= widget.timeoutMs; //Subtract max score for killing innocents
         await player.setAsset('assets/audio/owOw.mp3');
+        await Future.delayed(const Duration(seconds:2)); //Give time for my long ows
       }
       currentView = getScoreBoard();
       setState(() {currentView;});
@@ -100,6 +101,7 @@ class _PlayGoNoGo extends State<PlayGoNoGo>{
 
       if (shouldGo){currentRound++;}
     }
+    await Future.delayed(const Duration(seconds:2)); //Give time for any audio to complete
     await player.setAsset('assets/audio/gameOverVoice.mp3');
     player.play();
     currentRound -= 1;
