@@ -43,6 +43,8 @@ class _PlayShootYourColor extends State<PlayShootYourColor>{
   AudioPlayer player = AudioPlayer();
   Future<void> startGameLogic() async {
     await LedDisplay().allOff();
+    await player.setAsset('assets/audio/startMatch.mp3');
+    player.play();
     await countDown();
     clearScores();
     currentView = getScoreBoard();
@@ -58,6 +60,8 @@ class _PlayShootYourColor extends State<PlayShootYourColor>{
       await LedDisplay().allOff();
 
       int winner = colors[hitResult.targetNum];
+      await player.setAsset('assets/audio/dingDing.mp3');
+      player.play();
       await LedDisplay().flashAllTargetsOneLed(winner);
 
       scores[winner] += (100000 / hitResult.reactionTime).round();
@@ -67,6 +71,14 @@ class _PlayShootYourColor extends State<PlayShootYourColor>{
       currentView = getScoreBoard();
       setState(() {currentView;});
     }
+    int winningPlayer = 0;
+    for (int i=0; i<scores.length;i++) {
+      if (scores[i] > scores[winningPlayer]) {winningPlayer = i;}
+    }
+    List<String> audioClips = ["GreenWins", "BlueWins", "RedWins"];
+    await player.setAsset('assets/audio/${audioClips[winningPlayer]}.mp3');
+    await player.play();
+
     currentRound -= 1; //subtract round by 1 for display purposes
     currentView = makeScoreBoardAndPlayButton();
     setState(() {currentView;});

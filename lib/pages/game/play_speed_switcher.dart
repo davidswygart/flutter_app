@@ -1,6 +1,5 @@
 
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -45,11 +44,12 @@ class _PlaySpeedSwitcher extends State<PlaySpeedSwitcher>{
   AudioPlayer player = AudioPlayer();
   Future<void> startGameLogic() async {
     await LedDisplay().allOff();
+    await player.setAsset('assets/audio/startMatch.mp3');
+    player.play();
     await countDown();
     clearScores();
     currentView = getScoreBoard();
     setState(() {currentView;});
-
 
     for (currentRound=0; currentRound<widget.numberOfRounds;currentRound++){
       await Future.delayed(Duration(milliseconds: Random().nextInt(widget.maxPreRoundDelayMs+1))); // add 1 ms in case the user set equal to 0
@@ -73,6 +73,8 @@ class _PlaySpeedSwitcher extends State<PlaySpeedSwitcher>{
 
       HitResults hitResult = await BlueToothHandler().getHit();
       hitDetected = true;
+      await player.setAsset('assets/audio/dingDing.mp3');
+      player.play();
 
       scores[currentLed] += (100000 / delay).round();
       hits[currentLed] += 1;
@@ -81,6 +83,14 @@ class _PlaySpeedSwitcher extends State<PlaySpeedSwitcher>{
       currentView = getScoreBoard();
       setState(() {currentView;});
     }
+    int winningPlayer = 0;
+    for (int i=0; i<scores.length;i++) {
+      if (scores[i] > scores[winningPlayer]) {winningPlayer = i;}
+    }
+    List<String> audioClips = ["GreenWins", "BlueWins", "RedWins"];
+    await player.setAsset('assets/audio/${audioClips[winningPlayer]}.mp3');
+    await player.play();
+
     currentRound -= 1; //subtract round by 1 for display purposes
     currentView = makeScoreBoardAndPlayButton();
     setState(() {currentView;});

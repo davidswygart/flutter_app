@@ -44,11 +44,12 @@ class _PlayMovingTarget extends State<PlayMovingTarget>{
   AudioPlayer player = AudioPlayer();
   Future<void> startGameLogic() async {
     await LedDisplay().allOff();
+    await player.setAsset('assets/audio/startMatch.mp3');
+    player.play();
     await countDown();
     clearScores();
     currentView = getScoreBoard();
     setState(() {currentView;});
-
 
     for (currentRound=0; currentRound<widget.numberOfRounds;currentRound++){
       await Future.delayed(Duration(milliseconds: Random().nextInt(widget.maxPreRoundDelayMs+1))); // add 1 ms in case the user set equal to 0
@@ -78,10 +79,19 @@ class _PlayMovingTarget extends State<PlayMovingTarget>{
       currentView = getScoreBoard();
       setState(() {currentView;});
 
-      await Future.delayed(const Duration(milliseconds: 100));
+      await player.setAsset('assets/audio/dingDing.mp3');
+      player.play();
       await LedDisplay().flashAllTargetsOneLed(winner);
-      await LedDisplay().allOff(); // I waited to turn it off until now in case the moving loop is still running
+
     }
+    int winningPlayer = 0;
+    for (int i=0; i<scores.length;i++) {
+      if (scores[i] > scores[winningPlayer]) {winningPlayer = i;}
+    }
+    List<String> audioClips = ["GreenWins", "BlueWins", "RedWins"];
+    await player.setAsset('assets/audio/${audioClips[winningPlayer]}.mp3');
+    await player.play();
+
     currentRound -= 1; //subtract round by 1 for display purposes
     currentView = makeScoreBoardAndPlayButton();
     setState(() {currentView;});

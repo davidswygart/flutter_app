@@ -42,6 +42,8 @@ class _PlayMemory extends State<PlayMemory> {
   AudioPlayer player = AudioPlayer();
   Future<void> startGameLogic() async {
     await LedDisplay().allOff();
+    await player.setAsset('assets/audio/startMatch.mp3');
+    player.play();
     await countDown();
     clearScores();
     currentView = getScoreBoard();
@@ -59,13 +61,19 @@ class _PlayMemory extends State<PlayMemory> {
         await LedDisplay().writeOnePaddle(chosenPaddle, [0, 255, 0]); //write the paddle green
         await Future.delayed(Duration(milliseconds: widget.flashDelayMs));
         await LedDisplay().writeOnePaddle(chosenPaddle, [0, 0, 0]);
-        await Future.delayed(Duration(milliseconds: widget.flashDelayMs));
+        await Future.delayed(const Duration(milliseconds: 100)); // needs to turn off for a brief period to distinguish from long on period
       }
+
+      await player.setAsset('assets/audio/GoVoice.mp3');
+      player.play();
+      await LedDisplay().flashAllTargetsOneLed(0, numBlinks: 1);
 
       bool continueSubround = true;
       int subRoundNum = 0;
       while (continueSubround) {
         HitResults hitResult = await BlueToothHandler().getHit();
+        await player.setAsset('assets/audio/clash.mp3');
+        player.play();
 
         if (paddleSequence[subRoundNum] == hitResult.targetNum) {
           scores[0] += 100 ~/ hitResult.reactionTime;
@@ -74,8 +82,8 @@ class _PlayMemory extends State<PlayMemory> {
         } else {
           perfection = false;
           continueSubround = false;
-          await LedDisplay().flashAllTargetsOneLed(2);
         }
+
         currentView = getScoreBoard();
         setState(() {
           currentView;
@@ -87,7 +95,19 @@ class _PlayMemory extends State<PlayMemory> {
         subRoundNum++;
       }
       currentRound++;
+      if(perfection){
+        await player.setAsset('assets/audio/dingDing.mp3');
+        player.play();
+        await LedDisplay().flashAllTargetsOneLed(0);
+      } else {
+        await player.setAsset('assets/audio/buzzer.mp3');
+        player.play();
+        await LedDisplay().flashAllTargetsOneLed(2);
+      }
     }
+    await player.setAsset('assets/audio/gameOverVoice.mp3');
+    player.play();
+    currentRound -= 1;
     currentView = makeScoreBoardAndPlayButton();
     setState(() {
       currentView;
@@ -122,7 +142,7 @@ class _PlayMemory extends State<PlayMemory> {
 
   ScoreBoard getScoreBoard() {
     return ScoreBoard(
-      totalRounds: currentRound,
+      totalRounds: 0,
       currentRound: currentRound,
       hits: hits,
       reactionTimes: reactionTimes,

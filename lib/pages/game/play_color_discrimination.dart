@@ -42,6 +42,8 @@ class _PlayColorDiscrimination extends State<PlayColorDiscrimination>{
   AudioPlayer player = AudioPlayer();
   Future<void> startGameLogic() async {
     await LedDisplay().allOff();
+    await player.setAsset('assets/audio/startMatch.mp3');
+    player.play();
     await countDown();
     clearScores();
     currentView = getScoreBoard();
@@ -69,18 +71,26 @@ class _PlayColorDiscrimination extends State<PlayColorDiscrimination>{
         scores[0] += points;
         hits[0] += 1;
         reactionTimes[0] = hitResult.reactionTime;
+        await player.setAsset('assets/audio/dingDing.mp3');
+        player.play();
         await LedDisplay().flashAllTargetsOneLed(0);
       } else {
         perfection = false;
         scores[0] -= points;
         reactionTimes[0] = hitResult.reactionTime;
+
+        await player.setAsset('assets/audio/buzzer.mp3');
+        player.play();
         await LedDisplay().flashAllTargetsOneLed(2);
       }
       currentRound += 1;
       currentView = getScoreBoard();
       setState(() {currentView;});
-      //await player.play();
+
     }
+    await player.setAsset('assets/audio/gameOverVoice.mp3');
+    player.play();
+    currentRound -= 1;
     currentView = makeScoreBoardAndPlayButton();
     setState(() {currentView;});
   }

@@ -46,6 +46,8 @@ class _PlayGoNoGo extends State<PlayGoNoGo>{
   AudioPlayer player = AudioPlayer();
   Future<void> startGameLogic() async {
     await LedDisplay().allOff();
+    await player.setAsset('assets/audio/startMatch.mp3');
+    player.play();
     await countDown();
     clearScores();
     currentView = getScoreBoard();
@@ -94,11 +96,13 @@ class _PlayGoNoGo extends State<PlayGoNoGo>{
       }
       currentView = getScoreBoard();
       setState(() {currentView;});
-      await player.play();
+      player.play();
 
       if (shouldGo){currentRound++;}
     }
-
+    await player.setAsset('assets/audio/gameOverVoice.mp3');
+    player.play();
+    currentRound -= 1;
     currentView = makeScoreBoardAndPlayButton();
     setState(() {currentView;});
   }

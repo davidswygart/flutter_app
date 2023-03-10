@@ -108,8 +108,7 @@ class LedDisplay {
     await targetList[targetIndex].writeLED([0,0,0]);
   }
 
-  flashAllTargetsOneLed(int ledNumber) async {
-    int numBlinks = 3;
+  flashAllTargetsOneLed(int ledNumber, {int numBlinks = 3}) async {
     Duration delay = const Duration(milliseconds: 200);
 
     List<List<int>> offArray = genUniformColorArray(val: 0);
