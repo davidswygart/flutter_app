@@ -8,24 +8,11 @@ import 'package:flutter_app/pages/game/settings_speed_switcher.dart';
 
 import 'settings_go_no_go.dart';
 
-class ChooseGamesPage extends StatefulWidget {
+class ChooseGamesPage extends StatelessWidget {
   const ChooseGamesPage({Key? key}) : super(key: key);
 
   @override
-  State<ChooseGamesPage> createState() => _ChooseGamesPage();
-}
-
-class _ChooseGamesPage extends State<ChooseGamesPage> {
-  @override
   Widget build(BuildContext context) {
-    List<Widget> carouselPages = [];
-
-    carouselPages.add(const SettingsGoNoGo());
-    carouselPages.add(const SettingsSpeedSwitcher());
-    carouselPages.add(const SettingsShootYourColor());
-    carouselPages.add(const SettingsMovingTarget());
-    carouselPages.add(const SettingsMemory());
-    carouselPages.add(const SettingsColorDiscrimination());
 
     CarouselOptions options = CarouselOptions(
       height: MediaQuery.of(context).size.height,
@@ -33,12 +20,18 @@ class _ChooseGamesPage extends State<ChooseGamesPage> {
       enableInfiniteScroll: false,
     );
 
-    Widget carousel = CarouselSlider(
+    return CarouselSlider(
       options: options,
-      items: carouselPages,
+      items: const [
+        SettingsGoNoGo(),
+        SettingsSpeedSwitcher(),
+        SettingsShootYourColor(),
+        SettingsMovingTarget(),
+        SettingsMemory(),
+        SettingsColorDiscrimination(),
+      ],
     );
 
-    return carousel;
   }
 }
 
