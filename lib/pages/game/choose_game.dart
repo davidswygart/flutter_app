@@ -15,7 +15,7 @@ class ChooseGamesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CarouselOptions options = CarouselOptions(
       height: MediaQuery.of(context).size.height,
-      viewportFraction: 0.7,
+      viewportFraction: 0.8,
       enableInfiniteScroll: false,
       enlargeCenterPage: false,
     );
@@ -36,7 +36,7 @@ class ChooseGamesPage extends StatelessWidget {
   Widget makePage(Widget SettingsPage) {
     return SingleChildScrollView(
       child: Container(
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(20),
         child: SettingsPage,
       ),
     );
@@ -73,6 +73,7 @@ class IntroFormat extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Text(
         gameName,
+        textAlign: TextAlign.center,
         textScaleFactor: 2,
         style: const TextStyle(fontWeight: FontWeight.bold),
       ),
@@ -99,10 +100,11 @@ class IntroFormat extends StatelessWidget {
 
   Widget makeDescription() {
     return Padding(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.symmetric(vertical:5, horizontal:0),
       child: Text(
+        textAlign: TextAlign.center,
         description,
-        textScaleFactor: 1.1,
+        textScaleFactor: 1.2,
       ),
     );
   }
