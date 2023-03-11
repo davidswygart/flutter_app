@@ -24,18 +24,31 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text("Hits: $numHits",textScaleFactor: 1.5,textAlign: TextAlign.center,),
-          Text("Acceleration: ${lastAcceleration.toStringAsFixed(1)} gs", textScaleFactor: 1.5, textAlign: TextAlign.center,),
-          functionButton(func: clearHits, label: "clear hits"),
-          const Divider(),
-          Text("Threshold: $threshold gs", textScaleFactor: 1.5,textAlign: TextAlign.center,),
-          getThresholdSlider(),
-          const Divider(),
-          Text("Refractory period: ${refractoryPeriod.toStringAsFixed(0)} ms", textScaleFactor: 1.5,textAlign: TextAlign.center,),
-          getRefractorySlider(),
+          Column(children: [
+            Text("Hits:   $numHits",textScaleFactor: 1.5,textAlign: TextAlign.center,),
+            Text("Acceleration:   ${lastAcceleration.toStringAsFixed(1)} gs", textScaleFactor: 1.5, textAlign: TextAlign.center,),
+            functionButton(func: clearHits, label: "clear hits"),
+
+          ],),
+
+          Column(children:[
+
+            Text("Threshold: ${threshold.toStringAsFixed(1)} gs", textScaleFactor: 1.5,textAlign: TextAlign.center,),
+            getThresholdSlider(),
+
+          ]),
+
+          Column(children:[
+
+            Text("Refractory period: ${refractoryPeriod.toStringAsFixed(0)} ms", textScaleFactor: 1.5,textAlign: TextAlign.center,),
+            getRefractorySlider(),
+
+          ]),
+
+          functionButton(func:LedDisplay().cycleLeds, label:"Flash Lights"),
         ],
       ),
     );
@@ -95,8 +108,8 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
         min: 0.5,
         max: 16,
         value: threshold,
-        label: threshold.toStringAsFixed(1),
-        divisions: 31,
+        label: null,//threshold.toStringAsFixed(1),
+        divisions: 155,
         onChanged: (double value) {
           setState(() {
             threshold = value;
@@ -110,10 +123,10 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   Widget getRefractorySlider(){
     return Slider(
         min: 0,
-        max: 2500,
+        max: 1000,
         value: refractoryPeriod,
-        label: refractoryPeriod.toStringAsFixed(0),
-        divisions: 100,
+        label: null,//refractoryPeriod.toStringAsFixed(0),
+        divisions: 1000,
         onChanged: (double value) {
           setState(() {
             refractoryPeriod = value;

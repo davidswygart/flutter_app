@@ -22,13 +22,11 @@ class _DevicesPage extends State<DevicesPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          functionButton(func: addTargetsAndUpdate, label: "Connect to targets"),
+          const Text("Targets", textAlign: TextAlign.center,textScaleFactor: 2,style: TextStyle(fontWeight:FontWeight.bold),),
           getDeviceTable(),
-          functionButton(func: clearTargets, label: "Disconnect from targets"),
-          const Divider(),
-          functionButton(func:LedDisplay().cycleLeds, label: "Flash LEDs"),
-          const Divider(),
-          navigateToAdvanced(context: context),
+          functionButton(func: addTargetsAndUpdate, label:"Scan for targets"),
+          functionButton(func: clearTargets, label:"Disconnect from targets"),
+          functionButton(func: goToAdvancedSettings, label:"Advanced settings"),
         ],
       ),
     );
@@ -73,15 +71,11 @@ class _DevicesPage extends State<DevicesPage> {
     setState(() {});
   }
 
-  Widget navigateToAdvanced({required BuildContext context}){
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ScaffoldWrapper(bodyPage: DevicesPageAdvanced())),
-        );
-      },
-      child: const Text("Advanced settings",textScaleFactor: 1.5,),
+  goToAdvancedSettings(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) =>
+          ScaffoldWrapper(bodyPage: DevicesPageAdvanced())),
     );
   }
 }
