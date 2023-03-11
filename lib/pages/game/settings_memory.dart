@@ -57,7 +57,7 @@ class _SettingsMemory extends State<SettingsMemory> {
         max: 20,
         divisions: 200,
         value: maxDelaySeconds,
-        label: maxDelaySeconds.toStringAsFixed(1),
+        label: null,//maxDelaySeconds.toStringAsFixed(1),
         onChanged: (double value) {
           setState((){maxDelaySeconds = value;});
         }
@@ -70,7 +70,7 @@ class _SettingsMemory extends State<SettingsMemory> {
         max: 2,
         divisions: 19,
         value: moveSpeedHz,
-        label: moveSpeedHz.toStringAsFixed(1),
+        label: null,//moveSpeedHz.toStringAsFixed(1),
         onChanged: (double value) {
           setState((){moveSpeedHz = value;});
         }

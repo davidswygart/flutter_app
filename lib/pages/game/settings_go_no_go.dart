@@ -67,7 +67,7 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
         max: 20,
         divisions: 19,
         value: numberOfRounds,
-        label: numberOfRounds.toStringAsFixed(0),
+        label: null,//numberOfRounds.toStringAsFixed(0),
         onChanged: (double value) {
           setState((){numberOfRounds = value;});
         }
@@ -80,7 +80,7 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
         max: 20,
         divisions: 200,
         value: maxDelaySeconds,
-        label: maxDelaySeconds.toStringAsFixed(1),
+        label: null,//maxDelaySeconds.toStringAsFixed(1),
         onChanged: (double value) {
           setState((){maxDelaySeconds = value;});
         }
@@ -93,7 +93,7 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
         max: 10,
         divisions: 95,
         value: timeoutSeconds,
-        label: timeoutSeconds.toStringAsFixed(1),
+        label: null,//timeoutSeconds.toStringAsFixed(1),
         onChanged: (double value) {
           setState((){timeoutSeconds = value;});
         }
@@ -106,7 +106,7 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
         max: 100,
         divisions: 99,
         value: percentGo,
-        label: percentGo.toStringAsFixed(0),
+        label: null,//percentGo.toStringAsFixed(0),
         onChanged: (double value) {
           setState((){percentGo = value;});
         }

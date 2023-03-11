@@ -57,7 +57,7 @@ class _SettingsColorDiscrimination extends State<SettingsColorDiscrimination> {
         max: 20,
         divisions: 200,
         value: maxDelaySeconds,
-        label: maxDelaySeconds.toStringAsFixed(1),
+        label: null,//maxDelaySeconds.toStringAsFixed(1),
         onChanged: (double value) {
           setState((){maxDelaySeconds = value;});
         }
@@ -70,7 +70,7 @@ class _SettingsColorDiscrimination extends State<SettingsColorDiscrimination> {
         max: 80,
         divisions: 70,
         value: convergencePercent,
-        label: convergencePercent.toStringAsFixed(0),
+        label: null,//convergencePercent.toStringAsFixed(0),
         onChanged: (double value) {
           setState((){convergencePercent = value;});
         }

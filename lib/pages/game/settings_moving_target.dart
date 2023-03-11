@@ -62,7 +62,7 @@ class _SettingsMovingTarget extends State<SettingsMovingTarget> {
         max: 20,
         divisions: 19,
         value: numberOfRounds,
-        label: numberOfRounds.toStringAsFixed(0),
+        label: null,//numberOfRounds.toStringAsFixed(0),
         onChanged: (double value) {
           setState((){numberOfRounds = value;});
         }
@@ -75,7 +75,7 @@ class _SettingsMovingTarget extends State<SettingsMovingTarget> {
         max: 20,
         divisions: 200,
         value: maxDelaySeconds,
-        label: maxDelaySeconds.toStringAsFixed(1),
+        label: null,//maxDelaySeconds.toStringAsFixed(1),
         onChanged: (double value) {
           setState((){maxDelaySeconds = value;});
         }
@@ -88,7 +88,7 @@ class _SettingsMovingTarget extends State<SettingsMovingTarget> {
         max: 2,
         divisions: 19,
         value: moveSpeedHz,
-        label: moveSpeedHz.toStringAsFixed(1),
+        label: null,//moveSpeedHz.toStringAsFixed(1),
         onChanged: (double value) {
           setState((){moveSpeedHz = value;});
         }

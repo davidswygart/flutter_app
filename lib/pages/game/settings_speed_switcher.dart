@@ -62,7 +62,7 @@ class _SettingsSpeedSwitcher extends State<SettingsSpeedSwitcher> {
         max: 20,
         divisions: 19,
         value: numberOfRounds,
-        label: numberOfRounds.toStringAsFixed(0),
+        label: null,//numberOfRounds.toStringAsFixed(0),
         onChanged: (double value) {
           setState((){numberOfRounds = value;});
         }
@@ -75,7 +75,7 @@ class _SettingsSpeedSwitcher extends State<SettingsSpeedSwitcher> {
         max: 20,
         divisions: 200,
         value: maxDelaySeconds,
-        label: maxDelaySeconds.toStringAsFixed(1),
+        label: null,//maxDelaySeconds.toStringAsFixed(1),
         onChanged: (double value) {
           setState((){maxDelaySeconds = value;});
         }
@@ -88,7 +88,7 @@ class _SettingsSpeedSwitcher extends State<SettingsSpeedSwitcher> {
         max: 50,
         divisions: 49,
         value: speedDecreasePercent,
-        label: speedDecreasePercent.toStringAsFixed(0),
+        label: null,//speedDecreasePercent.toStringAsFixed(0),
         onChanged: (double value) {
           setState((){speedDecreasePercent = value;});
         }
