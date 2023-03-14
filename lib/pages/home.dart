@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/pages/game/settings_go_no_go.dart';
 import 'package:flutter_app/pages/scaffold_wrapper.dart';
 
 import 'devices.dart';
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const DevicesPage(),
-          navigationButton(context: context, page: const ChooseGamesPage(), label: "Play Game"),
+          navigationButton(context: context, page: const SettingsGoNoGo(), label: "Play Game"),
         ],
       ),
     );
@@ -25,17 +26,17 @@ class HomePage extends StatelessWidget {
 
   Widget navigationButton({required BuildContext context, required Widget page, required String label}){
     return ElevatedButton(
-      style: ButtonStyle(
-        padding: MaterialStateProperty.all(const EdgeInsets.all(20),),
-        backgroundColor: MaterialStateProperty.all(Colors.green.shade600),
-      ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ScaffoldWrapper(bodyPage: page)),
-        );
-      },
-      child: Text(label, textScaleFactor: 2,));
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all(const EdgeInsets.all(20),),
+          backgroundColor: MaterialStateProperty.all(Colors.green.shade600),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ScaffoldWrapper(bodyPage: page)),
+          );
+        },
+        child: Text(label, textScaleFactor: 2,));
   }
 }
 

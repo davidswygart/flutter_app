@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/game/play_go_no_go.dart';
+import 'package:flutter_app/pages/game/settings_speed_switcher.dart';
 
 import '../scaffold_wrapper.dart';
 import 'choose_game.dart';
@@ -19,7 +20,7 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    Widget primaryColumn = Column(
       children: [
         Image.asset("assets/images/FamilyGuy.gif"),
         const IntroFormat(gameName: 'Go / No Go', numPlayers: '1', numPaddles: '1', description: "Shoot on green, don't shoot on red."),
@@ -39,24 +40,46 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
         makePlayButton(),
       ],
     );
+
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        child:primaryColumn,
+      ),
+    );
   }
 
   Widget makePlayButton() {
-    return ElevatedButton(
-      onPressed: () {startGame();},
-      child: const Text('Play', textScaleFactor: 1.5,),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        const IconButton(
+          onPressed: null,
+          padding: EdgeInsets.zero,
+          icon: Icon(Icons.arrow_back, size: 50),
+        ),
+        ElevatedButton(
+          onPressed: () {startGame();},
+          child: const Text('Play', textScaleFactor: 1.5,),
+        ),
+        IconButton(
+          onPressed: () {goToNextPage();},
+          padding: EdgeInsets.zero,
+          icon: const Icon(Icons.arrow_forward, size: 50),
+        ),
+      ],
     );
   }
 
   startGame(){
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ScaffoldWrapper(
-          bodyPage: PlayGoNoGo(
-            numberOfRounds: numberOfRounds.toInt(),
-            maxPreRoundDelayMs: (maxDelaySeconds*1000).toInt(),
-            percentGo: percentGo.toInt(),
-            timeoutMs: (timeoutSeconds*1000).toInt(),
-          ),
+        bodyPage: PlayGoNoGo(
+          numberOfRounds: numberOfRounds.toInt(),
+          maxPreRoundDelayMs: (maxDelaySeconds*1000).toInt(),
+          percentGo: percentGo.toInt(),
+          timeoutMs: (timeoutSeconds*1000).toInt(),
+        ),
       );
     }));
   }
@@ -97,6 +120,13 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
         onChanged: (double value) {
           setState((){timeoutSeconds = value;});
         }
+    );
+  }
+
+  goToNextPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ScaffoldWrapper(bodyPage: SettingsSpeedSwitcher())),
     );
   }
 
