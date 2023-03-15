@@ -97,4 +97,13 @@ class BlueToothHandler {
     }
     targetList.clear();
   }
+
+  bool anyLostConnections() {
+    for(int i=0; i<targetList.length; i++) {
+      if(targetList[i].state == DeviceConnectionState.disconnected){
+        return true;
+      }
+    }
+    return false;
+  }
 }

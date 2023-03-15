@@ -12,6 +12,7 @@ class SingleTarget{
   SingleTarget(this.device);
 
   late StreamSubscription<ConnectionStateUpdate> stateStream;
+  DeviceConnectionState state = DeviceConnectionState.disconnected;
   late QualifiedCharacteristic led;
   late QualifiedCharacteristic hitSensor;
   late Stream<List<int>> hitStream;
@@ -65,8 +66,9 @@ class SingleTarget{
       withServices: [],
       prescanDuration: const Duration(seconds: 3),
       connectionTimeout: const Duration(seconds:  2),
-    ).listen((connectionState) {
-      debugPrint("Connection state update: $connectionState");
+    ).listen((info) {
+      debugPrint("${info.connectionState}");
+      state = info.connectionState;
     }, onError: (dynamic error) {
       throw Exception("unable to connect");
     });
@@ -77,7 +79,6 @@ class SingleTarget{
     try{await stateStream.cancel();}
     catch(error){debugPrint("couldn't disconnect from device. Probably not initialized");}
   }
-
 
   Future<bool> writeLED(List<int> intList) async {
     //debugPrint("led: writing to LEDs: $intList");
@@ -116,7 +117,6 @@ class SingleTarget{
     double thresh  =  16 * thresh16 / 32767; // convert 16-bit value for 16g range
     return thresh;
   }
-
 
   Future<double> readHitAcceleration() async {
     List<int> byteList = await FlutterReactiveBle().readCharacteristic(hitAcceleration);

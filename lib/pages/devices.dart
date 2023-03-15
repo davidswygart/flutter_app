@@ -16,12 +16,30 @@ class DevicesPage extends StatefulWidget {
 class _DevicesPage extends State<DevicesPage> {
   @override
   void initState() {
-    delayedUpdater(); //hacky way to handle connections completing after build
+    periodicConnectionChecker(); //hacky
     super.initState();
   }
-  Future<void> delayedUpdater() async {
-    await Future.delayed(const Duration(seconds: 3));
+
+  bool periodicallyCheckTargets = true;
+  Future<void> periodicConnectionChecker() async {
+    await BlueToothHandler().connectToTargets();
     setState(() {});
+
+    while(periodicallyCheckTargets){
+      if (BlueToothHandler().anyLostConnections()){
+        await BlueToothHandler().clearTargets();
+        await Future.delayed(const Duration(milliseconds: 100)); //give time for ESP32 to begin advertising again
+        await BlueToothHandler().connectToTargets();
+        setState(() {});
+      }
+      await Future.delayed(const Duration(seconds: 5));
+    }
+  }
+
+  @override
+  void dispose(){
+    periodicallyCheckTargets = false;
+    super.dispose();
   }
 
   @override
