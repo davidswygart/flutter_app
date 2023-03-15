@@ -7,10 +7,7 @@ import 'id.dart';
 
 
 class SingleTarget{
-
   final DiscoveredDevice device;
-  SingleTarget(this.device);
-
   late StreamSubscription<ConnectionStateUpdate> stateSubscription;
   DeviceConnectionState state = DeviceConnectionState.disconnected;
   late QualifiedCharacteristic led;
@@ -20,13 +17,24 @@ class SingleTarget{
   late QualifiedCharacteristic hitTimeout;
   late QualifiedCharacteristic hitAcceleration;
 
-  Future<void> init () async { // init needs to be its own function because constructor cannot be async
-    await _connect();
+  SingleTarget(this.device){
+    debugPrint("single_target: Attempting connection");
+    stateSubscription = FlutterReactiveBle().connectToAdvertisingDevice(
+      id: device.id,
+      withServices: [],
+      prescanDuration: const Duration(seconds: 1),
+      connectionTimeout: const Duration(seconds:  2),
+    ).listen((info) {
+      debugPrint("${info.connectionState}");
+      state = info.connectionState;
+    }, onError: (dynamic error) {
+      throw Exception("unable to connect");
+    });
 
     led = QualifiedCharacteristic(
-          serviceId: ID().service,
-          characteristicId: ID().led,
-          deviceId: device.id
+        serviceId: ID().service,
+        characteristicId: ID().led,
+        deviceId: device.id
     );
 
     hitSensor = QualifiedCharacteristic(
@@ -58,22 +66,6 @@ class SingleTarget{
     );
   }
 
-  Future<void> _connect() async {
-    debugPrint("single_target: Attempting connection");
-
-    stateSubscription = FlutterReactiveBle().connectToAdvertisingDevice(
-      id: device.id,
-      withServices: [],
-      prescanDuration: const Duration(seconds: 3),
-      connectionTimeout: const Duration(seconds:  2),
-    ).listen((info) {
-      debugPrint("${info.connectionState}");
-      state = info.connectionState;
-    }, onError: (dynamic error) {
-      throw Exception("unable to connect");
-    });
-  }
-
   Future<void> disconnect() async {
     debugPrint("single_target: Attempting disconnect");
     try{await stateSubscription.cancel();}
@@ -90,8 +82,6 @@ class SingleTarget{
     );
     return true;
   }
-
-
 
   Future<HitResults> getHit(int tNum) async {
     //debugPrint("hit_sensor: waiting for hit value");

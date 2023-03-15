@@ -23,14 +23,16 @@ class _DevicesPage extends State<DevicesPage> {
   bool periodicallyCheckTargets = true;
   Future<void> periodicConnectionChecker() async {
     await BlueToothHandler().connectToTargets();
+    await Future.delayed(const Duration(seconds: 1));
     setState(() {});
 
     while(periodicallyCheckTargets){
       if (BlueToothHandler().anyLostConnections()){
+        setState((){buttonsEnabled = false;});
         await BlueToothHandler().clearTargets();
-        await Future.delayed(const Duration(milliseconds: 100)); //give time for ESP32 to begin advertising again
+        await Future.delayed(const Duration(seconds: 1)); //give time for ESP32 to begin advertising again
         await BlueToothHandler().connectToTargets();
-        setState(() {});
+        setState(() {buttonsEnabled = true;});
       }
       await Future.delayed(const Duration(seconds: 5));
     }
@@ -42,8 +44,19 @@ class _DevicesPage extends State<DevicesPage> {
     super.dispose();
   }
 
+  bool buttonsEnabled = true;
   @override
   Widget build(BuildContext context) {
+    Widget connectButton;
+    Widget disconnectButton;
+    if (buttonsEnabled){
+      connectButton = functionButton(func: addTargetsAndUpdate, label:"Scan for targets");
+      disconnectButton = functionButton(func: clearTargets, label:"Disconnect from targets");
+    } else {
+      connectButton = functionButton(func: null, label:"Scan for targets");
+      disconnectButton = functionButton(func: null, label:"Disconnect from targets");
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
       child: Column(
@@ -52,8 +65,8 @@ class _DevicesPage extends State<DevicesPage> {
         children: [
           const Text("Targets", textAlign: TextAlign.center,textScaleFactor: 2,style: TextStyle(fontWeight:FontWeight.bold),),
           getDeviceTable(),
-          functionButton(func: addTargetsAndUpdate, label:"Scan for targets"),
-          functionButton(func: clearTargets, label:"Disconnect from targets"),
+          connectButton,
+          disconnectButton,
           functionButton(func: goToAdvancedSettings, label:"Advanced settings"),
         ],
       ),
@@ -82,21 +95,23 @@ class _DevicesPage extends State<DevicesPage> {
     );
   }
 
-  ElevatedButton functionButton({required Function func, required String label}){
+  ElevatedButton functionButton({required void Function()? func, required String label}){
     return ElevatedButton(
-      onPressed: () {func();},
+      onPressed: func,
       child: Text(label,textScaleFactor: 1.5,),
     );
   }
 
   addTargetsAndUpdate() async {
+    setState((){buttonsEnabled = false;});
     await BlueToothHandler().connectToTargets();
-    setState(() {});
+    setState((){buttonsEnabled = true;});
   }
 
   clearTargets() async {
+    setState((){buttonsEnabled = false;});
     await BlueToothHandler().clearTargets();
-    setState(() {});
+    setState((){buttonsEnabled = true;});
   }
 
   goToAdvancedSettings(){

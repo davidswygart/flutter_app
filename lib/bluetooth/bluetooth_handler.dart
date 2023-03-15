@@ -19,9 +19,7 @@ class BlueToothHandler {
 
   List<SingleTarget> targetList = [];
 
-  Future<List<SingleTarget>> connectToTargets(
-      {Duration timeout = const Duration(seconds: 3)}) async {
-
+  Future<List<SingleTarget>> connectToTargets() async {
     if (await BluetoothEnable.enableBluetooth == "false"){return [];}
 
     if (await Permission.location.isDenied) {
@@ -42,34 +40,24 @@ class BlueToothHandler {
         availableDevices[dev.name] = dev;
       },
     );
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
     await subscription.cancel();
 
-    availableDevices.forEach((name, dev) async {
-      try {
-        debugPrint("available device $name");
-        List<int> toPop = [];
-        for(int i=0; i<targetList.length; i++) {
-          if (name == targetList[i].device.name) {
-            await targetList[i].disconnect();
-            toPop.add(i);
-          }
-        }
-        for(int i=0; i<toPop.length; i++){targetList.removeAt(i);} //remove from list after loop so I don't mess up my indexing of for loop
+    availableDevices.forEach((name, dev) {
+      debugPrint("available device $name");
+      bool newDevice = true;
+      for(int i=0; i<targetList.length; i++) {
+        if (name == targetList[i].device.name) {newDevice = false;}
+      }
+      if (newDevice){
         SingleTarget t = SingleTarget(dev);
-        await t.init();
         targetList.add(t);
-        debugPrint(
-            "bluetooth_handler: Successfully added BLE device to list in BLE handler");
-      } on Exception catch (_) {
-        debugPrint(
-            "bluetooth_handler: Failed to add BLE device to list in BLE handler");
+        debugPrint("bluetooth_handler: Successfully added BLE device to list");
       }
     });
+
     return targetList;
   }
-
-  // ToDo: check if devices in list are still connected. Maybe run before game or periodically? Clear from list if no connection.
 
   void setHitThreshold(double thresh){
     for (int i=0; i<targetList.length; i++){
