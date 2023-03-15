@@ -11,7 +11,7 @@ class SingleTarget{
   final DiscoveredDevice device;
   SingleTarget(this.device);
 
-  late StreamSubscription<ConnectionStateUpdate> stateStream;
+  late StreamSubscription<ConnectionStateUpdate> stateSubscription;
   DeviceConnectionState state = DeviceConnectionState.disconnected;
   late QualifiedCharacteristic led;
   late QualifiedCharacteristic hitSensor;
@@ -61,7 +61,7 @@ class SingleTarget{
   Future<void> _connect() async {
     debugPrint("single_target: Attempting connection");
 
-    stateStream = FlutterReactiveBle().connectToAdvertisingDevice(
+    stateSubscription = FlutterReactiveBle().connectToAdvertisingDevice(
       id: device.id,
       withServices: [],
       prescanDuration: const Duration(seconds: 3),
@@ -76,7 +76,7 @@ class SingleTarget{
 
   Future<void> disconnect() async {
     debugPrint("single_target: Attempting disconnect");
-    try{await stateStream.cancel();}
+    try{await stateSubscription.cancel();}
     catch(error){debugPrint("couldn't disconnect from device. Probably not initialized");}
   }
 
