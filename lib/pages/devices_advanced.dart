@@ -58,6 +58,7 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   bool shouldWatchForHits = true;
   @override
   void initState() {
+    readInitialValues();
     shouldWatchForHits = true;
     watchForHits();
     super.initState();
@@ -67,6 +68,14 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
   void dispose(){
     shouldWatchForHits = false;
     super.dispose();
+  }
+  Future<void> readInitialValues()async {
+    if(BlueToothHandler().targetList.isNotEmpty){
+      threshold = await BlueToothHandler().targetList[0].readHitThreshold();
+      int r = await BlueToothHandler().targetList[0].readHitRefractoryPeriod();
+      refractoryPeriod = r.toDouble();
+      setState(() {threshold;});
+    }
   }
 
   clearHits() {

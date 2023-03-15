@@ -102,6 +102,15 @@ class SingleTarget{
         hitThreshold, value: intList
     );
   }
+  Future<double> readHitThreshold() async {
+    List<int> byteList = await FlutterReactiveBle().readCharacteristic(hitThreshold);
+    ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));
+    int thresh16 = byteData.getInt16(0, Endian.little);
+    double thresh  =  16 * thresh16 / 32767; // convert 16-bit value for 16g range
+    return thresh;
+  }
+
+
   Future<double> readHitAcceleration() async {
     List<int> byteList = await FlutterReactiveBle().readCharacteristic(hitAcceleration);
     ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));
@@ -115,6 +124,12 @@ class SingleTarget{
     await FlutterReactiveBle().writeCharacteristicWithoutResponse(
         hitTimeout, value: bufferInt
     );
+  }
+
+  Future<int> readHitRefractoryPeriod() async{
+    List<int> intList = await FlutterReactiveBle().readCharacteristic(hitTimeout);
+    int refractory = intList[0]*10;
+    return refractory;
   }
 }
 
