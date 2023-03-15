@@ -44,14 +44,14 @@ class _DevicesPage extends State<DevicesPage> {
 
   Container getDeviceTable() {
     List<DataColumn> columns = [
-    const DataColumn(label: Text("name",textScaleFactor: 1.5,)),
-    const DataColumn(label: Text("rssi",textScaleFactor: 1.5,)),
+    const DataColumn(label: Text("Name",textScaleFactor: 1.1,)),
+    const DataColumn(label: Text("Decibels",textScaleFactor: 1.1,)),
     ];
     List<DataRow> rows = [];
     for (SingleTarget target in BlueToothHandler().targetList) {
       debugPrint(target.device.name);
       List<DataCell> rowCells = [
-        DataCell(Text(target.device.name)),
+        DataCell(Text(target.device.name.substring(13))), //last 6 of MAC
         DataCell(Text(target.device.rssi.toString())),
       ];
       rows.add(DataRow(cells: rowCells));
