@@ -47,9 +47,18 @@ class BlueToothHandler {
 
     availableDevices.forEach((name, dev) async {
       try {
+        debugPrint("available device $name");
+        List<int> toPop = [];
+        for(int i=0; i<targetList.length; i++) {
+          if (name == targetList[i].device.name) {
+            await targetList[i].disconnect();
+            toPop.add(i);
+          }
+        }
+        for(int i=0; i<toPop.length; i++){targetList.removeAt(i);} //remove from list after loop so I don't mess up my indexing of for loop
         SingleTarget t = SingleTarget(dev);
         await t.init();
-        targetList.add(t); //ToDo : remove from availableDevices list
+        targetList.add(t);
         debugPrint(
             "bluetooth_handler: Successfully added BLE device to list in BLE handler");
       } on Exception catch (_) {
