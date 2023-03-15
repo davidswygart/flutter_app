@@ -42,11 +42,12 @@ class _PlayWhackAMole extends State<PlayWhackAMole>{
     return Center(child: currentView,);
   }
 
-  AudioPlayer player = AudioPlayer();
+
   Future<void> startGameLogic() async {
+    AudioPlayer localPlayer = AudioPlayer();
     await LedDisplay().allOff();
-    await player.setAsset('assets/audio/startMatch.mp3');
-    player.play();
+    await localPlayer.setAsset('assets/audio/startMatch.mp3');
+    localPlayer.play();
     await countDown();
     clearScores();
     currentView = getScoreBoard();
@@ -65,15 +66,17 @@ class _PlayWhackAMole extends State<PlayWhackAMole>{
 
   Future<void> endGame() async {
     continueGame = false;
-    await Future.delayed(Duration(milliseconds:widget.timeoutMs + 1000)); //Give time for loops to complete
-    await player.setAsset('assets/audio/gameOverVoice.mp3');
-    player.play();
+    await Future.delayed(Duration(milliseconds:widget.timeoutMs + 3000)); //Give time for loops to complete
+    AudioPlayer localPlayer = AudioPlayer();
+    await localPlayer.setAsset('assets/audio/gameOverVoice.mp3');
+    localPlayer.play();
     currentView = makeScoreBoardAndPlayButton();
     setState(() {currentView;});
   }
 
 
   Future<void> handlePaddle(SingleTarget target) async {
+    AudioPlayer localPlayer = AudioPlayer();
     while (continueGame){
       await Future.delayed(Duration(milliseconds: Random().nextInt(widget.maxPreRoundDelayMs+1))); // add 1 ms in case the user set equal to 0
 
@@ -100,26 +103,26 @@ class _PlayWhackAMole extends State<PlayWhackAMole>{
         scores[0] += widget.timeoutMs - hitResult!.reactionTime;
         hits[0] += 1;
         reactionTimes[0] = hitResult.reactionTime;
-        await player.setAsset('assets/audio/dingDing.mp3');
+        await localPlayer.setAsset('assets/audio/dingDing.mp3');
       }
       else if (!shouldGo & (hitResult == null)){
         debugPrint("game: correct no go");
         scores[0] += (widget.timeoutMs*.05).toInt(); //add 5% of max round score for correct no go
-        await player.setAsset('assets/audio/dingDing.mp3');
+        await localPlayer.setAsset('assets/audio/dingDing.mp3');
       }
       else if (shouldGo & (hitResult == null)){
         debugPrint("game: incorrect no go");
         scores[0] -= (widget.timeoutMs*.05).toInt();//subtract 5% of max round score for missed go
-        await player.setAsset('assets/audio/buzzer.mp3');
+        await localPlayer.setAsset('assets/audio/buzzer.mp3');
       }
       else if (!shouldGo & (hitResult != null)){
         debugPrint("game: incorrect go");
         scores[0] -= widget.timeoutMs; //Subtract max score for killing innocents
-        await player.setAsset('assets/audio/buzzer.mp3');
+        await localPlayer.setAsset('assets/audio/buzzer.mp3');
       }
       currentView = getScoreBoard();
       setState(() {currentView;});
-      player.play();
+      await localPlayer.play();
     }
   }
 
