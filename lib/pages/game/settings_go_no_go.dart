@@ -19,7 +19,7 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
 
   @override
   Widget build(BuildContext context) {
-    Widget primaryColumn = Column(
+    return Column(
       children: [
         Image.asset("assets/images/FamilyGuy.gif"),
         const IntroFormat(gameName: 'Go / No Go', numPlayers: '1', numPaddles: '1', description: "Shoot on green, don't shoot on red."),
@@ -39,32 +39,12 @@ class _SettingsGoNoGo extends State<SettingsGoNoGo> {
         makePlayButton(),
       ],
     );
-
-    return SingleChildScrollView(
-        child: Container(
-            margin: const EdgeInsets.all(10),
-            child:primaryColumn,
-        ),
-    );
   }
 
   Widget makePlayButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        IconButton(
-          onPressed: () {  },
-          icon: const Icon(Icons.ac_unit, size: 50),
-        ),
-        ElevatedButton(
-          onPressed: () {startGame();},
-          child: const Text('Play', textScaleFactor: 1.5,),
-        ),
-        IconButton(
-          onPressed: () {  },
-          icon: const Icon(Icons.ac_unit, size: 50),
-        ),
-      ],
+    return ElevatedButton(
+      onPressed: () {startGame();},
+      child: const Text('Play', textScaleFactor: 1.5,),
     );
   }
 

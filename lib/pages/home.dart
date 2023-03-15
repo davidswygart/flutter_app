@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/game/settings_go_no_go.dart';
 import 'package:flutter_app/pages/scaffold_wrapper.dart';
 
 import 'devices.dart';
@@ -18,7 +17,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const DevicesPage(),
-          navigationButton(context: context, page: const SettingsGoNoGo(), label: "Play Game"),
+          navigationButton(context: context, page: const ChooseGamesPage(), label: "Play Game"),
         ],
       ),
     );
