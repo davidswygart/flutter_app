@@ -72,6 +72,13 @@ class SingleTarget{
     });
   }
 
+  Future<void> disconnect() async {
+    debugPrint("single_target: Attempting disconnect");
+    try{await stateStream.cancel();}
+    catch(error){debugPrint("couldn't disconnect from device. Probably not initialized");}
+  }
+
+
   Future<bool> writeLED(List<int> intList) async {
     //debugPrint("led: writing to LEDs: $intList");
     if (intList.length != 3){

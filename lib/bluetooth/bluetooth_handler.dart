@@ -82,7 +82,10 @@ class BlueToothHandler {
     return result;
   }
 
-  clearTargets() {
+  Future<void> clearTargets() async {
+    for(int i=0; i<targetList.length; i++) {
+      await targetList[i].disconnect();
+    }
     targetList.clear();
   }
 }
