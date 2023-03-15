@@ -42,7 +42,7 @@ class BlueToothHandler {
         availableDevices[dev.name] = dev;
       },
     );
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     await subscription.cancel();
 
     availableDevices.forEach((name, dev) async {

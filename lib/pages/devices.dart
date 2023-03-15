@@ -15,6 +15,16 @@ class DevicesPage extends StatefulWidget {
 
 class _DevicesPage extends State<DevicesPage> {
   @override
+  void initState() {
+    delayedUpdater(); //hacky way to handle connections completing after build
+    super.initState();
+  }
+  Future<void> delayedUpdater() async {
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
