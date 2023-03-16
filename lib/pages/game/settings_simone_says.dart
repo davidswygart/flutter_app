@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/game/play_shoot_your_color.dart';
 import 'package:flutter_app/pages/game/play_simone_says.dart';
-
 import '../scaffold_wrapper.dart';
 import 'choose_game.dart';
 

@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/game/scoreboard.dart';
 import 'package:just_audio/just_audio.dart';
-
 import '../../bluetooth/bluetooth_handler.dart';
 import '../../bluetooth/led_display.dart';
 import '../../bluetooth/single_target.dart';

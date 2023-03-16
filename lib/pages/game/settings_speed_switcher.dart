@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/game/play_speed_switcher.dart';
-
 import '../scaffold_wrapper.dart';
 import 'choose_game.dart';
 

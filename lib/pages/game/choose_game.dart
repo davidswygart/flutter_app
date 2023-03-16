@@ -7,7 +7,6 @@ import 'package:flutter_app/pages/game/settings_shoot_your_color.dart';
 import 'package:flutter_app/pages/game/settings_simone_says.dart';
 import 'package:flutter_app/pages/game/settings_speed_switcher.dart';
 import 'package:flutter_app/pages/game/settings_whack_a_mole.dart';
-
 import 'settings_go_no_go.dart';
 
 class ChooseGamesPage extends StatelessWidget {
