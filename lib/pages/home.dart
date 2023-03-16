@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/scaffold_wrapper.dart';
-
 import 'devices.dart';
-import 'devices_advanced.dart';
 import 'game/choose_game.dart';
 
 class HomePage extends StatelessWidget {

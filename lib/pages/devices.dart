@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/pages/scaffold_wrapper.dart';
-
 import '../bluetooth/bluetooth_handler.dart';
-import '../bluetooth/led_display.dart';
 import '../bluetooth/single_target.dart';
 import 'devices_advanced.dart';
 
 class DevicesPage extends StatefulWidget {
   const DevicesPage({Key? key}) : super(key: key);
-
   @override
   State<DevicesPage> createState() => _DevicesPage();
 }
@@ -88,9 +85,7 @@ class _DevicesPage extends State<DevicesPage> {
       rows.add(DataRow(cells: rowCells));
     }
     return Container(
-        decoration: BoxDecoration(
-            border: Border.all()
-        ),
+        decoration: BoxDecoration(border: Border.all()),
         child: DataTable(columns: columns, rows: rows)
     );
   }
@@ -118,7 +113,7 @@ class _DevicesPage extends State<DevicesPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) =>
-          ScaffoldWrapper(bodyPage: DevicesPageAdvanced())),
+          const ScaffoldWrapper(bodyPage: DevicesPageAdvanced())),
     );
   }
 }

@@ -1,6 +1,4 @@
-
 import 'dart:math';
-
 import 'bluetooth_handler.dart';
 import 'single_target.dart';
 

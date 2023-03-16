@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-
 import 'id.dart';
 
 
@@ -84,8 +83,6 @@ class SingleTarget{
   }
 
   Future<HitResults> getHit(int tNum) async {
-    //debugPrint("hit_sensor: waiting for hit value");
-
     List<int> byteList = await hitStream.firstWhere((b) => b.isNotEmpty);
     ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));
     int rTime = byteData.getUint32(0, Endian.little);
@@ -95,11 +92,11 @@ class SingleTarget{
   Future<void> setHitThreshold(double thresh) async {
     int threshInt = (32767 * thresh / 16).round(); //convert from Gs to 16-bit int with 16g range
     List<int> intList = Uint8List(2)..buffer.asByteData().setInt16(0, threshInt, Endian.little); //convert to list of bytes
-
     await FlutterReactiveBle().writeCharacteristicWithoutResponse(
         hitThreshold, value: intList
     );
   }
+
   Future<double> readHitThreshold() async {
     List<int> byteList = await FlutterReactiveBle().readCharacteristic(hitThreshold);
     ByteData byteData = ByteData.sublistView(Uint8List.fromList(byteList));

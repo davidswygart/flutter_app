@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bluetooth/led_display.dart';
 import 'package:flutter_app/bluetooth/single_target.dart';
 import 'package:just_audio/just_audio.dart';
-
 import '../bluetooth/bluetooth_handler.dart';
 
 class DevicesPageAdvanced extends StatefulWidget {
   const DevicesPageAdvanced({Key? key}) : super(key: key);
-
   @override
   State<DevicesPageAdvanced> createState() => _DevicesPageAdvanced();
 }
@@ -31,21 +29,16 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
             Text("Hits:   $numHits",textScaleFactor: 1.5,textAlign: TextAlign.center,),
             Text("Acceleration:   ${lastAcceleration.toStringAsFixed(1)} gs", textScaleFactor: 1.5, textAlign: TextAlign.center,),
             functionButton(func: clearHits, label: "clear hits"),
-
           ],),
 
           Column(children:[
-
             Text("Threshold: ${threshold.toStringAsFixed(1)} gs", textScaleFactor: 1.5,textAlign: TextAlign.center,),
             getThresholdSlider(),
-
           ]),
 
           Column(children:[
-
             Text("Refractory period: ${refractoryPeriod.toStringAsFixed(0)} ms", textScaleFactor: 1.5,textAlign: TextAlign.center,),
             getRefractorySlider(),
-
           ]),
 
           functionButton(func:LedDisplay().cycleLeds, label:"Flash Lights"),
@@ -53,7 +46,6 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
       ),
     );
   }
-
 
   bool shouldWatchForHits = true;
   @override
@@ -80,9 +72,7 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
 
   clearHits() {
     numHits = 0;
-    setState(() {
-      numHits;
-    });
+    setState(() {numHits;});
   }
 
   watchForHits() async {
@@ -92,9 +82,7 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
       if (mounted) { //check if mounted in case user has moved from page since listening
         numHits++;
         LedDisplay().flashOnePaddle(targetIndex: res.targetNum);
-        lastAcceleration = await BlueToothHandler()
-            .targetList[res.targetNum]
-            .readHitAcceleration();
+        lastAcceleration = await BlueToothHandler().targetList[res.targetNum].readHitAcceleration();
         await player.setAsset('assets/audio/clash.mp3');
         player.play();
         setState(() {numHits;});
@@ -102,12 +90,9 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
     }
   }
 
-  ElevatedButton functionButton(
-      {required Function func, required String label}) {
+  ElevatedButton functionButton({required Function func,required String label}){
     return ElevatedButton(
-      onPressed: () {
-        func();
-      },
+      onPressed: () {func();},
       child: Text(label, textScaleFactor: 1.5,),
     );
   }
@@ -120,10 +105,8 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
         label: null,//threshold.toStringAsFixed(1),
         divisions: 155,
         onChanged: (double value) {
-          setState(() {
-            threshold = value;
-          });
-        },
+          setState(() {threshold = value;});
+          },
         onChangeEnd: (double value) {
           BlueToothHandler().setHitThreshold(threshold);
         });
@@ -137,10 +120,8 @@ class _DevicesPageAdvanced extends State<DevicesPageAdvanced> {
         label: null,//refractoryPeriod.toStringAsFixed(0),
         divisions: 1000,
         onChanged: (double value) {
-          setState(() {
-            refractoryPeriod = value;
-          });
-        },
+          setState(() {refractoryPeriod = value;});
+          },
         onChangeEnd: (double value) {
           BlueToothHandler().setHitRefractoryPeriod(refractoryPeriod);
         });
